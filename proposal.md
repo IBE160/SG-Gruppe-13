@@ -40,20 +40,110 @@ Children from 6 to 12 years old. Primarily elementary school students.
 - Data entity 2: Log of questions that the chatbot was unable to answer, anonymized. This means no identifiable chat logs, no personal data collection. 
 
 
-## User Stories
-1. As a student, I want to ask the chatbot for help with my schoolwork. I expect to get help, but not have the whole task solved. 
-2. As a student I want to be able to have a dialogue with the chatbot about course material, so that I can further my understanding of the subject.
-3. As a student, I want to get support with the tasks from the textbook, so that I can solve them.
-4. As a system admin, I want to be able to see the logs of questions that weren’t answered properly, so that I can update the knowledge base when needed.
-5. As a system admin, I want to be able to update the knowledgebase through an admin site.
+## User Flow
+### Flow 1: Student using the chatbot
+**Entry Point**: Student lands on homepage
+1. **Landing Page**
+  - Student is shown one button for each available subject. 
+  - They click on the subject they want to ask questions about. 
+2. **Chatbot interface**
+  - Student sees the text field where they can ask the chatbot question
+  - They also see a dropdown near the text field, where they can choose their grade level
+  - There is also a flag nearby, which represents what language the chatbot will use. If they click the flag, they can 
+    change the language.
 
-## Technical Constraints
-- Must function in a web-browser.
-- Training must be constrained to subject material.
-- Front-end in Nextjs and tailwind.
-- Back end using Python. 
-- Database: Supabase.
-- AI-model: Gemini api
+**Exit Point**: Student returns to landing page
+
+
+
+## Technical Specifications
+
+### Frontend Specification
+- **Framework**: Next.js 14+ with App Router for server-side rendering and optimal performance
+- **Language**: TypeScript for type safety and better AI-assisted development
+- **Styling**: Tailwind CSS for rapid, responsive UI development
+- **Shadcn UI**: Shadcn UI for rapid, responsive UI development
+- **Authentication UI**: Supabase Auth UI components + custom styling
+- **API Communication**: Axios with interceptors for authenticated requests
+- **Deployment**: Vercel for frontend hosting with automatic CI/CD
+
+
+### Backend Specification
+- **Framework**: FastAPI (Python) for high-performance RESTful API development
+- **Language**: Python for AI integration compatibility and rapid development
+- **Database**: Supabase (Postgres Vector database) for a managed database of curriculum 
+- **Authentication**: Supabase Auth for built-in user management, JWT tokens
+- **Authorization**: Row Level Security (RLS) policies in Supabase + role-based middleware (student/teacher/admin roles)
+- **Database Migrations**: Alembic for version-controlled schema changes
+- **AI Integration**:
+  - GOOGLE Gemini 2.5 Pro API for AI chatbot
+  - Custom prompt engineering for consistent AI behavior
+  - Fallback logic for API failures
+- **API Documentation**: FastAPI automatic OpenAPI/Swagger documentation
+- **Testing**: Pytest for unit and integration tests
+- **Build Tool**: UV for fast Python package management
+- **Deployment**: Vercel (FastAPI supports Vercel deployment)
+
+**API Architecture**: RESTful API design with versioning (/api/v1/) and clear resource-oriented endpoints. Supabase Realtime for live chat instead of WebSockets.
+
+### Database Specification
+- **Database Type**: Supabase (Postgres Vector database) for a managed database of curriculum
+- **Migrations**: Alembic for database schema version control
+- **Hosting**: Supabase managed cloud (includes automatic backups, scaling, and monitoring)
+
+**Schema Design**:
+- Unique identifiers to track each knowledge item,
+- Content fields for storing the main text or source reference,
+- Vector embeddings to enable similarity search and contextual retrieval,
+- Metadata attributes (e.g., topic, category, source) for filtering and organization,
+- Timestamps for versioning and updates.
+
+Function and Structure:
+- The schema supports:
+- Semantic search, allowing the chatbot to find relevant responses based on meaning, not just exact words.
+- Contextual filtering, enabling retrieval by topic, intent, or domain.
+- Scalability, so new data sources and knowledge domains can be integrated over time.
+- Flexibility, accommodating multiple content types such as documents or FAQs..
+
+### AI Integration Specification
+**AI Use Cases**:
+1. **AI Chatbot**: answer user’s questions using the Supabase vector database. 
+
+**Implementation**:
+- **Model**: Gemini 2.5 pro
+- **Prompt Design**:
+  - Chatbot user selects their grade level, and language. These are included in the system prompt.
+  - The backend then adds relevant information from the vector database to the system prompt. 
+- **Rate Limiting**: Implement request queuing and caching for cost optimization
+- **Cost Management**: Budget monitoring and usage alerts
+
+**API Integration Architecture**:
+- Separate service layer for AI calls
+- Retry logic with exponential backoff
+- Response validation and sanitization
+- Caching for repeated similar scenarios
+
+### Platform Type
+**Primary Platform**: Web application (browser-based)
+
+**Target Devices**:
+- Desktop computers (primary): Windows, macOS, Linux
+- Laptops (primary): All operating systems
+- Tablets (secondary): iPad, Android tablets (landscape orientation recommended)
+- Mobile phones (future): iOS and Android via responsive design or dedicated apps
+
+**Browser Compatibility**:
+- Chrome 90+ (primary testing target)
+- Firefox 88+
+- Safari 14+
+- Edge 90+
+
+**Responsive Breakpoints**:
+- Desktop: 1280px+ (optimal experience)
+- Laptop: 1024px-1279px (full features)
+- Tablet: 768px-1023px (adapted layout)
+- Mobile: 375px-767px (future phase - simplified UI)
+
 
 ## Timeline
 Week 1: Analysis & planning.
