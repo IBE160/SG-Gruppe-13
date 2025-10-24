@@ -53,7 +53,7 @@ Children from 6 to 12 years old. Primarily elementary school students.
 - Front-end in Nextjs and tailwind.
 - Back end using Python. 
 - Database: Supabase.
-- AI-model: The one that the teacher is able to source for us for free. 
+- AI-model: Gemini api
 
 ## Timeline
 Week 1: Analysis & planning.
