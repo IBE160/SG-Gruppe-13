@@ -54,7 +54,6 @@ Children from 6 to 12 years old. Primarily elementary school students.
 3. **Exit point**
   - They click on a "Home button" to return to landing page.
 
-**Exit Point**: Student returns to landing page
 
 
 
