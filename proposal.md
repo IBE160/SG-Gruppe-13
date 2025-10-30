@@ -51,6 +51,8 @@ Children from 6 to 12 years old. Primarily elementary school students.
   - They also see a dropdown near the text field, where they can choose their grade level
   - There is also a flag nearby, which represents what language the chatbot will use. If they click the flag, they can 
     change the language.
+3. **Exit point**
+  - They click on a "Home button" to return to landing page.
 
 **Exit Point**: Student returns to landing page
 
