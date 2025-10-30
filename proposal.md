@@ -53,6 +53,8 @@ Children from 6 to 12 years old. Primarily elementary school students.
     change the language.
 3. **Exit point**
   - They click on a "Home button" to return to landing page.
+  - The home button will be located in the upper left corner. It has an icon of a house.
+  -If they click on the icon, they will get a pop-up, warning them that the chat will be deleted. 
 
 
 
