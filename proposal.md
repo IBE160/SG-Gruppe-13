@@ -11,7 +11,7 @@ Create a web application capable of answering any curriculum relevant questions 
 Children from 6 to 12 years old. Primarily elementary school students. 
 
 ## Core Functionality
-
+Research report: Read research: @/docs/research-2025-10-30-mvp-nice-to-have.md
 ### Must Have (MVP)
 - Feature 1: Relevant and accurate knowledge base.
 - Feature 2: User friendly interface. Must be minimalistic, clear & easy to navigate with colorful design. 
@@ -41,6 +41,7 @@ Children from 6 to 12 years old. Primarily elementary school students.
 
 
 ## User Flow
+Research report: @/docs/research-2025-10-30-userflow.md
 ### Flow 1: Student using the chatbot
 **Entry Point**: Student lands on homepage
 1. **Landing Page**
@@ -54,6 +55,8 @@ Children from 6 to 12 years old. Primarily elementary school students.
   - If the Chatbot is unable to provide an answer, it will provide the user with alternate questions they can ask that it may be able to answer.
 3. **Exit point**
   - They click on a "Home button" to return to landing page.
+  - The home button will be located in the upper left corner. It has an icon of a house.
+  -If they click on the icon, they will get a pop-up, warning them that the chat will be deleted. 
 
 
 
@@ -61,6 +64,7 @@ Children from 6 to 12 years old. Primarily elementary school students.
 ## Technical Specifications
 
 ### Frontend Specification
+research report: @/docs/research-technical-2025-10-30-frontend.md
 - **Framework**: Next.js 14+ with App Router for server-side rendering and optimal performance
 - **Language**: TypeScript for type safety and better AI-assisted development
 - **Styling**: Tailwind CSS for rapid, responsive UI development
@@ -71,6 +75,7 @@ Children from 6 to 12 years old. Primarily elementary school students.
 
 
 ### Backend Specification
+research report: @/docs/research-technical-2025-10-30-backend.md
 - **Framework**: FastAPI (Python) for high-performance RESTful API development
 - **Language**: Python for AI integration compatibility and rapid development
 - **Database**: Supabase (Postgres Vector database) for a managed database of curriculum 
@@ -89,6 +94,7 @@ Children from 6 to 12 years old. Primarily elementary school students.
 **API Architecture**: RESTful API design with versioning (/api/v1/) and clear resource-oriented endpoints. Supabase Realtime for live chat instead of WebSockets.
 
 ### Database Specification
+research report: @/docs/research-technical-2025-10-30-database.md
 - **Database Type**: Supabase (Postgres Vector database) for a managed database of curriculum
 - **Migrations**: Alembic for database schema version control
 - **Hosting**: Supabase managed cloud (includes automatic backups, scaling, and monitoring)
@@ -108,6 +114,7 @@ Function and Structure:
 - Flexibility, accommodating multiple content types such as documents or FAQs..
 
 ### AI Integration Specification
+research report: Read research: @/docs/research-technical-2025-10-30-ai-integration.md
 **AI Use Cases**:
 1. **AI Chatbot**: answer user’s questions using the Supabase vector database. 
 
