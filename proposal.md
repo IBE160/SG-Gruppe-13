@@ -55,6 +55,8 @@ Research report: @/docs/research-2025-10-30-userflow.md
   - If the Chatbot is unable to provide an answer, it will provide the user with alternate questions they can ask that it may be able to answer.
 3. **Exit point**
   - They click on a "Home button" to return to landing page.
+  - The home button will be located in the upper left corner. It has an icon of a house.
+  -If they click on the icon, they will get a pop-up, warning them that the chat will be deleted. 
 
 
 
