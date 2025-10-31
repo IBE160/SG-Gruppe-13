@@ -56,7 +56,7 @@ Research report: @/docs/research-2025-10-30-userflow.md
 3. **Exit point**
   - They click on a "Home button" to return to landing page.
   - The home button will be located in the upper left corner. It has an icon of a house.
-  -If they click on the icon, they will get a pop-up, warning them that the chat will be deleted. 
+  - If they click on the icon, they will get a pop-up, warning them that the chat will be deleted. 
 
 
 
@@ -114,7 +114,7 @@ Function and Structure:
 - Flexibility, accommodating multiple content types such as documents or FAQs..
 
 ### AI Integration Specification
-research report: Read research: @/docs/research-technical-2025-10-30-ai-integration.md
+Research report: @/docs/research-technical-2025-10-30-ai-integration.md
 **AI Use Cases**:
 1. **AI Chatbot**: answer user’s questions using the Supabase vector database. 
 
