@@ -14,7 +14,7 @@
 
 - [X] Planning
   - [X] /run-agent-task pm *prd
-  - [ ] /run-agent-task pm *validate-prd
+  - [X] /run-agent-task pm *validate-prd
   - [ ] /run-agent-task ux-designer *create-ux-design {prompt / user-input-file}
   - [ ] /run-agent-task ux-designer *validate-ux-design {prompt / user-input-file}
   - [ ] /run-agent-task tea *framework {prompt / user-input-file}
