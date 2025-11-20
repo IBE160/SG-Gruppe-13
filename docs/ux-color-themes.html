@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiabot - Color Theme Visualizer</title>
+    <style>
+        :root {
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --radius: 0.5rem;
+        }
+        body {
+            font-family: var(--font-sans);
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+        h1, h2, h3, h4 {
+            color: #0f172a;
+            font-weight: 600;
+        }
+        h1 { font-size: 2.25rem; margin-bottom: 1rem; }
+        h2 { font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;}
+        h3 { font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .intro {
+            background-color: #ffffff;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 2rem;
+        }
+        .theme-card {
+            background-color: #ffffff;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        .theme-card:hover {
+            transform: translateY(-5px);
+        }
+        .theme-header {
+            padding: 1.5rem;
+        }
+        .theme-header h3 { margin-top: 0; }
+        .theme-body {
+            padding: 0 1.5rem 1.5rem;
+        }
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .swatch {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            text-align: center;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .swatch .color-box {
+            height: 60px;
+            width: 100%;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+        .swatch .label {
+            display: block;
+            color: #475569;
+        }
+        .swatch .hex {
+            display: block;
+            color: #64748b;
+            font-size: 0.75rem;
+        }
+        .component-preview {
+            border: 1px solid; /* Set in theme */
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .component-preview h4 { margin-top: 0; }
+        .button {
+            display: inline-block;
+            font-weight: 600;
+            padding: 0.625rem 1.25rem;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            margin-right: 0.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .input {
+            width: calc(100% - 2rem);
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius);
+            border: 1px solid; /* Set in theme */
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+        .alert {
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            border: 1px solid transparent;
+        }
+        .card {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .mode-toggle button {
+            background-color: #475569;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .mode-toggle button.active {
+            background-color: #1e293b;
+            font-weight: bold;
+        }
+        
+        /* Light/Dark Mode Styles */
+        body.dark {
+            background-color: #0f172a;
+            color: #cbd5e1;
+        }
+        body.dark h1, body.dark h2, body.dark h3, body.dark h4 {
+            color: #f1f5f9;
+        }
+        body.dark .intro, body.dark .theme-card {
+            background-color: #1e293b;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+        }
+        body.dark .swatch .label { color: #94a3b8; }
+        body.dark .swatch .hex { color: #64748b; }
+        
+        /* Theme 1: Trustworthy Learner */
+        [data-theme="theme1"] {
+            --primary: #2563eb; --primary-fg: #ffffff;
+            --secondary: #059669; --secondary-fg: #ffffff;
+            --accent: #f59e0b; --accent-fg: #ffffff;
+            --neutral: #f1f5f9; --neutral-fg: #1e293b;
+            --base-100: #ffffff; --base-content: #1e293b;
+            --border: #e2e8f0;
+            --success: #22c55e; --success-fg: #ffffff;
+            --error: #ef4444; --error-fg: #ffffff;
+        }
+        [data-theme="theme1"].dark {
+            --primary: #3b82f6; --primary-fg: #ffffff;
+            --secondary: #10b981; --secondary-fg: #ffffff;
+            --accent: #f59e0b; --accent-fg: #0f172a;
+            --neutral: #334155; --neutral-fg: #e2e8f0;
+            --base-100: #1e293b; --base-content: #e2e8f0;
+            --border: #475569;
+        }
+
+        /* Theme 2: Curious Explorer */
+        [data-theme="theme2"] {
+            --primary: #7c3aed; --primary-fg: #ffffff;
+            --secondary: #f97316; --secondary-fg: #ffffff;
+            --accent: #ec4899; --accent-fg: #ffffff;
+            --neutral: #f3f4f6; --neutral-fg: #1f2937;
+            --base-100: #ffffff; --base-content: #1f2937;
+            --border: #e5e7eb;
+            --success: #16a34a; --success-fg: #ffffff;
+            --error: #dc2626; --error-fg: #ffffff;
+        }
+        [data-theme="theme2"].dark {
+            --primary: #8b5cf6; --primary-fg: #ffffff;
+            --secondary: #fb923c; --secondary-fg: #0f172a;
+            --accent: #f472b6; --accent-fg: #0f172a;
+            --neutral: #374151; --neutral-fg: #d1d5db;
+            --base-100: #1f2937; --base-content: #d1d5db;
+            --border: #4b5563;
+        }
+        
+        /* Theme 3: Focused Achiever */
+        [data-theme="theme3"] {
+            --primary: #0d9488; --primary-fg: #ffffff;
+            --secondary: #475569; --secondary-fg: #ffffff;
+            --accent: #f43f5e; --accent-fg: #ffffff;
+            --neutral: #f8fafc; --neutral-fg: #0f172a;
+            --base-100: #ffffff; --base-content: #0f172a;
+            --border: #e2e8f0;
+            --success: #4ade80; --success-fg: #0f172a;
+            --error: #f87171; --error-fg: #0f172a;
+        }
+        [data-theme="theme3"].dark {
+            --primary: #14b8a6; --primary-fg: #0f172a;
+            --secondary: #64748b; --secondary-fg: #ffffff;
+            --accent: #fb7185; --accent-fg: #0f172a;
+            --neutral: #1e293b; --neutral-fg: #f1f5f9;
+            --base-100: #0f172a; --base-content: #f1f5f9;
+            --border: #334155;
+        }
+
+        /* Theme 4: Bright Innovator */
+        [data-theme="theme4"] {
+            --primary: #16a34a; --primary-fg: #ffffff;
+            --secondary: #ca8a04; --secondary-fg: #ffffff;
+            --accent: #0ea5e9; --accent-fg: #ffffff;
+            --neutral: #f0fdf4; --neutral-fg: #14532d;
+            --base-100: #ffffff; --base-content: #1e293b;
+            --border: #dcfce7;
+            --success: #22c55e; --success-fg: #ffffff;
+            --error: #ef4444; --error-fg: #ffffff;
+        }
+        [data-theme="theme4"].dark {
+            --primary: #22c55e; --primary-fg: #0f172a;
+            --secondary: #eab308; --secondary-fg: #0f172a;
+            --accent: #38bdf8; --accent-fg: #0f172a;
+            --neutral: #1c1917; --neutral-fg: #a3e635;
+            --base-100: #1c1917; --base-content: #dcfce7;
+            --border: #292524;
+        }
+        
+        /* Themed Component Styles */
+        .themed {
+            background-color: var(--base-100);
+            color: var(--base-content);
+        }
+        .themed .button.primary { background-color: var(--primary); color: var(--primary-fg); }
+        .themed .button.secondary { background-color: var(--secondary); color: var(--secondary-fg); }
+        .themed .button.accent { background-color: var(--accent); color: var(--accent-fg); }
+        .themed .input { border-color: var(--border); background-color: var(--base-100); color: var(--base-content); }
+        .themed .input:focus { border-color: var(--primary); outline: 2px solid var(--primary); outline-offset: 2px; }
+        .themed .alert.success { background-color: var(--success); color: var(--success-fg); border-color: transparent;}
+        .themed .alert.error { background-color: var(--error); color: var(--error-fg); border-color: transparent; }
+        .themed .card { background-color: var(--neutral); color: var(--neutral-fg); border: 1px solid var(--border); }
+        .themed .component-preview { border-color: var(--border); }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro">
+            <h1>🎨 Sentiabot Color Theme Visualizer</h1>
+            <p>Hello BIP! Here are four potential color theme directions for Sentiabot. Each theme is designed to evoke a slightly different personality while staying true to our goals of creating a trustworthy, engaging, and simple tool for young learners.</p>
+            <p>Review the palettes and the live component examples below. Think about which one *feels* right for Sentiabot's mission. You can toggle between light and dark modes to see how they adapt.</p>
+        </div>
+
+        <div class="mode-toggle">
+            <button id="light-mode-btn" class="active">Light Mode</button>
+            <button id="dark-mode-btn">Dark Mode</button>
+        </div>
+
+        <div class="grid">
+            <!-- Theme 1 Card -->
+            <div class="theme-card">
+                <div class="theme-header" data-theme="theme1">
+                    <h3>1. Trustworthy Learner</h3>
+                    <p><strong>Personality:</strong> Calm, reliable, and academic.</p>
+                    <p><strong>Strategy:</strong> A primary blue for trust and intelligence, with a secondary green for learning and growth. A warm yellow accent adds a spark of curiosity.</p>
+                </div>
+                <div class="theme-body themed" data-theme="theme1" id="theme1-body">
+                    <h4>Color Palette</h4>
+                    <div class="swatch-grid">
+                        <div class="swatch"><div class="color-box" style="background-color: var(--primary);"></div><span class="label">Primary</span><span class="hex">#2563eb</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--secondary);"></div><span class="label">Secondary</span><span class="hex">#059669</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--accent);"></div><span class="label">Accent</span><span class="hex">#f59e0b</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--success);"></div><span class="label">Success</span><span class="hex">#22c55e</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--error);"></div><span class="label">Error</span><span class="hex">#ef4444</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--neutral);"></div><span class="label">Neutral</span><span class="hex">#f1f5f9</span></div>
+                    </div>
+                    <div class="component-preview">
+                        <h4>Component Preview</h4>
+                        <button class="button primary">Primary Action</button>
+                        <button class="button secondary">Secondary</button>
+                        <br/><br/>
+                        <input type="text" class="input" placeholder="Ask a question...">
+                        <div class="alert success">Well done! That's the correct answer.</div>
+                        <div class="card">This is a card. It holds important content.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theme 2 Card -->
+            <div class="theme-card">
+                <div class="theme-header" data-theme="theme2">
+                    <h3>2. Curious Explorer</h3>
+                    <p><strong>Personality:</strong> Creative, inquisitive, and friendly.</p>
+                    <p><strong>Strategy:</strong> A primary purple to evoke creativity and wisdom, with a vibrant orange accent to encourage interaction and curiosity. Playful but still intelligent.</p>
+                </div>
+                <div class="theme-body themed" data-theme="theme2" id="theme2-body">
+                    <h4>Color Palette</h4>
+                    <div class="swatch-grid">
+                         <div class="swatch"><div class="color-box" style="background-color: var(--primary);"></div><span class="label">Primary</span><span class="hex">#7c3aed</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--secondary);"></div><span class="label">Secondary</span><span class="hex">#f97316</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--accent);"></div><span class="label">Accent</span><span class="hex">#ec4899</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--success);"></div><span class="label">Success</span><span class="hex">#16a34a</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--error);"></div><span class="label">Error</span><span class="hex">#dc2626</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--neutral);"></div><span class="label">Neutral</span><span class="hex">#f3f4f6</span></div>
+                    </div>
+                    <div class="component-preview">
+                        <h4>Component Preview</h4>
+                        <button class="button primary">Primary Action</button>
+                        <button class="button secondary">Secondary</button>
+                        <br/><br/>
+                        <input type="text" class="input" placeholder="Ask a question...">
+                        <div class="alert success">Great job! You figured it out.</div>
+                        <div class="card">This is a card. It holds important content.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theme 3 Card -->
+            <div class="theme-card">
+                <div class="theme-header" data-theme="theme3">
+                    <h3>3. Focused Achiever</h3>
+                    <p><strong>Personality:</strong> Modern, efficient, and clean.</p>
+                    <p><strong>Strategy:</strong> A sophisticated teal as the primary color, which balances the calmness of blue with the renewal of green. Paired with dark graphite and a bright coral accent.</p>
+                </div>
+                <div class="theme-body themed" data-theme="theme3" id="theme3-body">
+                    <h4>Color Palette</h4>
+                    <div class="swatch-grid">
+                         <div class="swatch"><div class="color-box" style="background-color: var(--primary);"></div><span class="label">Primary</span><span class="hex">#0d9488</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--secondary);"></div><span class="label">Secondary</span><span class="hex">#475569</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--accent);"></div><span class="label">Accent</span><span class="hex">#f43f5e</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--success);"></div><span class="label">Success</span><span class="hex">#4ade80</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--error);"></div><span class="label">Error</span><span class="hex">#f87171</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--neutral);"></div><span class="label">Neutral</span><span class="hex">#f8fafc</span></div>
+                    </div>
+                    <div class="component-preview">
+                        <h4>Component Preview</h4>
+                        <button class="button primary">Primary Action</button>
+                        <button class="button secondary">Secondary</button>
+                        <br/><br/>
+                        <input type="text" class="input" placeholder="Ask a question...">
+                        <div class="alert error">Oops! Let's try that another way.</div>
+                        <div class="card">This is a card. It holds important content.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Theme 4 Card -->
+            <div class="theme-card">
+                <div class="theme-header" data-theme="theme4">
+                    <h3>4. Bright Innovator</h3>
+                    <p><strong>Personality:</strong> Energetic, fresh, and optimistic.</p>
+                    <p><strong>Strategy:</strong> A bright, friendly green as the primary color to feel fresh and educational, with a sunny yellow accent to feel optimistic and energetic. Very approachable.</p>
+                </div>
+                <div class="theme-body themed" data-theme="theme4" id="theme4-body">
+                    <h4>Color Palette</h4>
+                    <div class="swatch-grid">
+                         <div class="swatch"><div class="color-box" style="background-color: var(--primary);"></div><span class="label">Primary</span><span class="hex">#16a34a</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--secondary);"></div><span class="label">Secondary</span><span class="hex">#ca8a04</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--accent);"></div><span class="label">Accent</span><span class="hex">#0ea5e9</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--success);"></div><span class="label">Success</span><span class="hex">#22c55e</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--error);"></div><span class="label">Error</span><span class="hex">#ef4444</span></div>
+                        <div class="swatch"><div class="color-box" style="background-color: var(--neutral);"></div><span class="label">Neutral</span><span class="hex">#f0fdf4</span></div>
+                    </div>
+                    <div class="component-preview">
+                        <h4>Component Preview</h4>
+                        <button class="button primary">Primary Action</button>
+                        <button class="button secondary">Secondary</button>
+                        <br/><br/>
+                        <input type="text" class="input" placeholder="Ask a question...">
+                        <div class="alert success">You got it! Nicely done.</div>
+                        <div class="card">This is a card. It holds important content.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const lightModeBtn = document.getElementById('light-mode-btn');
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const body = document.body;
+        const themeBodies = document.querySelectorAll('.theme-body');
+
+        function setMode(mode) {
+            if (mode === 'dark') {
+                body.classList.add('dark');
+                themeBodies.forEach(tb => tb.classList.add('dark'));
+                lightModeBtn.classList.remove('active');
+                darkModeBtn.classList.add('active');
+            } else {
+                body.classList.remove('dark');
+                themeBodies.forEach(tb => tb.classList.remove('dark'));
+                darkModeBtn.classList.remove('active');
+                lightModeBtn.classList.add('active');
+            }
+        }
+
+        lightModeBtn.addEventListener('click', () => setMode('light'));
+        darkModeBtn.addEventListener('click', () => setMode('dark'));
+    </script>
+</body>
+</html>

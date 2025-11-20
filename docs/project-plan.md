@@ -20,7 +20,6 @@
   - [ ] /run-agent-task tea *framework {prompt / user-input-file}
   - [ ] /run-agent-task tea *ci {prompt / user-input-file}
   - [ ] /run-agent-task tea *test-design {prompt / user-input-file}
-
 ## Fase 2
 
 - [ ] Solutioning

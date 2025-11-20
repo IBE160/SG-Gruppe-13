@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiabot - Design Direction Showcase</title>
+    <style>
+        :root {
+            /* Base Theme: Trustworthy Learner with modified success */
+            --primary: #2563eb; --primary-fg: #ffffff;
+            --secondary: #059669; --secondary-fg: #ffffff;
+            --accent: #f59e0b; --accent-fg: #ffffff;
+            --neutral-bg: #f1f5f9; --neutral-fg: #1e293b;
+            --base-bg: #ffffff; --base-content: #1e293b;
+            --border: #e2e8f0;
+            --success: #16a34a; --success-fg: #ffffff; /* Modified */
+            --error: #ef4444; --error-fg: #ffffff;
+
+            /* Typography */
+            --font-sans: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            --text-base: 1rem;
+            --text-sm: 0.875rem;
+            --text-lg: 1.125rem;
+            --text-xl: 1.25rem;
+            --text-2xl: 1.5rem;
+            --text-3xl: 1.875rem;
+
+            /* Spacing (8px grid) */
+            --space-px: 1px;
+            --space-0-5: 0.125rem; /* 2px */
+            --space-1: 0.25rem;    /* 4px */
+            --space-2: 0.5rem;     /* 8px */
+            --space-3: 0.75rem;    /* 12px */
+            --space-4: 1rem;       /* 16px */
+            --space-5: 1.25rem;    /* 20px */
+            --space-6: 1.5rem;     /* 24px */
+            --space-8: 2rem;       /* 32px */
+            --space-10: 2.5rem;    /* 40px */
+            --space-12: 3rem;      /* 48px */
+            --space-16: 4rem;      /* 64px */
+
+            /* Other */
+            --radius: 0.5rem;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        /* Dark Mode adjustments */
+        body.dark {
+            --primary: #3b82f6; --primary-fg: #ffffff;
+            --secondary: #10b981; --secondary-fg: #ffffff;
+            --accent: #f59e0b; --accent-fg: #0f172a;
+            --neutral-bg: #1e293b; --neutral-fg: #e2e8f0;
+            --base-bg: #0f172a; --base-content: #e2e8f0;
+            --border: #475569;
+            --success: #22c55e; --success-fg: #ffffff;
+            --error: #ef4444; --error-fg: #ffffff;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--base-bg);
+            color: var(--base-content);
+            margin: 0;
+            padding: var(--space-8);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+            font-size: var(--text-base);
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--base-content);
+            font-weight: 600;
+            margin-top: var(--space-8);
+            margin-bottom: var(--space-4);
+        }
+        h1 { font-size: var(--text-3xl); }
+        h2 { font-size: var(--text-2xl); border-bottom: 1px solid var(--border); padding-bottom: var(--space-2); }
+        h3 { font-size: var(--text-xl); }
+        h4 { font-size: var(--text-lg); }
+
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+        .intro {
+            background-color: var(--neutral-bg);
+            border-radius: var(--radius);
+            padding: var(--space-8);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-8);
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            text-align: center;
+            margin-bottom: var(--space-8);
+        }
+        .mode-toggle button {
+            background-color: var(--border);
+            color: var(--base-content);
+            border: none;
+            padding: var(--space-3) var(--space-6);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: var(--text-base);
+            margin: 0 var(--space-1);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .mode-toggle button.active {
+            background-color: var(--primary);
+            color: var(--primary-fg);
+            font-weight: bold;
+        }
+
+        /* Navigation for directions */
+        .direction-nav {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2);
+            margin-bottom: var(--space-8);
+            flex-wrap: wrap;
+        }
+        .direction-nav button {
+            background-color: var(--neutral-bg);
+            color: var(--base-content);
+            border: 1px solid var(--border);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: var(--text-sm);
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .direction-nav button:hover {
+            background-color: var(--border);
+        }
+        .direction-nav button.active {
+            background-color: var(--primary);
+            color: var(--primary-fg);
+            border-color: var(--primary);
+        }
+
+        /* Design Direction Display */
+        .design-direction {
+            display: none;
+            background-color: var(--base-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: var(--space-8);
+            overflow: hidden;
+        }
+        .design-direction.active {
+            display: block;
+        }
+
+        .direction-header {
+            padding: var(--space-6);
+            background-color: var(--neutral-bg);
+            border-bottom: 1px solid var(--border);
+        }
+        .direction-header h3 {
+            margin-top: 0;
+            margin-bottom: var(--space-2);
+            font-size: var(--text-2xl);
+            color: var(--base-content);
+        }
+        .direction-header p {
+            margin-bottom: var(--space-1);
+            color: var(--base-content);
+        }
+
+        .mockup-area {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-6);
+            padding: var(--space-6);
+        }
+
+        .mockup-container {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background-color: var(--neutral-bg);
+        }
+        .mockup-header {
+            background-color: var(--border);
+            color: var(--base-content);
+            padding: var(--space-2) var(--space-4);
+            font-size: var(--text-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .mockup-content {
+            padding: var(--space-4);
+            display: flex;
+            flex-direction: column;
+            height: 600px; /* Fixed height for mockups */
+            position: relative;
+        }
+
+        /* Chat interface common styles */
+        .chat-history {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: var(--space-2); /* For scrollbar */
+            margin-bottom: var(--space-4);
+        }
+        .chat-message {
+            display: flex;
+            margin-bottom: var(--space-4);
+            font-size: var(--text-base);
+        }
+        .message-content {
+            max-width: 80%;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            position: relative;
+        }
+        .user-message .message-content {
+            background-color: var(--primary);
+            color: var(--primary-fg);
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+        .bot-message .message-content {
+            background-color: var(--neutral-bg);
+            color: var(--base-content);
+            border: 1px solid var(--border);
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+        .message-source {
+            font-size: var(--text-sm);
+            margin-top: var(--space-1);
+            color: var(--accent);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .chat-input-area {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            padding-top: var(--space-2);
+            border-top: 1px solid var(--border);
+        }
+        .chat-input {
+            flex-grow: 1;
+            padding: var(--space-3) var(--space-4);
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background-color: var(--base-bg);
+            color: var(--base-content);
+            font-size: var(--text-base);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .chat-input:focus {
+            border-color: var(--primary);
+        }
+        .send-button {
+            background-color: var(--primary);
+            color: var(--primary-fg);
+            border: none;
+            padding: var(--space-3) var(--space-5);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: var(--text-base);
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .send-button:hover {
+            background-color: var(--secondary); /* Example hover */
+        }
+
+        /* Specific Direction Styles */
+
+        /* Direction 1: Classic Chat */
+        #direction1 .mockup-content { /* Default chat style */ }
+
+        /* Direction 2: Contextual Sidebar */
+        #direction2 .mockup-content {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: var(--space-4);
+            padding: var(--space-4);
+        }
+        #direction2 .sidebar {
+            background-color: var(--neutral-bg);
+            border-radius: var(--radius);
+            padding: var(--space-4);
+            border: 1px solid var(--border);
+            height: 100%;
+        }
+        #direction2 .sidebar h4 {
+            margin-top: 0;
+            margin-bottom: var(--space-4);
+            font-size: var(--text-base);
+        }
+        #direction2 .sidebar button {
+            display: block;
+            width: 100%;
+            background-color: var(--base-bg);
+            color: var(--base-content);
+            border: 1px solid var(--border);
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius);
+            margin-bottom: var(--space-2);
+            cursor: pointer;
+            text-align: left;
+        }
+        #direction2 .main-chat-area {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Direction 3: Clean Header */
+        #direction3 .mockup-content .chat-history {
+            padding-top: var(--space-4); /* Space for header */
+        }
+        #direction3 .chat-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-3) var(--space-4);
+            background-color: var(--neutral-bg);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        #direction3 .chat-header span {
+            color: var(--base-content);
+        }
+        #direction3 .chat-header button {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--base-content);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: var(--text-sm);
+        }
+        #direction3 .mockup-content { padding-top: var(--space-12); } /* Push content down */
+
+
+        /* Direction 4: Floating Input */
+        #direction4 .mockup-content {
+            position: relative;
+        }
+        #direction4 .chat-input-area {
+            position: absolute;
+            bottom: var(--space-4);
+            left: var(--space-4);
+            right: var(--space-4);
+            background-color: var(--base-bg);
+            border-top: none;
+            padding-top: 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            padding: var(--space-2);
+            z-index: 10;
+        }
+        #direction4 .chat-input {
+            border: none;
+            background-color: var(--neutral-bg);
+        }
+        #direction4 .chat-history {
+            padding-bottom: var(--space-16); /* Make space for floating input */
+        }
+
+
+        /* Direction 5: Source-Integrated Bubbles */
+        #direction5 .message-content {
+            padding-bottom: var(--space-6); /* Space for integrated source */
+        }
+        #direction5 .message-source {
+            position: absolute;
+            bottom: var(--space-1);
+            left: var(--space-4);
+            right: var(--space-4);
+            font-size: 0.7rem; /* Smaller text */
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-weight: 500;
+        }
+        #direction5 .user-message .message-source {
+            color: var(--primary-fg);
+            opacity: 0.8;
+            left: auto;
+            right: var(--space-4);
+        }
+        #direction5 .bot-message .message-source {
+            color: var(--accent);
+        }
+        #direction5 .message-source:before {
+            content: '🔗';
+            font-size: 0.8rem;
+            line-height: 1;
+        }
+
+
+        /* Direction 6: Playful Accents */
+        #direction6 .chat-message.bot-message .message-content {
+            background-color: var(--primary); /* Playful bot color */
+            color: var(--primary-fg);
+            border: none;
+            border-bottom-left-radius: var(--radius);
+            border-top-right-radius: var(--radius);
+            border-bottom-right-radius: var(--radius);
+        }
+        #direction6 .chat-message.user-message .message-content {
+            background-color: var(--neutral-bg); /* Playful user color */
+            color: var(--base-content);
+            border: 1px solid var(--border);
+            border-bottom-right-radius: var(--radius);
+            border-top-left-radius: var(--radius);
+            border-bottom-left-radius: var(--radius);
+        }
+        #direction6 .send-button {
+            background-color: var(--accent); /* Playful send button */
+            color: var(--accent-fg);
+        }
+        #direction6 .send-button:hover {
+            background-color: var(--secondary);
+        }
+        /* More rounded corners for general elements */
+        #direction6 .chat-input, #direction6 .chat-input-area {
+            border-radius: var(--space-4); /* More rounded */
+        }
+
+        /* Direction 7: Combined */
+        #direction7 .message-content {
+            padding-bottom: var(--space-6); /* Space for integrated source */
+        }
+        #direction7 .message-source {
+            position: absolute;
+            bottom: var(--space-1);
+            left: var(--space-4);
+            right: var(--space-4);
+            font-size: 0.7rem; /* Smaller text */
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-1);
+            font-weight: 500;
+        }
+        #direction7 .user-message .message-source {
+            color: var(--primary-fg);
+            opacity: 0.8;
+            left: auto;
+            right: var(--space-4);
+        }
+        #direction7 .bot-message .message-source {
+            color: var(--accent);
+        }
+        #direction7 .message-source:before {
+            content: '🔗';
+            font-size: 0.8rem;
+            line-height: 1;
+        }
+        #direction7 .mockup-content .chat-history {
+            padding-top: var(--space-4); /* Space for header */
+        }
+        #direction7 .chat-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: var(--space-3) var(--space-4);
+            background-color: var(--neutral-bg);
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+        #direction7 .chat-header span {
+            color: var(--base-content);
+        }
+        #direction7 .chat-header button {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--base-content);
+            padding: var(--space-1) var(--space-2);
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: var(--text-sm);
+        }
+        #direction7 .mockup-content { padding-top: var(--space-12); } /* Push content down */
+
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            body { padding: var(--space-4); }
+            h1 { font-size: var(--text-2xl); }
+            h2 { font-size: var(--text-xl); }
+            .grid { grid-template-columns: 1fr; }
+            .direction-nav { justify-content: start; }
+            #direction2 .mockup-content {
+                grid-template-columns: 1fr;
+                gap: var(--space-6);
+                height: auto;
+            }
+            #direction2 .sidebar { height: auto; }
+            .mockup-content { height: 500px; } /* Adjust height for mobile */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="intro">
+            <h1>🎨 Sentiabot Design Direction Showcase</h1>
+            <p>Hello BIP! Here are six different design directions for Sentiabot's core chat interface. These mockups apply the "Trustworthy Learner" color theme and the defined typography/spacing to illustrate various UX approaches.</p>
+            <p>As you explore, consider which layout feels most intuitive for elementary students, how information is presented, and how the overall feel aligns with our goals of making them feel efficient, productive, and curious.</p>
+            <p>You can use the navigation buttons below to switch between directions. For now, the responsive view is simulated by shrinking your browser window.</p>
+        </div>
+
+        <div class="mode-toggle">
+            <button id="light-mode-btn" class="active">Light Mode</button>
+            <button id="dark-mode-btn">Dark Mode</button>
+        </div>
+
+        <div class="direction-nav">
+            <button class="nav-button" data-target="direction1">1. Classic Chat</button>
+            <button class="nav-button" data-target="direction2">2. Contextual Sidebar</button>
+            <button class="nav-button" data-target="direction3">3. Clean Header</button>
+            <button class="nav-button" data-target="direction4">4. Floating Input</button>
+            <button class="nav-button" data-target="direction5">5. Source-Integrated Bubbles</button>
+            <button class="nav-button" data-target="direction6">6. Playful Accents</button>
+            <button class="nav-button active" data-target="direction7">7. Combined Direction</button>
+        </div>
+
+        <!-- Design Direction 1: Classic Chat -->
+        <div class="design-direction" id="direction1">
+            <div class="direction-header">
+                <h3>1. Classic Chat</h3>
+                <p><strong>Personality:</strong> Familiar, straightforward, efficient.</p>
+                <p><strong>Philosophy:</strong> A timeless chat layout that users are already accustomed to. The focus is squarely on the conversation with minimal distractions.</p>
+                <p><strong>Characteristics:</strong> Layout: Single column chat history. Density: Balanced. Navigation: Implicit (via chat). Primary action prominence: High (input field).</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot - Science (Grade 3)</div>
+                    <div class="mockup-content themed">
+                        <div class="chat-history">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis?
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen!
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                            <button class="send-button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Direction 2: Contextual Sidebar -->
+        <div class="design-direction" id="direction2">
+            <div class="direction-header">
+                <h3>2. Contextual Sidebar</h3>
+                <p><strong>Personality:</strong> Organized, functional, focused.</p>
+                <p><strong>Philosophy:</strong> Provides persistent access to key settings (subject, grade, history) without cluttering the main chat area. Useful for quick context switching.</p>
+                <p><strong>Characteristics:</strong> Layout: Two-column (sidebar + chat). Density: Balanced. Navigation: Explicit (sidebar). Primary action prominence: High (input field).</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot</div>
+                    <div class="mockup-content themed">
+                        <div class="sidebar">
+                            <h4>Current Topic</h4>
+                            <button>Science (Biology)</button>
+                            <h4>Grade Level</h4>
+                            <button>Grade 3</button>
+                            <h4>Language</h4>
+                            <button>English</button>
+                            <h4>Tools</h4>
+                            <button>Download Chat</button>
+                        </div>
+                        <div class="main-chat-area">
+                            <div class="chat-history">
+                                <div class="chat-message bot-message">
+                                    Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis?
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen!
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                            <div class="chat-input-area">
+                                <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                                <button class="send-button">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Direction 3: Clean Header -->
+        <div class="design-direction" id="direction3">
+            <div class="direction-header">
+                <h3>3. Clean Header</h3>
+                <p><strong>Personality:</strong> Minimalist, modern, uncluttered.</p>
+                <p><strong>Philosophy:</strong> Keeps the main chat area as clean as possible by moving secondary controls to a subtle, yet accessible, header. Emphasizes the conversation flow.</p>
+                <p><strong>Characteristics:</strong> Layout: Single column. Density: Spacious. Navigation: Minimal header. Primary action prominence: High (input field).</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot</div>
+                    <div class="mockup-content themed">
+                        <div class="chat-header">
+                            <span>Science (Grade 3)</span>
+                            <button>Options</button>
+                        </div>
+                        <div class="chat-history">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis?
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen!
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                            <button class="send-button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Direction 4: Floating Input -->
+        <div class="design-direction" id="direction4">
+            <div class="direction-header">
+                <h3>4. Floating Input</h3>
+                <p><strong>Personality:</strong> Modern, dynamic, focused.</p>
+                <p><strong>Philosophy:</strong> The chat input subtly floats above the conversation, giving the chat history more room and a feeling of continuity. Emphasizes the fluid nature of chat.</p>
+                <p><strong>Characteristics:</strong> Layout: Single column. Density: Spacious. Navigation: Implicit (via chat). Primary action prominence: High (input field), visually distinct.</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot - Science (Grade 3)</div>
+                    <div class="mockup-content themed">
+                        <div class="chat-history">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis?
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen!
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    Why is it important?
+                                </div>
+                            </div>
+                             <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    It's super important because almost all living things on Earth depend on plants for food and oxygen! Without plants doing photosynthesis, there wouldn't be enough food or air for animals and people to survive.
+                                    <div class="message-source">Source: National Geographic Kids</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                            <button class="send-button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Direction 5: Source-Integrated Bubbles -->
+        <div class="design-direction" id="direction5">
+            <div class="direction-header">
+                <h3>5. Source-Integrated Bubbles</h3>
+                <p><strong>Personality:</strong> Trustworthy, educational, detailed.</p>
+                <p><strong>Philosophy:</strong> Emphasizes the sourcing of information by integrating it more tightly within the chat bubble, making it an undeniable part of the answer. Builds strong credibility.</p>
+                <p><strong>Characteristics:</strong> Layout: Single column. Density: Slightly denser due to integrated source. Navigation: Implicit. Primary action prominence: High.</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot - Science (Grade 3)</div>
+                    <div class="mockup-content themed">
+                        <div class="chat-history">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis?
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen!
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    Why is it important?
+                                </div>
+                            </div>
+                             <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    It's super important because almost all living things on Earth depend on plants for food and oxygen! Without plants doing photosynthesis, there wouldn't be enough food or air for animals and people to survive.
+                                    <div class="message-source">Source: National Geographic Kids</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                            <button class="send-button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Design Direction 6: Playful Accents -->
+        <div class="design-direction" id="direction6">
+            <div class="direction-header">
+                <h3>6. Playful Accents</h3>
+                <p><strong>Personality:</strong> Friendly, engaging, approachable.</p>
+                <p><strong>Philosophy:</strong> Uses subtle, child-friendly visual cues and rounded shapes to make the interface feel less sterile and more inviting, while maintaining clarity and simplicity.</p>
+                <p><strong>Characteristics:</strong> Layout: Single column. Density: Balanced. Navigation: Implicit. Primary action prominence: High (input field) with distinct styling.</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot - Science (Grade 3)</div>
+                    <div class="mockup-content themed">
+                        <div class="chat-history">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    👋 Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today? 💡
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis? 🤔
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! 🌱 They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen! ☀️
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    Why is it important?
+                                </div>
+                            </div>
+                             <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    It's super important because almost all living things on Earth depend on plants for food and oxygen! Without plants doing photosynthesis, there wouldn't be enough food or air for animals and people to survive. 🌍
+                                    <div class="message-source">Source: National Geographic Kids</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                            <button class="send-button">Ask Sentiabot</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- New Direction 7: Combined -->
+        <div class="design-direction" id="direction7">
+            <div class="direction-header">
+                <h3>7. Combined Direction (Source-Integrated Bubbles + Clean Header Options)</h3>
+                <p><strong>Personality:</strong> Trustworthy, Educational, and User-Controlled.</p>
+                <p><strong>Philosophy:</strong> Combines the strong credibility of integrated sources with the clarity and user control provided by a clean, accessible header for settings.</p>
+                <p><strong>Characteristics:</strong> Layout: Single column. Density: Slightly denser due to integrated source. Navigation: Implicit chat with explicit header options. Primary action prominence: High.</p>
+            </div>
+            <div class="mockup-area">
+                <div class="mockup-container">
+                    <div class="mockup-header">Sentiabot</div>
+                    <div class="mockup-content themed">
+                        <div class="chat-header">
+                            <span>Science (Grade 3)</span>
+                            <button>Options</button>
+                        </div>
+                        <div class="chat-history">
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Hello there! I'm Sentiabot. I can help you with your science questions. What would you like to learn about today?
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    What is photosynthesis?
+                                </div>
+                            </div>
+                            <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    Photosynthesis is how plants make their own food! They use sunlight, water, and a gas called carbon dioxide to create sugar for energy and release oxygen, which we breathe. It's like a plant's kitchen!
+                                    <div class="message-source">Source: Encyclopedia Britannica</div>
+                                </div>
+                            </div>
+                            <div class="chat-message user-message">
+                                <div class="message-content">
+                                    Why is it important?
+                                </div>
+                            </div>
+                             <div class="chat-message bot-message">
+                                <div class="message-content">
+                                    It's super important because almost all living things on Earth depend on plants for food and oxygen! Without plants doing photosynthesis, there wouldn't be enough food or air for animals and people to survive.
+                                    <div class="message-source">Source: National Geographic Kids</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input-area">
+                            <input type="text" class="chat-input" placeholder="Ask Sentiabot a question...">
+                            <button class="send-button">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const lightModeBtn = document.getElementById('light-mode-btn');
+        const darkModeBtn = document.getElementById('dark-mode-btn');
+        const body = document.body;
+        const navButtons = document.querySelectorAll('.nav-button');
+        const designDirections = document.querySelectorAll('.design-direction');
+
+        function setMode(mode) {
+            if (mode === 'dark') {
+                body.classList.add('dark');
+                lightModeBtn.classList.remove('active');
+                darkModeBtn.classList.add('active');
+            } else {
+                body.classList.remove('dark');
+                darkModeBtn.classList.remove('active');
+                lightModeBtn.classList.add('active');
+            }
+        }
+
+        function showDirection(targetId) {
+            designDirections.forEach(direction => {
+                direction.classList.remove('active');
+            });
+            document.getElementById(targetId).classList.add('active');
+
+            navButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.target === targetId) {
+                    button.classList.add('active');
+                }
+            });
+        }
+
+        lightModeBtn.addEventListener('click', () => setMode('light'));
+        darkModeBtn.addEventListener('click', () => setMode('dark'));
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                showDirection(button.dataset.target);
+            });
+        });
+
+        // Initialize with light mode and Direction 7
+        setMode('light');
+        showDirection('direction7');
+    </script>
+</body>
+</html>
