@@ -1,42 +1,108 @@
 ## Product Roadmap: Sentiabot
 
-This roadmap outlines the development plan for Sentiabot, an AI-powered chatbot for elementary school students.
+This roadmap outlines the development plan for Sentiabot, an AI-powered chatbot for elementary school students. It has been restructured to prioritize a foundational, vertically-sliced approach to deliver value iteratively.
 
-### Epic 1: Core Chatbot Functionality
+### Epic 1: Foundational End-to-End Chat
 
-**Goal:** Develop the fundamental chatbot capabilities to answer student questions accurately and safely.
+**Goal:** Establish the core technical infrastructure and deliver the simplest possible end-to-end user experience. This provides a working skeleton of the application that can be built upon in subsequent epics.
 
-*   **Story 1.1:** As a student, I want to ask questions about Biology and Geology and get accurate answers.
-*   **Story 1.2:** As a student, I want the chatbot to provide sources for its answers so I can verify the information.
-*   **Story 1.3:** As a student, I want the chatbot to use a knowledge base to prevent it from making things up.
-*   **Story 1.4:** As a student, I want to be able to ask questions in both Norwegian and English.
-*   **Story 1.5:** As a student, I want to be able to download my chat history.
+*   **Story 1.1:** As a developer, I want to set up a basic, deployable application skeleton, so that we have a working foundation for all future features.
+    *   **Acceptance Criteria:**
+        1.  A Next.js frontend project is initialized.
+        2.  A FastAPI backend project is initialized.
+        3.  A database is provisioned.
+        4.  The frontend and backend are connected and can exchange a simple "hello world" message.
+        5.  The entire application is deployed and accessible via a public URL.
 
-### Epic 2: User Interface and Experience
+*   **Story 1.2:** As a student, I want to see a single page with an input field and receive a hardcoded response, so that I can see the most basic chat functionality working.
+    *   **Acceptance Criteria:**
+        1.  Given I am on the main page.
+        2.  When I type any question into the chat input and press enter.
+        3.  Then I see a static, pre-written answer appear on the screen.
 
-**Goal:** Create a user-friendly, engaging, and accessible interface for young students.
+*   **Story 1.3:** As a student, I want my question to be sent to an AI model and get a real, generated response, so that I can have a true conversational experience.
+    *   **Acceptance Criteria:**
+        1.  Given I am on the chat page.
+        2.  When I type a question, it is sent to the AI API.
+        3.  Then the response from the AI is displayed back to me.
+        4.  The response is generated and displayed within 5 seconds.
 
-*   **Story 2.1:** As a student, I want to see a simple and colorful landing page where I can easily choose a subject.
-*   **Story 2.2:** As a student, I want to be able to select my grade level so the chatbot can use language I understand.
-*   **Story 2.3:** As a student, I want a clear and simple chat interface that is easy to use.
-*   **Story 2.4:** As a student, I want to be able to switch the language of the chatbot.
-*   **Story 2.5:** As a student, I want to be able to go back to the home page from the chat interface.
+### Epic 2: Knowledge-Driven, Contextual Chat
 
-### Epic 3: Administration and Content Management
+**Goal:** Enhance the chatbot by connecting it to a dedicated knowledge base and allowing users to specify their context, ensuring answers are relevant and accurate.
 
-**Goal:** Build a secure and efficient system for managing the chatbot's knowledge and behavior.
+*   **Story 2.1:** As a student, I want the chatbot to use a dedicated knowledge base for its answers, so that I receive trustworthy information instead of made-up answers.
+    *   **Acceptance Criteria:**
+        1.  A vector database is set up and populated with at least one sample document.
+        2.  Given a user asks a question related to the sample document.
+        3.  Then the backend performs a search on the vector database.
+        4.  The search results are used by the AI to generate the answer.
 
-*   **Story 3.1:** As an administrator, I want to be able to add, edit, and delete information in the knowledge base.
-*   **Story 3.2:** As an administrator, I want a secure login to the admin interface.
-*   **Story 3.3:** As an administrator, I want to be able to edit the system prompt to debug and refine the chatbot's behavior.
+*   **Story 2.2:** As a student, I want to choose a subject category before chatting, so that the answers I get are more relevant to what I'm studying.
+    *   **Acceptance Criteria:**
+        1.  Given I am on the home page.
+        2.  I can see options for "Biology" and "Geology".
+        3.  When I select a category, my choice is stored.
+        4.  Then the AI uses this category as context when generating answers.
 
-### Epic 4: Technical Infrastructure and Deployment
+*   **Story 2.3:** As a student, I want to select my grade level, so the chatbot can use language that is easy for me to understand.
+    *   **Acceptance Criteria:**
+        1.  Given I am on the home page.
+        2.  I can select a grade level from a list (e.g., 1-6).
+        3.  When I select a grade level, my choice is stored.
+        4.  Then the chatbot's system prompt is updated to instruct the AI to tailor its language for my grade.
 
-**Goal:** Set up a robust and scalable technical foundation for the Sentiabot application.
+### Epic 3: Enhanced User Experience and Features
 
-*   **Story 4.1:** As a developer, I want to set up the frontend project with Next.js, TypeScript, and Tailwind CSS.
-*   **Story 4.2:** As a developer, I want to set up the backend project with FastAPI.
-*   **Story 4.3:** As a developer, I want to set up the Supabase database, including the vector database for the knowledge base.
-*   **Story 4.4:** As a developer, I want to integrate the Gemini 2.5 Pro API for the chatbot's AI.
-*   **Story 4.5:** As a developer, I want to set up authentication using Supabase Auth.
-*   **Story 4.6:** As a developer, I want to deploy the application to Vercel.
+**Goal:** Improve the user interface and add key features that make the tool more useful and engaging for students.
+
+*   **Story 3.1:** As a student, I want to interact with a simple, colorful, and easy-to-navigate interface, so that I can focus on learning without getting distracted.
+    *   **Acceptance Criteria:**
+        1.  The application uses a consistent, bright color palette.
+        2.  All interactive elements (buttons, menus) are clearly labeled and have a large click/tap area.
+        3.  The layout is clean and minimalist, with no more than 3-4 primary actions visible on the main screen.
+        4.  The design is responsive and usable on both desktop and tablet devices.
+
+*   **Story 3.2:** As a student, I want the chatbot to provide the source for its information, so that I can check where the answer came from.
+    *   **Acceptance Criteria:**
+        1.  Given the chatbot provides an answer based on the knowledge base.
+        2.  Then a "Source" link is displayed beneath the answer.
+        3.  When I click the link, I am taken to the original source document or page.
+
+*   **Story 3.3:** As a student, I want to be able to ask questions and get answers in both Norwegian and English, so that I can use the language I'm most comfortable with.
+    *   **Acceptance Criteria:**
+        1.  Given I have selected "Norwegian" as my language.
+        2.  When I ask a question in Norwegian, the chatbot responds in Norwegian.
+        3.  Given I have selected "English" as my language.
+        4.  When I ask a question in English, the chatbot responds in English.
+
+*   **Story 3.4:** As a student, I want to download my chat history, so that I can save it and look at it later.
+    *   **Acceptance Criteria:**
+        1.  Given I have had a conversation with the chatbot.
+        2.  I can click a "Download" button.
+        3.  When I click the button, a .txt file containing the full chat log is downloaded to my computer.
+
+### Epic 4: Administration and System Management
+
+**Goal:** Create the necessary tools for administrators to manage the application's content and behavior securely.
+
+*   **Story 4.1:** As an administrator, I need a secure way to log in, so that only authorized users can manage the system.
+    *   **Acceptance Criteria:**
+        1.  There is a separate login page for administrators.
+        2.  Given I enter valid administrator credentials, I am granted access to the admin dashboard.
+        3.  Given I enter invalid credentials, I am shown an error message and denied access.
+
+*   **Story 4.2:** As an administrator, I want an interface to add, edit, and delete content in the knowledge base, so that I can keep the information accurate and up-to-date.
+    *   **Acceptance Criteria:**
+        1.  Given I am logged in as an administrator.
+        2.  I can view a list of all documents in the knowledge base.
+        3.  I can create a new document.
+        4.  I can edit an existing document.
+        5.  I can delete a document.
+
+*   **Story 4.3:** As an administrator, I want to be able to modify the chatbot's system prompt, so that I can refine its behavior and tone without needing to redeploy the application.
+    *   **Acceptance Criteria:**
+        1.  Given I am logged in as an administrator.
+        2.  I can see the current system prompt in a text editor.
+        3.  I can modify the prompt and save my changes.
+        4.  The next chat session uses the updated system prompt.
