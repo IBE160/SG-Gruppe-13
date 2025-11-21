@@ -1,7 +1,7 @@
 <!-- BMAD BMM Tech Spec Workflow Instructions (v6) -->
 
 ```xml
-<critical>The workflow execution engine is governed by: {project_root}/bmad/core/tasks/workflow.xml</critical>
+<critical>The workflow execution engine is governed by: {project_root}/.bmad/core/tasks/workflow.xml</critical>
 <critical>You MUST have already loaded and processed: {installed_path}/workflow.yaml</critical>
 <critical>Communicate all responses in {communication_language}</critical>
 <critical>This workflow generates a comprehensive Technical Specification from PRD and Architecture, including detailed design, NFRs, acceptance criteria, and traceability mapping.</critical>
@@ -13,8 +13,7 @@
     <ask if="inputs are missing">ask the user for file paths. HALT and wait for docs to proceed</ask>
 
     <!-- Intelligent Epic Discovery -->
-    <critical>MUST read COMPLETE sprint-status.yaml file to discover next epic</critical>
-    <action>Load the FULL file: {{output_folder}}/sprint-status.yaml</action>
+    <critical>MUST read COMPLETE {sprint-status} file to discover next epic</critical>
     <action>Read ALL development_status entries</action>
     <action>Find all epics with status "backlog" (not yet contexted)</action>
     <action>Identify the FIRST backlog epic as the suggested default</action>
@@ -52,8 +51,13 @@ No epics with status "backlog" found in sprint-status.yaml.
       </check>
     </check>
 
-    <action>Extract {{epic_title}} from PRD based on {{epic_id}}.</action>
     <action>Resolve output file path using workflow variables and initialize by writing the template.</action>
+  </step>
+
+  <step n="1.5" goal="Discover and load project documents">
+    <invoke-protocol name="discover_inputs" />
+    <note>After discovery, these content variables are available: {prd_content}, {gdd_content}, {architecture_content}, {ux_design_content}, {epics_content} (will load only epic-{{epic_id}}.md if sharded), {document_project_content}</note>
+    <action>Extract {{epic_title}} from {prd_content} or {epics_content} based on {{epic_id}}.</action>
   </step>
 
   <step n="2" goal="Validate epic exists in sprint status" tag="sprint-status">
@@ -128,10 +132,10 @@ Continuing to regenerate tech spec...
   </step>
 
   <step n="9" goal="Validate and mark epic contexted" tag="sprint-status">
-    <invoke-task>Validate against checklist at {installed_path}/checklist.md using bmad/core/tasks/validate-workflow.xml</invoke-task>
+    <invoke-task>Validate against checklist at {installed_path}/checklist.md using .bmad/core/tasks/validate-workflow.xml</invoke-task>
 
     <!-- Mark epic as contexted -->
-    <action>Load the FULL file: {{output_folder}}/sprint-status.yaml</action>
+    <action>Load the FULL file: {sprint_status}</action>
     <action>Find development_status key "epic-{{epic_id}}"</action>
     <action>Verify current status is "backlog" (expected previous state)</action>
     <action>Update development_status["epic-{{epic_id}}"] = "contexted"</action>
