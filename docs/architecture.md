@@ -9,7 +9,7 @@ This document outlines the architectural decisions for Sentiabot, an educational
 The first implementation story will involve initializing the project using the following command:
 
 ```bash
-npm create vite@latest sentiabot-frontend -- --template react-ts
+npm create vite@7.2.4 sentiabot-frontend -- --template react-ts
 ```
 
 This establishes the base architecture with these decisions:
@@ -22,13 +22,13 @@ This establishes the base architecture with these decisions:
 
 | Category                | Decision                  | Version                        | Affects FR Categories                           | Rationale                                                                        |
 | :---------------------- | :------------------------ | :----------------------------- | :---------------------------------------------- | :------------------------------------------------------------------------------- |
-| AI Application          | Google Gemini             | 2.5 Pro                        | Chatbot Core Functionality, Knowledge Base      | User preference, powerful, and capable model.                                    |
-| Data Persistence        | pgvector (on Supabase)    | Latest stable for Supabase PostgreSQL | Knowledge Base, Data Management/Persistence     | User preference, good integration with existing Supabase usage, open-source.     |
+| AI Application          | Google Gemini             | Gemini 2.5 Pro                   | Chatbot Core Functionality, Knowledge Base      | User preference, powerful, and capable model.                                    |
+| Data Persistence        | pgvector (on Supabase)    | 0.8.0                          | Knowledge Base, Data Management/Persistence     | User preference, good integration with existing Supabase usage, open-source.     |
 | Authentication          | Supabase Auth             | Supabase managed service       | Admin Functionality                             | User preference, existing Supabase integration, secures admin interfaces.        |
 | API Pattern             | REST                      | Standard HTTP/JSON             | Chatbot Core Functionality, Admin Functionality | User preference, simplicity, widespread adoption, and ease of understanding.     |
 | Deployment Target       | Vercel                    | Managed service                | All (application availability)                  | User preference, excellent developer experience, optimized for modern web apps.  |
-| Styling Solution        | Material UI (MUI)         | Latest stable                  | User Interface/Interaction                      | User preference, provides pre-built, accessible components, consistent UI.       |
-| State Management        | Zustand                   | Latest stable                  | User Interface/Interaction, Chatbot Core Functionality | User acceptance, simplicity, ease of learning, good fit for Vite/React.          |
+| Styling Solution        | Material UI (MUI)         | v7.3.5                         | User Interface/Interaction                      | User preference, provides pre-built, accessible components, consistent UI.       |
+| State Management        | Zustand                   | 5.0.8                          | User Interface/Interaction, Chatbot Core Functionality | User acceptance, simplicity, ease of learning, good fit for Vite/React.          |
 | Cross-Cutting (Error Handling) | Standardized API error responses | N/A                            | All                                             | Simplicity, clarity, consistent user experience.                                 |
 | Cross-Cutting (Logging) | Console logging           | N/A                            | All                                             | Simplicity for MVP, ease of debugging.                                           |
 | Cross-Cutting (API Response Format) | Standard JSON (`data` / `error`) | N/A                            | All                                             | Consistency, ease of frontend consumption.                                       |
