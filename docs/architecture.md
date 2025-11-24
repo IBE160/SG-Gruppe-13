@@ -27,7 +27,7 @@ This establishes the base architecture with these decisions:
 | Authentication          | Supabase Auth             | Supabase managed service       | Admin Functionality                             | User preference, existing Supabase integration, secures admin interfaces.        |
 | API Pattern             | REST                      | Standard HTTP/JSON             | Chatbot Core Functionality, Admin Functionality | User preference, simplicity, widespread adoption, and ease of understanding.     |
 | Deployment Target       | Vercel                    | Managed service                | All (application availability)                  | User preference, excellent developer experience, optimized for modern web apps.  |
-| Styling Solution        | Material UI (MUI)         | v7.3.5                         | User Interface/Interaction                      | User preference, provides pre-built, accessible components, consistent UI.       |
+| Styling Solution        | Shadcn UI        | 3.5.0                        | User Interface/Interaction                      | User preference, provides pre-built, accessible components, consistent UI.       |
 | State Management        | Zustand                   | 5.0.8                          | User Interface/Interaction, Chatbot Core Functionality | User acceptance, simplicity, ease of learning, good fit for Vite/React.          |
 | Cross-Cutting (Error Handling) | Standardized API error responses | N/A                            | All                                             | Simplicity, clarity, consistent user experience.                                 |
 | Cross-Cutting (Logging) | Console logging           | N/A                            | All                                             | Simplicity for MVP, ease of debugging.                                           |
@@ -68,7 +68,7 @@ This establishes the base architecture with these decisions:
     *   Frontend: `frontend/src/pages/ChatPage.tsx`, `frontend/src/components/ChatWindow.tsx`, `frontend/src/store/chatStore.ts`
     *   Backend: `api/chat.ts` (interacts with Google Gemini and Supabase pgvector)
 *   **User Interface/Interaction (FR002, FR004, FR005):**
-    *   Frontend: `frontend/src/components/GradeSelector.tsx`, `frontend/src/components/SubjectSelector.tsx`, `frontend/src/styles/theme.ts` (Material UI styling)
+    *   Frontend: `frontend/src/components/GradeSelector.tsx`, `frontend/src/components/SubjectSelector.tsx`, `frontend/src/styles/theme.ts` (Shadcn UI styling)
     *   State Management: `frontend/src/store/userSettingsStore.ts`
 *   **Data Management/Persistence (FR009 - Download Chatlog):**
     *   Frontend: Handled by client-side logic within `frontend/src/components/ChatWindow.tsx` or similar.
@@ -87,7 +87,7 @@ This establishes the base architecture with these decisions:
 
 *   **Frontend Framework:** React (with Vite for bundling)
 *   **Language:** TypeScript
-*   **UI Library:** Material UI (MUI)
+*   **UI Library:** Shadcn UI
 *   **State Management:** Zustand
 *   **Backend Runtime:** Node.js (Vercel Serverless Functions)
 *   **AI Model:** Google Gemini (version 2.5 Pro)
@@ -172,7 +172,7 @@ The application will expose a **RESTful API** through Vercel serverless function
 ## Performance Considerations
 
 *   **Chatbot Response Time:** Google Gemini's performance will be a primary factor. Backend optimizations will focus on efficient knowledge base retrieval (pgvector).
-*   **Frontend Responsiveness:** Vite and React provide a fast, responsive UI. Material UI is optimized for performance.
+*   **Frontend Responsiveness:** Vite and React provide a fast, responsive UI. Shadcn UI is optimized for performance.
 *   **Database Queries:** `pgvector` is optimized for vector similarity search. Proper indexing on PostgreSQL will be crucial.
 
 ## Deployment Architecture
@@ -226,7 +226,7 @@ The Sentiabot application will be deployed on **Vercel**.
 *   **Authentication:** Supabase Auth - chosen for securing admin interfaces, leveraging existing Supabase ecosystem for ease of development and management.
 *   **API Pattern:** REST - chosen for its simplicity, widespread understanding, and efficiency for the MVP, allowing for quick development.
 *   **Deployment Target:** Vercel - chosen for its excellent developer experience, optimized deployment for modern web apps, and ability to host both frontend and serverless API.
-*   **Styling Solution:** Material UI (MUI) - chosen to quickly achieve a professional, consistent, and user-friendly interface that aligns with the PRD's design goals.
+*   **Styling Solution:** Shadcn UI - chosen to quickly achieve a professional, consistent, and user-friendly interface that aligns with the PRD's design goals.
 *   **State Management:** Zustand - chosen for its lightweight nature, simplicity, and excellent developer experience, suitable for managing frontend application state efficiently.
 
 ---
