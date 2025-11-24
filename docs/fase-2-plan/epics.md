@@ -6,13 +6,11 @@ This roadmap outlines the development plan for Sentiabot, an AI-powered chatbot 
 
 **Goal:** Establish the core technical infrastructure and deliver the simplest possible end-to-end user experience. This provides a working skeleton of the application that can be built upon in subsequent epics.
 
-*   **Story 1.1:** As a developer, I want to set up a basic, deployable application skeleton, so that we have a working foundation for all future features.
+*   **Story 1.1:** As a student, I want to access a deployed application and see a "Hello World" message from the backend, so that I know the core system is operational.
     *   **Acceptance Criteria:**
-        1.  A Next.js frontend project is initialized.
-        2.  A FastAPI backend project is initialized.
-        3.  A database is provisioned.
-        4.  The frontend and backend are connected and can exchange a simple "hello world" message.
-        5.  The entire application is deployed and accessible via a public URL.
+        1.  A frontend and backend are initialized, connected, and deployed to a public URL.
+        2.  When I navigate to the application's public URL, I see a "Hello World" message originating from the backend.
+        3.  The application includes a provisioned database, ready for future data integration.
 
 *   **Story 1.2:** As a student, I want to see a single page with an input field and receive a hardcoded response, so that I can see the most basic chat functionality working.
     *   **Acceptance Criteria:**
