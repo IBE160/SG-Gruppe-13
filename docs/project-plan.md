@@ -17,11 +17,7 @@
     - [x] File: brainstorming-session-results-date.md
   - [x] /run-agent-task analyst *brainstorm "Brainstorm what it means to have a paid user"
     - [x] File: brainstorming-session-results-date.md
-<<<<<<< HEAD
 - [x] Research
-=======
-- [ ] Research
->>>>>>> 4733bbe1b1c0c86e0b1dcd9c154d7d6126fb9969
   - [x] /run-agent-task analyst *research "Which AI library should we use for orchestrating LLM interactions?"
     - [x] File: research-technical-date.md
 - [x] Product Brief
@@ -30,28 +26,16 @@
 
 ## Fase 1
 
-<<<<<<< HEAD
 - [x] Planning
-=======
-- [ ] Planning
->>>>>>> 4733bbe1b1c0c86e0b1dcd9c154d7d6126fb9969
   - [x] /run-agent-task pm *prd
     - [x] File: PRD.md
   - [x] /run-agent-task pm *validate-prd
     - [x] File: validation-report-date.md
-<<<<<<< HEAD
   - [X] /run-agent-task ux-designer *create-ux-design {prompt / user-input-file}
     - [x] File: ux-design-specification.md
     - [x] File: ux-color-themes.html
     - [x] File: ux-design-directions.html
   - [x] /run-agent-task ux-designer *validate-ux-design {prompt / user-input-file}
-=======
-  - [ ] /run-agent-task ux-designer *create-ux-design {prompt / user-input-file}
-    - [ ] File: ux-design-specification.md
-    - [ ] File: ux-color-themes.html
-    - [ ] File: ux-design-directions.html
-  - [ ] /run-agent-task ux-designer *validate-ux-design {prompt / user-input-file}
->>>>>>> 4733bbe1b1c0c86e0b1dcd9c154d7d6126fb9969
 
 ## Fase 2
 
