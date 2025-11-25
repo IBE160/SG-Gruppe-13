@@ -1,0 +1,21 @@
+sprint: 2
+status: pending
+epics:
+  - name: "Epic 3: Enhanced User Experience and Features"
+    stories:
+      - name: "Story 3.1: As a student, I want to interact with a simple, colorful, and easy-to-navigate interface, so that I can focus on learning without getting distracted."
+        status: pending
+      - name: "Story 3.2: As a student, I want the chatbot to provide the source for its information, so that I can check where the answer came from."
+        status: pending
+      - name: "Story 3.3: As a student, I want to be able to ask questions and get answers in both Norwegian and English, so that I can use the language I'm most comfortable with."
+        status: pending
+      - name: "Story 3.4: As a student, I want to download my chat history, so that I can save it and look at it later."
+        status: pending
+  - name: "Epic 4: Administration and System Management"
+    stories:
+      - name: "Story 4.1: As an administrator, I need a secure way to log in, so that only authorized users can manage the system."
+        status: pending
+      - name: "Story 4.2: As an administrator, I want an interface to add, edit, and delete content in the knowledge base, so that I can keep the information accurate and up-to-date."
+        status: pending
+      - name: "Story 4.3: As an administrator, I want to be able to modify the chatbot's system prompt, so that I can refine its behavior and tone without needing to redeploy the application."
+        status: pending
