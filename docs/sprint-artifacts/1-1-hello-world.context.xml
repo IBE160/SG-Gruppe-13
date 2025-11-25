@@ -1,0 +1,129 @@
+<story-context id="{bmad_folder}/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>1.1</storyId>
+    <title>As a student, I want to access a deployed application and see a 'Hello World' message from the backend, so that I know the core system is operational.</title>
+    <status>drafted</status>
+    <generatedAt>2025-11-25</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/1-1-hello-world.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>student</asA>
+    <iWant>to access a deployed application and see a 'Hello World' message from the backend</iWant>
+    <soThat>I know the core system is operational.</soThat>
+    <tasks>
+    <task id="AC_1_1_1_InitFrontend" description="Initialize Frontend Project" ac_ref="1.1.1">
+      <subtask description="Run `npm create vite@7.2.4 sentiabot-frontend -- --template react-ts`" />
+      <subtask description="Configure `vite.config.ts` for Vercel deployment if needed" />
+    </task>
+    <task id="AC_1_1_1_InitBackend" description="Initialize Backend Project" ac_ref="1.1.1">
+      <subtask description="Create `api/package.json` with basic dependencies" />
+      <subtask description="Create placeholder `api/chat.ts` serverless function" />
+    </task>
+    <task id="AC_1_1_1_DeployVercel" description="Configure and Deploy to Vercel" ac_ref="1.1.1">
+      <subtask description="Set up a new Vercel project, linking frontend and backend repositories" />
+      <subtask description="Configure necessary Vercel environment variables" />
+      <subtask description="Deploy initial application to a public URL" />
+      <subtask description="Verify Public URL Accessibility" is_test="true" />
+    </task>
+    <task id="AC_1_1_2_ImplementFrontend" description="Implement Frontend &quot;Hello World&quot;" ac_ref="1.1.2">
+      <subtask description="Display a &quot;Loading...&quot; or placeholder message in `frontend/src/App.tsx`" />
+      <subtask description="Modify `frontend/src/App.tsx` to fetch initial message from backend `/api/chat` endpoint" />
+    </task>
+    <task id="AC_1_1_2_ImplementBackend" description="Implement Backend &quot;Hello World&quot; Endpoint" ac_ref="1.1.2">
+      <subtask description="Modify `api/chat.ts` to respond with a simple JSON object containing a &quot;Hello World&quot; message" />
+    </task>
+    <task id="AC_1_1_2_VerifyHello" description="Verify &quot;Hello World&quot; Message Origin" ac_ref="1.1.2">
+      <subtask description="Manually navigate to the public URL and confirm &quot;Hello World&quot; message is displayed, observing network requests to ensure it comes from the backend." is_test="true" />
+    </task>
+    <task id="AC_1_1_3_ProvisionSupabase" description="Provision Supabase PostgreSQL" ac_ref="1.1.3">
+      <subtask description="Create a new Supabase project and database instance" />
+      <subtask description="Obtain Supabase URL and Anon Key for future use" />
+    </task>
+    <task id="AC_1_1_3_VerifySupabase" description="Verify Supabase Accessibility" ac_ref="1.1.3">
+      <subtask description="Confirm Supabase instance is active and accessible via Supabase Studio or API endpoint" is_test="true" />
+    </task>
+</tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1.1.1">A frontend and backend are initialized, connected, and deployed to a public URL.</criterion>
+    <criterion id="1.1.2">When I navigate to the application's public URL, I see a 'Hello World' message originating from the backend.</criterion>
+    <criterion id="1.1.3">The application includes a provisioned database, ready for future data integration.</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc path="docs/fase-2-plan/PRD.md" title="Product Requirements Document: Sentiabot" section="Goals" snippet="The primary goal of Sentiabot is to create a trustworthy and user-friendly educational tool that helps elementary school students with their schoolwork."/>
+      <doc path="docs/fase-2-plan/PRD.md" title="Product Requirements Document: Sentiabot" section="Functional Requirements (MVP)" snippet="FR003: A working chatbot that can answer questions asked by students."/>
+      <doc path="docs/fase-2-plan/PRD.md" title="Product Requirements Document: Sentiabot" section="Epics" snippet="Epic 1: Foundational End-to-End Chat: Establish the core technical infrastructure and deliver the simplest possible end-to-end user experience."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Overview" snippet="This technical specification details the Foundational End-to-End Chat epic for Sentiabot... The initial focus is on establishing the core technical infrastructure and delivering a basic, functional end-to-end chat experience..."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Objectives and Scope - In-Scope" snippet="Establish the foundational technical infrastructure for Sentiabot, including a deployed React frontend and a Node.js backend capable of basic communication."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="System Architecture Alignment" snippet="This epic aligns with the established architecture utilizing a **React frontend (Vite)** and a **Node.js backend (Vercel Serverless Functions)**...Data persistence will be provisioned using **Supabase PostgreSQL**...The foundational deployment will target **Vercel**."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Detailed Design - Services and Modules" snippet="Frontend: `App.tsx`, `main.tsx`, `pages/ChatPage.tsx`. Backend: `api/chat.ts`."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Detailed Design - Data Models and Contracts" snippet="A provisioned Supabase PostgreSQL database will be ready for future data integration..."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Detailed Design - Workflows and Sequencing" snippet="Primary Chat Flow: User Input...API Call...Backend Processing...Backend Response...UI Render."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Acceptance Criteria (Authoritative) - Story 1.1" snippet="Lists all 3 ACs for Story 1.1."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Traceability Mapping - Story 1.1" snippet="Maps ACs to Spec Sections, Components/APIs, and Test Ideas for Story 1.1."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Dependencies and Integrations" snippet="Lists planned dependencies for Frontend and Backend."/>
+      <doc path="docs/sprint-artifacts/tech-spec-epic-1.md" title="Epic Technical Specification: Foundational End-to-End Chat" section="Test Strategy Summary" snippet="Mentions Manual Testing for 'Hello World' verification and deployment."/>
+      <doc path="docs/fase-3-solutioning/architecture.md" title="Architecture" section="Executive Summary" snippet="The architecture prioritizes simplicity, maintainability... leveraging a React frontend, a Node.js backend (serverless functions), Google Gemini for AI, and Supabase for data persistence and authentication."/>
+      <doc path="docs/fase-3-solutioning/architecture.md" title="Architecture" section="Project Initialization" snippet="Command: `npm create vite@7.2.4 sentiabot-frontend -- --template react-ts` for frontend setup."/>
+      <doc path="docs/fase-3-solutioning/architecture.md" title="Architecture" section="Deployment Architecture" snippet="The Sentiabot application will be deployed on Vercel...Frontend as static site, Backend as Vercel Serverless Functions."/>
+      <doc path="docs/fase-3-solutioning/architecture.md" title="Architecture" section="Development Environment - Setup Commands" snippet="Provides setup commands for cloning, initializing frontend, and API."/>
+      <doc path="docs/ux-design-specification.md" title="ibe160 UX Design Specification" section="Executive Summary" snippet="Mentions 'interactive chat with an AI chatbot, where the chat window itself is the most critical element.'"/>
+      <doc path="docs/ux-design-specification.md" title="ibe160 UX Design Specification" section="5.1 Critical User Paths - Primary Journey: Asking a Science Question" snippet="Screen 2: Chat Screen - User Sees: ...A welcoming message from Sentiabot (e.g., 'Hello! I'm ready to help with your Grade 3 science questions.'). This informs the 'Hello World' message."/>
+    </docs>
+    <code>
+      <code-artifact path="N/A" kind="N/A" symbol="N/A" lines="N/A" reason="No existing code artifacts found as project directories are not yet initialized."/>
+    </code>
+    <dependencies>
+      <dependency ecosystem="npm" name="react" version="N/A" reason="Frontend Framework (planned)"/>
+      <dependency ecosystem="npm" name="vite" version="N/A" reason="Frontend Build Tool (planned)"/>
+      <dependency ecosystem="npm" name="typescript" version="N/A" reason="Language (planned)"/>
+      <dependency ecosystem="npm" name="shadcn-ui" version="N/A" reason="UI Library (planned)"/>
+      <dependency ecosystem="npm" name="zustand" version="N/A" reason="State Management (planned)"/>
+      <dependency ecosystem="npm" name="node.js" version="N/A" reason="Backend Runtime (planned)"/>
+      <dependency ecosystem="npm" name="@google/generative-ai" version="N/A" reason="Google Gemini AI SDK (planned)"/>
+      <dependency ecosystem="npm" name="@supabase/supabase-js" version="N/A" reason="Supabase Client Library (planned)"/>
+      <dependency ecosystem="npm" name="vercel" version="N/A" reason="Vercel deployment (planned)"/>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+      <constraint type="Architectural Pattern" description="RESTful API for frontend-backend communication" source="docs/fase-3-solutioning/architecture.md#API-Pattern"/>
+      <constraint type="Frontend Framework" description="React (with Vite for bundling)" source="docs/fase-3-solutioning/architecture.md#Core-Technologies"/>
+      <constraint type="Backend Runtime" description="Node.js (Vercel Serverless Functions)" source="docs/fase-3-solutioning/architecture.md#Core-Technologies"/>
+      <constraint type="AI Model" description="Google Gemini (version 2.5 Pro)" source="docs/fase-3-solutioning/architecture.md#Core-Technologies"/>
+      <constraint type="Database" description="Supabase (PostgreSQL with `pgvector` extension) will be provisioned" source="docs/fase-3-solutioning/architecture.md#Core-Technologies"/>
+      <constraint type="Styling Solution" description="Shadcn UI" source="docs/fase-3-solutioning/architecture.md#Core-Technologies"/>
+      <constraint type="State Management" description="Zustand" source="docs/fase-3-solutioning/architecture.md#Core-Technologies"/>
+      <constraint type="Deployment Target" description="Vercel" source="docs/fase-3-solutioning/architecture.md#Deployment-Architecture"/>
+      <constraint type="Naming Convention" description="React Components: `PascalCase`, Files (non-component): `kebab-case`, Variables & Functions: `camelCase`, API Endpoints: `kebab-case` for paths, Database Tables/Columns: `snake_case`" source="docs/fase-3-solutioning/architecture.md#Naming-Conventions"/>
+      <constraint type="Error Handling" description="Standardized API error responses (`{ &quot;error&quot;: { &quot;message&quot;: &quot;...&quot; } }`)" source="docs/fase-3-solutioning/architecture.md#Cross-Cutting-(Error-Handling)"/>
+      <constraint type="Logging" description="Console logging for MVP" source="docs/fase-3-solutioning/architecture.md#Cross-Cutting-(Logging)"/>
+      <constraint type="Testing" description="Unit Tests (Vitest) and Integration Tests for API contract validation. Manual verification for UI/UX, performance, deployment, and basic accessibility." source="docs/sprint-artifacts/tech-spec-epic-1.md#Test-Strategy-Summary"/>
+      <constraint type="Security" description="All data in transit between frontend and backend will use HTTPS. API endpoint protection via rate limiting at Vercel edge." source="docs/sprint-artifacts/tech-spec-epic-1.md#Security"/>
+      <constraint type="Performance" description="Chatbot response time under 10 seconds. Frontend UI fluid and responsive." source="docs/sprint-artifacts/tech-spec-epic-1.md#Performance"/>
+      <constraint type="Project Initialization" description="Frontend setup using `npm create vite@7.2.4 sentiabot-frontend -- --template react-ts`" source="docs/fase-3-solutioning/architecture.md#Project-Initialization"/>
+      <constraint type="Story Specific Assumption" description="Google Gemini API will provide consistent and timely responses suitable for elementary school-level interactions." source="docs/sprint-artifacts/tech-spec-epic-1.md#Assumptions"/>
+      <constraint type="Story Specific Assumption" description="Frontend and backend development can proceed in parallel with well-defined API contracts." source="docs/sprint-artifacts/tech-spec-epic-1.md#Assumptions"/>
+      <constraint type="Story Specific Assumption" description="Deployment on Vercel will be straightforward and handle scaling for initial usage." source="docs/sprint-artifacts/tech-spec-epic-1.md#Assumptions"/>
+      <constraint type="Story Specific Open Question" description="What specific error handling mechanisms should be implemented on the frontend for AI-related failures?" source="docs/sprint-artifacts/tech-spec-epic-1.md#Open-Questions"/>
+      <constraint type="Story Specific Open Question" description="How will API keys for Google Gemini and Supabase be securely managed in the Vercel environment variables?" source="docs/sprint-artifacts/tech-spec-epic-1.md#Open-Questions"/>
+    </constraints>
+  <interfaces>
+      <interface name="Chat API" kind="REST endpoint" signature="POST /api/chat" path="api/chat.ts"/>
+  </interfaces>
+  <tests>
+    <standards>The project will use Vitest for unit testing. Testing strategy involves unit tests for both frontend (React components, Zustand stores, utilities) and backend (handler logic, Gemini integration). Integration tests will cover API contract validation and end-to-end chat flow. Manual testing will verify UI/UX, performance, deployment, and basic accessibility. Automated tools like Google Lighthouse and axe DevTools are planned for accessibility checks.</standards>
+    <locations>Frontend tests will likely reside within `frontend/src/**/*.test.ts(x)`. Backend tests will likely reside within `api/**/*.test.ts`.</locations>
+    <ideas>
+      <idea ac_ref="1.1.1">Verify public URL accessibility, inspect network traffic for connectivity.</idea>
+      <idea ac_ref="1.1.2">Access public URL, assert "Hello World" message is displayed and originates from backend.</idea>
+      <idea ac_ref="1.1.3">Verify Supabase instance is running and accessible (e.g., via Supabase Studio).</idea>
+    </ideas>
+  </tests>
+</story-context>
