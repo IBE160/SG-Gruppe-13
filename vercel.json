@@ -1,23 +1,17 @@
 {
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/api"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/sentiabot-frontend"
-    }
-  ],
   "builds": [
     {
-      "src": "sentiabot-frontend/index.html",
+      "src": "sentiabot-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "sentiabot-frontend/dist" }
+      "config": { "distDir": "dist" }
     },
     {
       "src": "api/chat.ts",
       "use": "@vercel/node"
     }
+  ],
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
