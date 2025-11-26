@@ -3,13 +3,22 @@
   "builds": [
     {
       "src": "sentiabot-frontend/package.json",
-      "use": "@vercel/static-build"
+      "use": "@vercel/static-build",
+      "config": { "distDir": "dist" }
+    },
+    {
+      "src": "api/chat.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
-      "dest": "sentiabot-frontend/$1"
+      "src": "/api/(.)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.)",
+      "dest": "sentiabot-frontend/dist/index.html"
     }
   ]
 }
