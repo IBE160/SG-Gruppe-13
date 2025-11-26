@@ -1,0 +1,5 @@
+node_modules
+sentiabot-frontend/node_modules
+api/node_modules
+.git
+.logging
