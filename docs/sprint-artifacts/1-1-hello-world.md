@@ -17,11 +17,11 @@ so that I know the core system is operational.
 ## Tasks / Subtasks
 
 - [ ] **Initialize Frontend Project (AC 1.1.1)**
-  - [ ] Run `npm create vite@7.2.4 sentiabot-frontend -- --template react-ts`
-  - [ ] Configure `vite.config.ts` for Vercel deployment if needed
+  - [x] Run `npm create vite@7.2.4 sentiabot-frontend -- --template react-ts` (Executed with `vite@latest` due to versioning issues.)
+  - [x] Configure `vite.config.ts` for Vercel deployment if needed
 - [ ] **Initialize Backend Project (AC 1.1.1)**
-  - [ ] Create `api/package.json` with basic dependencies (e.g., `express`, `typescript`, `vercel`)
-  - [ ] Create placeholder `api/chat.ts` serverless function
+  - [x] Create `api/package.json` with basic dependencies (e.g., `express`, `typescript`, `vercel`)
+  - [x] Create placeholder `api/chat.ts` serverless function
 - [ ] **Configure and Deploy to Vercel (AC 1.1.1)**
   - [ ] Set up a new Vercel project, linking frontend and backend repositories
   - [ ] Configure necessary Vercel environment variables
