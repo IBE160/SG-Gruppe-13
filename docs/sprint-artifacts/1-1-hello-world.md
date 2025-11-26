@@ -16,22 +16,22 @@ so that I know the core system is operational.
 
 ## Tasks / Subtasks
 
-- [ ] **Initialize Frontend Project (AC 1.1.1)**
+- [x] **Initialize Frontend Project (AC 1.1.1)**
   - [x] Run `npm create vite@7.2.4 sentiabot-frontend -- --template react-ts` (Executed with `vite@latest` due to versioning issues.)
   - [x] Configure `vite.config.ts` for Vercel deployment if needed
-- [ ] **Initialize Backend Project (AC 1.1.1)**
+- [x] **Initialize Backend Project (AC 1.1.1)**
   - [x] Create `api/package.json` with basic dependencies (e.g., `express`, `typescript`, `vercel`)
   - [x] Create placeholder `api/chat.ts` serverless function
-- [ ] **Configure and Deploy to Vercel (AC 1.1.1)**
-  - [ ] Set up a new Vercel project, linking frontend and backend repositories
-  - [ ] Configure necessary Vercel environment variables
-  - [ ] Deploy initial application to a public URL
-  - [ ] **Verify Public URL Accessibility** (Test Idea 1.1.1)
-- [ ] **Implement Frontend "Hello World" (AC 1.1.2)**
-  - [ ] Display a "Loading..." or placeholder message in `frontend/src/App.tsx`
-  - [ ] Modify `frontend/src/App.tsx` to fetch initial message from backend `/api/chat` endpoint
-- [ ] **Implement Backend "Hello World" Endpoint (AC 1.1.2)**
-  - [ ] Modify `api/chat.ts` to respond with a simple JSON object containing a "Hello World" message
+- [x] **Configure and Deploy to Vercel (AC 1.1.1)**
+  - [x] Set up a new Vercel project, linking frontend and backend repositories
+  - [x] Configure necessary Vercel environment variables
+  - [x] Deploy initial application to a public URL
+  - [x] **Verify Public URL Accessibility** (Test Idea 1.1.1)
+- [x] **Implement Frontend "Hello World" (AC 1.1.2)**
+  - [x] Display a "Loading..." or placeholder message in `frontend/src/App.tsx`
+  - [x] Modify `frontend/src/App.tsx` to fetch initial message from backend `/api/chat` endpoint
+- [x] **Implement Backend "Hello World" Endpoint (AC 1.1.2)**
+  - [x] Modify `api/chat.ts` to respond with a simple JSON object containing a "Hello World" message
 - [ ] **Verify "Hello World" Message Origin (AC 1.1.2)**
   - [ ] Manually navigate to the public URL and confirm "Hello World" message is displayed, observing network requests to ensure it comes from the backend.
 - [ ] **Provision Supabase PostgreSQL (AC 1.1.3)**
