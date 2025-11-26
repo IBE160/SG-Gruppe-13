@@ -2,12 +2,12 @@
   "version": 2,
   "builds": [
     {
-      "src": "sentiabot-frontend/package.json",
-      "use": "@vercel/static-build"
-    },
-    {
       "src": "api/chat.ts",
       "use": "@vercel/node"
+    },
+    {
+      "src": "sentiabot-frontend/package.json",
+      "use": "@vercel/static-build"
     }
   ],
   "routes": [
