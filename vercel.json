@@ -1,9 +1,11 @@
 {
   "version": 2,
+  "framework": null,
   "builds": [
     {
       "src": "sentiabot-frontend/package.json",
-      "use": "@vercel/static-build"
+      "use": "@vercel/static-build",
+      "workDirectory": "sentiabot-frontend"
     },
     {
       "src": "api/chat.ts",
@@ -20,7 +22,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/sentiabot-frontend/index.html"
     }
   ]
 }

@@ -4,5 +4,12 @@
     "target": "local",
     "outfile": ".logging/log.jsonl",
     "logPrompts": true
+  },
+  "mcpServers": {
+    "vercel": {
+      "command": "npx",
+      "args": ["mcp-remote", "https://mcp.vercel.com"]
+    }
   }
+
 }
