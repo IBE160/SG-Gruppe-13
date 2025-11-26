@@ -11,13 +11,17 @@
       "use": "@vercel/static-build",
       "config": {
         "distDir": "dist"
-      },
-      "workdir": "sentiabot-frontend"
+      }
     }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
-    { "src": "/assets/(.*)", "dest": "/sentiabot-frontend/assets/$1" },
-    { "src": "/(.*)", "dest": "/sentiabot-frontend/index.html" }
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
   ]
 }
