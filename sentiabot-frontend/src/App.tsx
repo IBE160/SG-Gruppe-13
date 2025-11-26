@@ -10,7 +10,7 @@ function App() {
       try {
         const response = await fetch('/api/chat');
         const data = await response.json();
-        setMessage(data.reply);
+        setMessage(data.data.reply);
       } catch (error) {
         console.error('Error fetching message:', error);
         setMessage('Failed to load message.');
