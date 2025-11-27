@@ -9,18 +9,5 @@
       "src": "api/chat.ts",
       "use": "@vercel/node"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/chat",
-      "dest": "/api/chat"
-    },
-    {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/sentiabot-frontend"
-    }
   ]
 }
