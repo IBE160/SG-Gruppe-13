@@ -1,27 +1,28 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "sentiabot-frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "installCommand": "npm install",
-        "buildCommand": "npm run build",
-        "outputDirectory": "sentiabot-frontend/dist"
+        "buildCommand": "npm run build"
       }
     },
     {
-      "src": "api/*.ts",
+      "src": "api/**/*.ts",
       "use": "@vercel/node"
     }
   ],
+  "outputDirectory": "sentiabot-frontend/dist",
+  
   "routes": [
+    { "src": "/api/(.*)", "dest": "api/$1" },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "sentiabot-frontend/dist/index.html"
+      "dest": "/index.html" 
     }
   ]
 }
