@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "sentiabot-frontend/package.json", 
+      "src": "sentiabot-frontend/package.json",
       "use": "@vercel/static-build"
     },
     {
@@ -20,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/sentiabot-frontend/dist/$1" 
+      "dest": "/sentiabot-frontend"
     }
   ]
 }
