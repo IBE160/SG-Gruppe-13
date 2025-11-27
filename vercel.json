@@ -6,21 +6,25 @@
       "use": "@vercel/static-build"
     },
     {
-      "src": "api/chat",
+      "src": "api/chat.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/chat",
-      "dest": "/api/chat"
+      "dest": "/api/chat.ts" 
+    },
+    {
+      "src": "/sentiabot-frontend/dist/(.*)",
+      "dest": "/sentiabot-frontend/dist/$1"
     },
     {
       "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "/sentiabot-frontend"
+      "dest": "/sentiabot-frontend/dist/index.html" 
     }
   ]
 }
