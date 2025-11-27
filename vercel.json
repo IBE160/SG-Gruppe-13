@@ -13,18 +13,14 @@
   "routes": [
     {
       "src": "/api/chat",
-      "dest": "/api/chat.ts" 
-    },
-    {
-      "src": "/sentiabot-frontend/dist/(.*)",
-      "dest": "/sentiabot-frontend/dist/$1"
+      "dest": "/api/chat"
     },
     {
       "handle": "filesystem"
     },
     {
       "src": "/(.*)",
-      "dest": "/sentiabot-frontend/dist/index.html" 
+      "dest": "/sentiabot-frontend"
     }
   ]
 }
