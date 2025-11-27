@@ -6,14 +6,14 @@
       "use": "@vercel/static-build"
     },
     {
-      "src": "api/chat.ts",
+      "src": "api/chat",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/chat",
-      "dest": "/api/chat.ts"
+      "dest": "/api/chat"
     },
     {
       "handle": "filesystem"
