@@ -1,17 +1,29 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "sentiabot-frontend/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
+      "config": {
+        "buildCommand": "npm run build"
+      }
     },
     {
       "src": "api/chat.ts",
       "use": "@vercel/node"
     }
   ],
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api/$1" },
-    { "source": "/(.*)", "destination": "/index.html" }
+
+  "outputDirectory": "sentiabot-frontend/dist",
+  
+  "routes": [
+
+    { "src": "/api/chat", "dest": "api/chat.ts" },
+
+    {
+      "handle": "filesystem"
+    },
+    
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
