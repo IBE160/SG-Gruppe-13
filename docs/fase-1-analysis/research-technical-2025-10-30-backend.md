@@ -39,7 +39,7 @@ Based on the `proposal.md`, the key requirements and constraints for the backend
 *   **Database Migrations**: Alembic
 *   **AI Integration**: Google Gemini 2.5 Pro API
 *   **Build Tool**: UV
-*   **Deployment**: Vercel
+*   **Deployment**: Locally
 
 ## 3. Technology Options (Database/Vector Database)
 
