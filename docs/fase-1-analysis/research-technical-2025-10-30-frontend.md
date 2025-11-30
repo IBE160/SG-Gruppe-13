@@ -12,7 +12,7 @@ The frontend technology stack proposed in `proposal.md` is a strong and modern f
 
 *   **Assessment**: Excellent choice.
 *   **Reasoning**: Next.js is a leading React framework that provides a robust set of features for building modern web applications. Its support for Server-Side Rendering (SSR) and Static Site Generation (SSG) will ensure a fast user experience and good search engine optimization (SEO). The App Router is the latest and recommended way to build Next.js applications.
-*   **Alternatives Considered**: Remix, Astro. While Remix is a strong competitor, Next.js has a larger ecosystem and seamless integration with Vercel for deployment. Astro is best suited for content-heavy sites and is less ideal for highly interactive applications like a chatbot.
+*   **Alternatives Considered**: Remix, Astro. Remix also supports full-stack development locally, but Next.js provides a more familiar developer experience and better documentation for React users. Astro is excellent for static content-focused projects, but it is less optimal for interactive applications like a chatbot that require real-time state and dynamic components.
 
 ### Language: TypeScript
 
