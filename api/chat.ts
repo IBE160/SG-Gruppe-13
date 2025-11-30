@@ -1,4 +1,5 @@
 // api/chat.ts
+import { createServer } from 'http';
 
 export default function handler(req: any, res: any) {
   // Add headers to explicitly disable caching for this route
@@ -13,4 +14,12 @@ export default function handler(req: any, res: any) {
   } else {
     res.status(405).end(); // Method Not Allowed
   }
+}
+
+if (require.main === module) {
+  const port = process.env.PORT || 3001;
+  const server = createServer((req, res) => handler(req, res));
+  server.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
 }
