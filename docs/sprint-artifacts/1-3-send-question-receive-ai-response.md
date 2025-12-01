@@ -5,8 +5,7 @@ Status: ready-for-dev
 ## Story
 
 As a student,
-I want to send a question to the AI chatbot and receive an answer,
-so that I can get help with my schoolwork.
+I want to send a question to the AI chatbot and receive an answer, so that I can get help with my schoolwork.
 
 ## Requirements Context Summary
 
@@ -34,14 +33,12 @@ The interaction flow is:
 
 ## Acceptance Criteria
 
-These Acceptance Criteria expand upon the high-level requirements in `epics.md` [Source: docs/fase-2-plan/epics.md#Story-1-3] and `tech-spec-epic-1.md` [Source: docs/sprint-artifacts/tech-spec-epic-1.md], and trace back to core functional requirements in `PRD.md` [Source: docs/fase-2-plan/PRD.md].
-
-1.  The user can type a question into a dedicated input field on the chat screen. [Source: epics.md#Story-1-3, PRD.md#FR003]
-2.  The user can submit their question using a "Send" button or by pressing Enter. [Source: epics.md#Story-1-3, PRD.md#FR003]
-3.  Upon submission, the user's question is displayed in a chat bubble. [Source: epics.md#Story-1-3]
-4.  A visual indicator (e.g., typing animation) is shown while Sentiabot is processing the request. [Source: epics.md#Story-1-3, tech-spec-epic-1.md]
-5.  Sentiabot's response is displayed in a chat bubble. [Source: epics.md#Story-1-3, PRD.md#FR003]
-6.  The response includes a clearly labeled and clickable source for the information. [Source: PRD.md#FR006]
+1.  The user can type a question into a dedicated input field on the chat screen.
+2.  The user can submit their question using a "Send" button or by pressing Enter.
+3.  Upon submission, the user's question is displayed in a chat bubble.
+4.  A visual indicator (e.g., typing animation) is shown while Sentiabot is processing the request.
+5.  Sentiabot's response is displayed in a chat bubble.
+6.  The response includes a clearly labeled and clickable source for the information.
 
 ## Tasks / Subtasks
 
@@ -80,7 +77,7 @@ These Acceptance Criteria expand upon the high-level requirements in `epics.md` 
 
 ### Learnings from Previous Story
 
-**From Story 1-1-frontend-backend-deployed (Status: done) [Source: stories/1-1-frontend-backend-deployed.md]**
+**From Story 1-1-frontend-backend-deployed (Status: done)**
 
 - **New Functionalities**: `/api/hello` endpoint (returns "Hello World"), Supabase client (`sentiabot/lib/supabase.ts`).
 - **Architectural Alignment**: Confirmed use of Next.js 14+ App Router, Supabase, REST API patterns. These patterns should be followed for current story development.
@@ -90,11 +87,7 @@ These Acceptance Criteria expand upon the high-level requirements in `epics.md` 
 
 ### References
 
-- [Source: docs/ux-design-specification.md]
-- [Source: docs/fase-2-plan/PRD.md]
-- [Source: docs/fase-2-plan/epics.md]
-- [Source: docs/sprint-artifacts/tech-spec-epic-1.md]
-- [Source: docs/fase-3-solutioning/architecture.md]
+- Cite all technical details with source paths and sections, e.g. [Source: docs/<file>.md#Section]
 
 ## Dev Agent Record
 
