@@ -55,7 +55,49 @@
         <snippet>Establish the core technical infrastructure and deliver the simplest possible end-to-end user experience.</snippet>
       </doc>
     </docs>
-    <code></code>
+    <code>
+      <code_ref>
+        <path>sentiabot/app/page.tsx</path>
+        <kind>Next.js Page/Frontend Component</kind>
+        <reason>Main frontend page where "Hello World" is displayed.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/app/api/hello/route.ts</path>
+        <kind>Next.js API Route</kind>
+        <symbol>GET</symbol>
+        <reason>Backend API endpoint providing "Hello World" message.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/lib/supabase.ts</path>
+        <kind>Supabase Client Configuration</kind>
+        <reason>Initializes and configures the Supabase client.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/.env.local</path>
+        <kind>Environment Variables</kind>
+        <reason>Stores Supabase and other environment-specific configurations.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/app/api/hello/route.test.ts</path>
+        <kind>Unit/Integration Test</kind>
+        <reason>Tests the `/api/hello` endpoint.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/lib/supabase.test.ts</path>
+        <kind>Unit/Integration Test</kind>
+        <reason>Tests the Supabase client connection.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/vitest.config.ts</path>
+        <kind>Test Configuration</kind>
+        <reason>Vitest configuration file.</reason>
+      </code_ref>
+      <code_ref>
+        <path>sentiabot/vitest.setup.ts</path>
+        <kind>Test Setup</kind>
+        <reason>Vitest setup file for environment variables and global mocks.</reason>
+      </code_ref>
+    </code>
     <dependencies>
       <dependency>
         <name>Next.js</name>

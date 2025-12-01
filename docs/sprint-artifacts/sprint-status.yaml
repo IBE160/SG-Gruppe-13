@@ -35,9 +35,9 @@ story_location: "{project-root}/docs/sprint-artifacts"
 
 development_status:
   epic-1: backlog
-  1-1-as-a-student-i-want-to-access-a-deployed-application-and-see-a-hello-world-message-from-the-backend-so-that-i-know-the-core-system-is-operational: drafted
+  1-1-as-a-student-i-want-to-access-a-deployed-application-and-see-a-hello-world-message-from-the-backend-so-that-i-know-the-core-system-is-operational: done
   1-2-as-a-student-i-want-to-see-a-single-page-with-an-input-field-and-receive-a-hardcoded-response-so-that-i-can-see-the-most-basic-chat-functionality-working: done
-  1-3-as-a-student-i-want-my-question-to-be-sent-to-an-ai-model-and-get-a-real-generated-response-so-that-i-can-have-a-true-conversational-experience: in-progress
+  1-3-as-a-student-i-want-my-question-to-be-sent-to-an-ai-model-and-get-a-real-generated-response-so-that-i-can-have-a-true-conversational-experience: done
   epic-1-retrospective: optional
   epic-2: backlog
   2-1-as-a-student-i-want-the-chatbot-to-use-a-dedicated-knowledge-base-for-its-answers-so-that-i-receive-trustworthy-information-instead-of-made-up-answers: backlog
