@@ -14,7 +14,7 @@ development_status:
   1-3-send-question-receive-ai-response: ready-for-dev
   1-3-backend-calls-gemini-api-successfully: backlog
   1-1-backend-connects-to-supabase: backlog
-  1-2-chat-input-static-response: backlog
+  1-2-chat-input-static-response: ready-for-dev
   1-2-chat-input-field-interactive: backlog
   epic-1-retrospective: optional
   epic-2: backlog

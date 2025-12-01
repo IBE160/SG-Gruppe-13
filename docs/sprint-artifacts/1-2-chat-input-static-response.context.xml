@@ -1,0 +1,143 @@
+<story-context id="{bmad_folder}/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>{{epic_id}}</epicId>
+    <storyId>{{story_id}}</storyId>
+    <title>{{story_title}}</title>
+    <status>{{story_status}}</status>
+    <generatedAt>{{date}}</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>{{story_path}}</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>a student,</asA>
+    <iWant>to see a single page with an input field and receive a hardcoded response,</iWant>
+    <soThat>I can see the most basic chat functionality working.</soThat>
+    <tasks>
+- Implement the main application page (AC: 1)
+  - Set up Next.js page for the main application.
+  - Implement basic layout as per UX Design Specification (Source: docs/ux-design-specification.md).
+  - Write a test to verify the main page loads correctly.
+- Develop the chat input component (AC: 2)
+  - Implement input field for user questions using Shadcn UI components.
+  - Handle user input on 'Enter' key press.
+  - Integrate with basic backend endpoint for static response.
+  - Write a test to simulate typing in the input field and pressing enter, verifying the input is captured.
+- Display static response in chat interface (AC: 3)
+  - Create a `ChatBubble` component for bot responses.
+  - Display a hardcoded static response from the backend.
+  - Ensure the UI updates to show the bot's response.
+  - Write a test to verify the static response appears correctly after user input.
+- Set up Supabase client in frontend (Foundational Task).
+- Create a basic backend API route (`/api/chat`) that returns a static response (Foundational Task).
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+1. Given I am on the main page.
+2. When I type any question into the chat input and press enter.
+3. Then I see a static, pre-written answer appear on the screen.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>Executive Summary</section>
+        <snippet>Sentiabot is an AI-powered educational tool designed to provide elementary school students... The core experience revolves around an interactive chat with an AI chatbot...</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>2.1 Defining Experience</section>
+        <snippet>The core experience for Sentiabot is the interactive conversation with the AI chatbot... The most critical interaction to get right is the chat window itself...</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>5.1 Critical User Paths - Primary Journey: Asking a Science Question - Flow Steps</section>
+        <snippet>Screen 2: Chat Screen: Details of user typing question, bot thinking, and answer display.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>6.1 Component Strategy - Detailed Component: ChatBubble</section>
+        <snippet>Description of the chat bubble component, its anatomy, content, user actions, variants, and states.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>7.1 Consistency Rules - Feedback Patterns</section>
+        <snippet>Describes the loading, success, and error feedback patterns for chat interactions.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 1: Foundational End-to-End Chat</section>
+        <snippet>Goal: Establish the core technical infrastructure and deliver the simplest possible end-to-end user experience.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Story 1.2</section>
+        <snippet>As a student, I want to see a single page with an input field and receive a hardcoded response, so that I can see the most basic chat functionality working.</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>sentiabot/app/page.tsx</path>
+        <kind>Next.js Page</kind>
+        <symbol>default</symbol>
+        <reason>Main application page where chat UI will be implemented.</reason>
+      </artifact>
+      <artifact>
+        <path>sentiabot/lib/supabase.ts</path>
+        <kind>Utility</kind>
+        <reason>Supabase client setup, foundational for future data integration though not directly used for static response.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <npm>
+        <package name="@supabase/supabase-js" version="^2.86.0" type="dependency"/>
+        <package name="next" version="16.0.6" type="dependency"/>
+        <package name="react" version="19.2.0" type="dependency"/>
+        <package name="react-dom" version="19.2.0" type="dependency"/>
+        <package name="@tailwindcss/postcss" version="^4" type="devDependency"/>
+        <package name="@types/node" version="^20" type="devDependency"/>
+        <package name="@types/react" version="^19" type="devDependency"/>
+        <package name="@types/react-dom" version="^19" type="devDependency"/>
+        <package name="eslint" version="^9" type="devDependency"/>
+        <package name="eslint-config-next" version="16.0.6" type="devDependency"/>
+        <package name="tailwindcss" version="^4" type="devDependency"/>
+        <package name="typescript" version="^5" type="devDependency"/>
+      </npm>
+    </dependencies>
+  </artifacts>
+
+    <constraints>
+      <constraint>Frontend UI developed with Next.js components and styled using Shadcn UI/Tailwind CSS.</constraint>
+      <constraint>Communication with a backend chat endpoint via Next.js API Routes.</constraint>
+      <constraint>Emphasis on component-based development and atomic design principles.</constraint>
+    </constraints>
+    <interfaces>
+      <interface>
+        <name>/api/chat</name>
+        <kind>Next.js API Route (POST)</kind>
+        <signature>POST /api/chat</signature>
+        <reason>New API endpoint for handling chat messages and returning a static response.</reason>
+      </interface>
+    </interfaces>
+  <tests>
+    <standards>The project employs automated testing using frameworks like Jest and React Testing Library for unit and integration tests. ESLint is used for code quality. Accessibility testing involves tools like Google Lighthouse and `axe DevTools`, supplemented by manual testing with keyboard navigation and screen readers.</standards>
+    <locations>
+      <location>sentiabot/app/**/*.test.tsx</location>
+      <location>sentiabot/app/__tests__/**/*.tsx</location>
+    </locations>
+    <ideas>
+      <idea ac_id="AC1">Verify the main page loads correctly.</idea>
+      <idea ac_id="AC2">Simulate typing in the input field and pressing enter, verifying the input is captured.</idea>
+      <idea ac_id="AC3">Verify the static response appears correctly after user input.</idea>
+    </ideas>
+  </tests>
+</story-context>
