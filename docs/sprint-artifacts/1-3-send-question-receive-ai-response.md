@@ -5,7 +5,7 @@ Status: ready-for-dev
 ## Story
 
 As a student,
-I want to send a question to the AI chatbot and receive an answer, so that I can get help with my schoolwork.
+I want to send a question to the AI chatbot and receive an answer,so that I can get help with my schoolwork.
 
 ## Requirements Context Summary
 
