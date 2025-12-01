@@ -443,3 +443,5 @@ The test strategy will encompass multiple levels to ensure the quality, reliabil
 - [ ] [Medium] Implement unit/integration tests for `/api/hello` endpoint to verify it returns `"{ "message": "Hello World" }"` as expected. (AC #2) [file: sentiabot/app/api/hello/route.ts] (Reference Story 1.1)
 - [ ] [Medium] Implement unit/integration tests for `supabase.ts` client to verify successful connection to Supabase. (AC #3) [file: sentiabot/lib/supabase.ts] (Reference Story 1.1)
 - Note: Consider the lifecycle and exposure of `sentiabot/app/api/check-db/route.ts`. Ensure it's not exposed in production, or integrate its testing functionality more formally into a test suite and remove the direct API route. (Reference Story 1.1)
+## Post-Review Follow-ups
+- [ ] [Low] Enhance error handling in `sentiabot/app/page.tsx` `handleSendMessage` to display user-friendly error messages. [file: sentiabot/app/page.tsx] (Reference Story 1.2)
