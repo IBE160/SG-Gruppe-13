@@ -1,0 +1,94 @@
+<story-context id="C:\Work\Projects\sentiabot-applikasjon\SG-Gruppe-13/.bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>1</epicId>
+    <storyId>3</storyId>
+    <title>send-question-receive-ai-response</title>
+    <status>ready-for-dev</status>
+    <generatedAt>2025-12-01</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>C:\Work\Projects\sentiabot-applikasjon\SG-Gruppe-13/docs/sprint-artifacts</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>a student</asA>
+    <iWant>send a question to the AI chatbot and receive an answer</iWant>
+    <soThat>I can get help with my schoolwork</soThat>
+    <tasks>
+    <task id="1" description="Implement Chat Input and Submission">
+      <subtask id="1.1" description="Develop a text input component for user questions"/>
+      <subtask id="1.2" description="Implement &quot;Send&quot; button functionality"/>
+      <subtask id="1.3" description="Implement submission on &quot;Enter&quot; key press"/>
+      <subtask id="1.4" description="Integrate with backend API for question submission"/>
+    </task>
+    <task id="2" description="Display User Question">
+      <subtask id="2.1" description="Create a ChatBubble variant for user questions"/>
+      <subtask id="2.2" description="Display submitted user questions in the chat history"/>
+    </task>
+    <task id="3" description="Implement Sentiabot Thinking Indicator">
+      <subtask id="3.1" description="Integrate TypingIndicator component during AI processing"/>
+    </task>
+    <task id="4" description="Display Sentiabot Response">
+      <subtask id="4.1" description="Create a ChatBubble variant for Sentiabot responses"/>
+      <subtask id="4.2" description="Display received AI responses in the chat history"/>
+      <subtask id="4.3" description="Integrate SourcedLink component within Sentiabot's response bubble"/>
+    </task>
+    <task id="5" description="Integrate with AI Model">
+      <subtask id="5.1" description="Implement backend logic to call the Google Gemini API with the user's question"/>
+      <subtask id="5.2" description="Process the AI model's response and extract relevant answer and source information"/>
+    </task>
+    <task id="6" description="Test Coverage">
+      <subtask id="6.1" description="Write unit/integration tests for chat input and submission"/>
+      <subtask id="6.2" description="Write unit/integration tests for displaying chat bubbles and indicators"/>
+      <subtask id="6.3" description="Write integration tests for AI model integration and response handling"/>
+    </tasks>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">The user can type a question into a dedicated input field on the chat screen.</criterion>
+    <criterion id="2">The user can submit their question using a "Send" button or by pressing Enter.</criterion>
+    <criterion id="3">Upon submission, the user's question is displayed in a chat bubble.</criterion>
+    <criterion id="4">A visual indicator (e.g., typing animation) is shown while Sentiabot is processing the request.</criterion>
+    <criterion id="5">Sentiabot's response is displayed in a chat bubble.</criterion>
+    <criterion id="6">The response includes a clearly labeled and clickable source for the information.</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>Core User Experience, User Journey Flows, Component Library</section>
+        <snippet>This document details the overall UX design for Sentiabot, including core experience, user journey flows for asking science questions, and component specifications for chat bubbles and typing indicators, directly relevant to implementing the story.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/PRD.md</path>
+        <title>Product Requirements Document: Sentiabot</title>
+        <section>Functional Requirements (MVP), User Journeys, Success Metrics</section>
+        <snippet>Outlines core functional requirements including FR003 (working chatbot), FR007 (dedicated knowledge base), FR008 (multilingual), and FR005 (grade level adaptation). Details user journey for student getting homework help (steps 4-7), and relevant success metrics (performance, multilingual).</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 1: Foundational End-to-End Chat, Story 1.3</section>
+        <snippet>Defines the goal for Epic 1 to establish core technical infrastructure and the Story 1.3 goal: "As a student, I want my question to be sent to an AI model and get a real, generated response, so that I can have a true conversational experience."</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Executive Summary, Decision Summary, Epic to Architecture Mapping, Technology Stack Details, Integration Points, Error Handling, Performance Considerations, Data Models and Relationships, API Contracts</section>
+        <snippet>Provides high-level architecture, key decisions (ADR 002, 004, 005, 006), and mapping for Epic 1. Details the technology stack (Next.js, Supabase, Gemini API, REST), integration points with Gemini API, error handling strategy, performance considerations for AI interaction, data model for chat messages, and API contract for /api/chat.</snippet>
+      </doc>
+    </docs>
+    <code></code>
+    <dependencies></dependencies>
+  </artifacts>
+
+  <constraints></constraints>
+  <interfaces></interfaces>
+  <tests>
+    <standards></standards>
+    <locations></locations>
+    <ideas></ideas>
+  </tests>
+</story-context>
