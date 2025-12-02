@@ -40,8 +40,8 @@ development_status:
   1-3-as-a-student-i-want-my-question-to-be-sent-to-an-ai-model-and-get-a-real-generated-response-so-that-i-can-have-a-true-conversational-experience: done
   epic-1-retrospective: done
   epic-2: contexted
-  2-1-as-a-student-i-want-the-chatbot-to-use-a-dedicated-knowledge-base-for-its-answers-so-that-i-receive-trustworthy-information-instead-of-made-up-answers: backlog
-  2-2-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying: backlog
+  2-1-as-a-student-i-want-the-chatbot-to-use-a-dedicated-knowledge-base-for-its-answers-so-that-i-receive-trustworthy-information-instead-of-made-up-answers: drafted
+  2-2-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying: drafted
   2-3-as-a-student-i-want-to-select-my-grade-level-so-the-chatbot-can-use-language-that-is-easy-for-me-to-understand: backlog
   epic-2-retrospective: optional
   epic-3: backlog
