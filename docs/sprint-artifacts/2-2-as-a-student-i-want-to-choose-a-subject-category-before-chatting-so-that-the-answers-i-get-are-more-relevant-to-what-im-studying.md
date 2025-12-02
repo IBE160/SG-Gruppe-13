@@ -1,6 +1,6 @@
 # Story 2.2: As a student, I want to choose a subject category before chatting so that the answers I get are more relevant to what I'm studying.
 
-Status: ready-for-dev
+Status: drafted
 
 ## Story
 
@@ -25,15 +25,12 @@ so that the answers I get are more relevant to what I'm studying.
   - [ ] Add a subject selection component (e.g., dropdown from Shadcn UI) to the `WelcomeScreen`.
   - [ ] Populate subject options (e.g., "Biology", "Geology").
   - [ ] Ensure the component is clearly visible and selectable.
-  - [ ] Add UI tests to verify the subject selection component is rendered and selectable.
 - [ ] **Task 2.2.2: Store Subject Selection in Frontend State (AC: 2)**
   - [ ] Implement state management (e.g., React Context, Zustand) to store the user's selected subject.
   - [ ] Update the state when the user makes a selection.
-  - [ ] Add unit/integration tests to verify the selected subject is correctly stored and updated in the frontend state.
 - [ ] **Task 2.2.3: Pass Subject to Backend Chat API (AC: 3)**
   - [ ] Modify the frontend logic that sends chat messages to the `/api/chat` endpoint.
   - [ ] Include the selected subject in the `context` object of the request body.
-  - [ ] Add integration tests to verify the selected subject is included in the `/api/chat` request payload.
 - [ ] **Task 2.2.4: Backend Logic to Filter KB Search by Subject (AC: 4)**
   - [ ] Enhance the knowledge base search logic in the backend (Knowledge Base Service) to accept a `subject` parameter.
   - [ ] Use the `subject` parameter to filter the `pgvector` semantic search on the `knowledge_base_entries` table.
@@ -57,7 +54,10 @@ so that the answers I get are more relevant to what I'm studying.
 
 ### References
 
+<<<<<<< HEAD
 - [Source: docs/fase-2-plan/epics.md#story-22-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying] - Epic 2 definition and Acceptance Criteria for Story 2.2.
+=======
+>>>>>>> 16d0cb00a55b6a983e50da969b2a086d336172b6
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#APIs-and-Interfaces] - Updated `/api/chat` contract for `context`.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#Data-Models-and-Contracts] - `chat_sessions` table and `knowledge_base_entries` table.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#Services-and-Modules] - Details on Knowledge Base Service and AI Context Service.
@@ -69,7 +69,7 @@ so that the answers I get are more relevant to what I'm studying.
 
 ### Context Reference
 
-- [Generated Story Context XML: docs/sprint-artifacts/2-2-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying.context.xml]
+<!-- Path(s) to story context XML will be added here by context workflow -->
 
 ### Agent Model Used
 
@@ -80,7 +80,3 @@ gemini-2.5-flash
 ### Completion Notes List
 
 ### File List
-
-## Change Log
-
-- 2025-12-02: Added comprehensive testing subtasks for all Acceptance Criteria and initialized Change Log.
