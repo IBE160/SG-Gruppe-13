@@ -42,7 +42,7 @@ development_status:
   epic-2: contexted
   2-1-as-a-student-i-want-the-chatbot-to-use-a-dedicated-knowledge-base-for-its-answers-so-that-i-receive-trustworthy-information-instead-of-made-up-answers: drafted
   2-2-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying: drafted
-  2-3-as-a-student-i-want-to-select-my-grade-level-so-the-chatbot-can-use-language-that-is-easy-for-me-to-understand: backlog
+  2-3-as-a-student-i-want-to-select-my-grade-level-so-the-chatbot-can-use-language-that-is-easy-for-me-to-understand: ready-for-dev
   epic-2-retrospective: optional
   epic-3: backlog
   3-1-as-a-student-i-want-to-interact-with-a-simple-colorful-and-easy-to-navigate-interface-so-that-i-can-focus-on-learning-without-getting-distracted: backlog
