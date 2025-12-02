@@ -47,7 +47,7 @@ development_status:
   epic-3: contexted
   3-1-as-a-student-i-want-to-interact-with-a-simple-colorful-and-easy-to-navigate-interface-so-that-i-can-focus-on-learning-without-getting-distracted: ready-for-dev
   3-2-as-a-student-i-want-the-chatbot-to-provide-the-source-for-its-information-so-that-i-can-check-where-the-answer-came-from: ready-for-dev
-  3-3-as-a-student-i-want-to-be-able-to-ask-questions-and-get-answers-in-both-norwegian-and-english-so-that-i-can-use-the-language-im-most-comfortable-with: backlog
+  3-3-as-a-student-i-want-to-be-able-to-ask-questions-and-get-answers-in-both-norwegian-and-english-so-that-i-can-use-the-language-im-most-comfortable-with: ready-for-dev
   3-4-as-a-student-i-want-to-download-my-chat-history-so-that-i-can-save-it-and-look-at-it-later: backlog
   epic-3-retrospective: optional
   epic-4: backlog

@@ -1,0 +1,352 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>3</storyId>
+    <title>As a student, I want to be able to ask questions and get answers in both Norwegian and English, so that I can use the language I'm most comfortable with</title>
+    <status>drafted</status>
+    <generatedAt>Tuesday, 2 December 2025</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>C:\Work\Projects\sentiabot-applikasjon\SG-Gruppe-13\docs/sprint-artifacts/3-3-as-a-student-i-want-to-be-able-to-ask-questions-and-get-answers-in-both-norwegian-and-english-so-that-i-can-use-the-language-im-most-comfortable-with.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As a student,</asA>
+    <iWant>to be able to ask questions and get answers in both Norwegian and English,</iWant>
+    <soThat>I can use the language I'm most comfortable with.</soThat>
+    <tasks>  - [ ] Implement UI for language selection (AC: 1, 3)
+    - [ ] Design and implement a language selector (e.g., dropdown, toggle)
+    - [ ] Store selected language in user preferences (e.g., local storage, user session)
+  - [ ] Backend: Modify chat API to accept language parameter (AC: 2, 4)
+    - [ ] Update `/api/chat` endpoint to receive language input
+    - [ ] Integrate language parameter into AI model prompt or API call
+    - [ ] Ensure AI model responds in the selected language
+  - [ ] Frontend: Send selected language with chat requests (AC: 2, 4)
+    - [ ] Retrieve selected language from preferences
+    - [ ] Include language in chat API requests
+  - [ ] Testing:
+    - [ ] Unit tests for language selection UI component
+    - [ ] Unit/integration tests for chat API to verify language-specific responses
+    - [ ] End-to-end tests for asking questions in Norwegian and English and verifying responses in the correct language.
+</tasks>
+  </story>
+
+  <acceptanceCriteria>  1. Given I have selected "Norwegian" as my language.
+  2. When I ask a question in Norwegian, the chatbot responds in Norwegian.
+  3. Given I have selected "English" as my language.
+  4. When I ask a question in English, the chatbot responds in English.
+</acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+  <entry>
+    <path>docs/ux-design-specification.md</path>
+    <title>ibe160 UX Design Specification</title>
+    <section>Executive Summary</section>
+    <snippet>Sentiabot is an AI-powered educational tool designed to provide elementary school students (ages 6-12) with safe, reliable, and easy-to-understand answers for their schoolwork... The design will ensure the text input is always obvious, inviting, and persistently available, while minimizing UI "chrome" to prevent distraction.</snippet>
+  </entry>
+  <entry>
+    <path>docs/ux-design-specification.md</path>
+    <title>ibe160 UX Design Specification</title>
+    <section>4.1 Chosen Design Approach</section>
+    <snippet>The "Source-Integrated Chat with Clean Header Options" approach combines robust credibility with user agency. The addition of a clean, subtle header with an accessible "Options" button provides clear control for students to manage settings like grade level, language, or to download chat history.</snippet>
+  </entry>
+  <entry>
+    <path>docs/ux-design-specification.md</path>
+    <title>ibe160 UX Design Specification</title>
+    <section>6. Component Library - Standard Components (from Shadcn UI)</section>
+    <snippet>The following standard components will be used as the foundation for Sentiabot's interface: Select / Dropdown Menu: For "Subject" and "Grade Level" selection on the welcome screen. Dialog / Modal: For presenting the "Options" menu and its contents (e.g., language selection, download chat).</snippet>
+  </entry>
+  <entry>
+    <path>docs/ux-design-specification.md</path>
+    <title>ibe160 UX Design Specification</title>
+    <section>7. UX Pattern Decisions - Modal Patterns (for "Options")</section>
+    <snippet>A simple, centered Dialog will overlay the chat interface with a semi-transparent backdrop, focusing the user's attention on the available options. The modal can be dismissed by clicking an explicit "Close" (X) button in the corner, pressing the Escape key, or clicking on the backdrop.</snippet>
+  </entry>
+  <entry>
+    <path>docs/ux-design-spec-validation-report-2025-11-21_14-30-00.md</path>
+    <title>Validation Report</title>
+    <section>Summary</section>
+    <snippet>Overall: 122/154 passed (79.22%) - Critical Issues: 3. This report validates the collaborative UX design facilitation, highlighting areas for improvement to ensure a complete and robust specification.</snippet>
+  </entry>
+  <entry>
+    <path>docs/fase-2-plan/epics.md</path>
+    <title>Product Roadmap: Sentiabot</title>
+    <section>Epic 3: Enhanced User Experience and Features</section>
+    <snippet>Goal: Improve the user interface and add key features that make the tool more useful and engaging for students. Story 3.3: As a student, I want to be able to ask questions and get answers in both Norwegian and English, so that I can use the language I'm most comfortable with.</snippet>
+  </entry>
+  <entry>
+    <path>docs/fase-2-plan/PRD.md</path>
+    <title>Product Requirements Document: Sentiabot</title>
+    <section>Functional Requirements (MVP)</section>
+    <snippet>- FR008: The ability to answer questions in both Norwegian and English.</snippet>
+  </entry>
+  <entry>
+    <path>docs/fase-3-solutioning/architecture.md</path>
+    <title>Architecture</title>
+    <section>Executive Summary</section>
+    <snippet>Core functionality is an AI chatbot for elementary school students. Includes features for contextualization (subject, grade level), multilingual support (Norwegian/English), and chatlog download.</snippet>
+  </entry>
+  <entry>
+    <path>docs/fase-3-solutioning/architecture.md</path>
+    <title>Architecture</title>
+    <section>Decision Summary</section>
+    <snippet>AI Integration Strategy: RAG with Google Gemini, Prompt Engineering, pgvector. Rationale: Ensures accurate, age-appropriate, sourced, and multilingual AI responses.</snippet>
+  </entry>
+    </docs>
+    <code>
+      <entry>
+        <path>sentiabot/app/api/chat/route.ts</path>
+        <kind>API Route</kind>
+        <symbol>POST</symbol>
+        <lines>8-27</lines>
+        <reason>Handles AI chat responses. Needs modification to accept and utilize a language parameter for multilingual support.</reason>
+      </entry>
+      <entry>
+        <path>sentiabot/components/ChatInput.tsx</path>
+        <kind>Frontend Component</kind>
+        <symbol>ChatInput</symbol>
+        <lines>9-40</lines>
+        <reason>User input component. Needs modification to send the selected language along with the user's message.</reason>
+      </entry>
+      <entry>
+        <path>sentiabot/types/index.ts</path>
+        <kind>Type Definition</kind>
+        <symbol>Message</symbol>
+        <lines>1-5</lines>
+        <reason>Interface for chat messages. May need updates to include language property.</reason>
+      </entry>
+      <entry>
+        <path>sentiabot/components/LanguageSelector.tsx</path>
+        <kind>New Frontend Component</kind>
+        <reason>Required for users to select their preferred language.</reason>
+      </entry>
+      <entry>
+        <path>sentiabot/lib/user-preferences.ts</path>
+        <kind>New Utility</kind>
+        <reason>Required for storing and retrieving user's language preference.</reason>
+      </entry>
+    </code>
+    <dependencies>
+      <node>
+        <package name="supabase" version="^2.63.1" location="./package.json" />
+        <package name="@google/generative-ai" version="^0.24.1" location="sentiabot/package.json" />
+        <package name="@radix-ui/react-slot" version="^1.2.4" location="sentiabot/package.json" />
+        <package name="@supabase/supabase-js" version="^2.86.0" location="sentiabot/package.json" />
+        <package name="@testing-library/user-event" version="^14.6.1" location="sentiabot/package.json" />
+        <package name="class-variance-authority" version="0.7.1" location="sentiabot/package.json" />
+        <package name="clsx" version="^2.1.1" location="sentiabot/package.json" />
+        <package name="lucide-react" version="^0.555.0" location="sentiabot/package.json" />
+        <package name="next" version="16.0.6" location="sentiabot/package.json" />
+        <package name="react" version="19.2.0" location="sentiabot/package.json" />
+        <package name="react-dom" version="19.2.0" location="sentiabot/package.json" />
+        <package name="tailwind-merge" version="^3.4.0" location="sentiabot/package.json" />
+      </node>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+      <constraint>
+        <description>Multilingual support will involve updating the AI integration strategy to handle language parameters in prompts.</description>
+      </constraint>
+      <constraint>
+        <description>Potential need for language-specific knowledge bases or content retrieval.</description>
+      </constraint>
+      <constraint>
+        <description>Frontend UI will need to manage and display language selection.</description>
+      </constraint>
+    </constraints>
+  <interfaces>
+      <interface>
+        <name>/api/chat</name>
+        <kind>REST endpoint</kind>
+        <signature>POST /api/chat { message: string, context: { subject: string, gradeLevel: string, language: string } }</signature>
+        <path>sentiabot/app/api/chat/route.ts</path>
+      </interface>
+    </interfaces>
+  <story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+    <metadata>
+      <epicId>3</epicId>
+      <storyId>3</storyId>
+      <title>As a student, I want to be able to ask questions and get answers in both Norwegian and English, so that I can use the language I'm most comfortable with</title>
+      <status>drafted</status>
+      <generatedAt>Tuesday, 2 December 2025</generatedAt>
+      <generator>BMAD Story Context Workflow</generator>
+      <sourceStoryPath>C:\Work\Projects\sentiabot-applikasjon\SG-Gruppe-13\docs/sprint-artifacts/3-3-as-a-student-i-want-to-be-able-to-ask-questions-and-get-answers-in-both-norwegian-and-english-so-that-i-can-use-the-language-im-most-comfortable-with.md</sourceStoryPath>
+    </metadata>
+  
+    <story>
+      <asA>As a student,</asA>
+      <iWant>to be able to ask questions and get answers in both Norwegian and English,</iWant>
+      <soThat>I can use the language I'm most comfortable with.</soThat>
+      <tasks>  - [ ] Implement UI for language selection (AC: 1, 3)
+      - [ ] Design and implement a language selector (e.g., dropdown, toggle)
+      - [ ] Store selected language in user preferences (e.g., local storage, user session)
+    - [ ] Backend: Modify chat API to accept language parameter (AC: 2, 4)
+      - [ ] Update `/api/chat` endpoint to receive language input
+      - [ ] Integrate language parameter into AI model prompt or API call
+      - [ ] Ensure AI model responds in the selected language
+    - [ ] Frontend: Send selected language with chat requests (AC: 2, 4)
+      - [ ] Retrieve selected language from preferences
+      - [ ] Include language in chat API requests
+    - [ ] Testing:
+      - [ ] Unit tests for language selection UI component
+      - [ ] Unit/integration tests for chat API to verify language-specific responses
+      - [ ] End-to-end tests for asking questions in Norwegian and English and verifying responses in the correct language.
+  </tasks>
+    </story>
+  
+    <acceptanceCriteria>  1. Given I have selected "Norwegian" as my language.
+    2. When I ask a question in Norwegian, the chatbot responds in Norwegian.
+    3. Given I have selected "English" as my language.
+    4. When I ask a question in English, the chatbot responds in English.
+  </acceptanceCriteria>
+  
+    <artifacts>
+      <docs>
+    <entry>
+      <path>docs/ux-design-specification.md</path>
+      <title>ibe160 UX Design Specification</title>
+      <section>Executive Summary</section>
+      <snippet>Sentiabot is an AI-powered educational tool designed to provide elementary school students (ages 6-12) with safe, reliable, and easy-to-understand answers for their schoolwork... The design will ensure the text input is always obvious, inviting, and persistently available, while minimizing UI "chrome" to prevent distraction.</snippet>
+    </entry>
+    <entry>
+      <path>docs/ux-design-specification.md</path>
+      <title>ibe160 UX Design Specification</title>
+      <section>4.1 Chosen Design Approach</section>
+      <snippet>The "Source-Integrated Chat with Clean Header Options" approach combines robust credibility with user agency. The addition of a clean, subtle header with an accessible "Options" button provides clear control for students to manage settings like grade level, language, or to download chat history.</snippet>
+    </entry>
+    <entry>
+      <path>docs/ux-design-specification.md</path>
+      <title>ibe160 UX Design Specification</title>
+      <section>6. Component Library - Standard Components (from Shadcn UI)</section>
+      <snippet>The following standard components will be used as the foundation for Sentiabot's interface: Select / Dropdown Menu: For "Subject" and "Grade Level" selection on the welcome screen. Dialog / Modal: For presenting the "Options" menu and its contents (e.g., language selection, download chat).</snippet>
+    </entry>
+    <entry>
+      <path>docs/ux-design-specification.md</path>
+      <title>ibe160 UX Design Specification</title>
+      <section>7. UX Pattern Decisions - Modal Patterns (for "Options")</section>
+      <snippet>A simple, centered Dialog will overlay the chat interface with a semi-transparent backdrop, focusing the user's attention on the available options. The modal can be dismissed by clicking an explicit "Close" (X) button in the corner, pressing the Escape key, or clicking on the backdrop.</snippet>
+    </entry>
+    <entry>
+      <path>docs/ux-design-spec-validation-report-2025-11-21_14-30-00.md</path>
+      <title>Validation Report</title>
+      <section>Summary</section>
+      <snippet>Overall: 122/154 passed (79.22%) - Critical Issues: 3. This report validates the collaborative UX design facilitation, highlighting areas for improvement to ensure a complete and robust specification.</snippet>
+    </entry>
+    <entry>
+      <path>docs/fase-2-plan/epics.md</path>
+      <title>Product Roadmap: Sentiabot</title>
+      <section>Epic 3: Enhanced User Experience and Features</section>
+      <snippet>Goal: Improve the user interface and add key features that make the tool more useful and engaging for students. Story 3.3: As a student, I want to be able to ask questions and get answers in both Norwegian and English, so that I can use the language I'm most comfortable with.</snippet>
+    </entry>
+    <entry>
+      <path>docs/fase-2-plan/PRD.md</path>
+      <title>Product Requirements Document: Sentiabot</title>
+      <section>Functional Requirements (MVP)</section>
+      <snippet>- FR008: The ability to answer questions in both Norwegian and English.</snippet>
+    </entry>
+    <entry>
+      <path>docs/fase-3-solutioning/architecture.md</path>
+      <title>Architecture</title>
+      <section>Executive Summary</section>
+      <snippet>Core functionality is an AI chatbot for elementary school students. Includes features for contextualization (subject, grade level), multilingual support (Norwegian/English), and chatlog download.</snippet>
+    </entry>
+    <entry>
+      <path>docs/fase-3-solutioning/architecture.md</path>
+      <title>Architecture</title>
+      <section>Decision Summary</section>
+      <snippet>AI Integration Strategy: RAG with Google Gemini, Prompt Engineering, pgvector. Rationale: Ensures accurate, age-appropriate, sourced, and multilingual AI responses.</snippet>
+    </entry>
+      </docs>
+      <code>
+        <entry>
+          <path>sentiabot/app/api/chat/route.ts</path>
+          <kind>API Route</kind>
+          <symbol>POST</symbol>
+          <lines>8-27</lines>
+          <reason>Handles AI chat responses. Needs modification to accept and utilize a language parameter for multilingual support.</reason>
+        </entry>
+        <entry>
+          <path>sentiabot/components/ChatInput.tsx</path>
+          <kind>Frontend Component</kind>
+          <symbol>ChatInput</symbol>
+          <lines>9-40</lines>
+          <reason>User input component. Needs modification to send the selected language along with the user's message.</reason>
+        </entry>
+        <entry>
+          <path>sentiabot/types/index.ts</path>
+          <kind>Type Definition</kind>
+          <symbol>Message</symbol>
+          <lines>1-5</lines>
+          <reason>Interface for chat messages. May need updates to include language property.</reason>
+        </entry>
+        <entry>
+          <path>sentiabot/components/LanguageSelector.tsx</path>
+          <kind>New Frontend Component</kind>
+          <reason>Required for users to select their preferred language.</reason>
+        </entry>
+        <entry>
+          <path>sentiabot/lib/user-preferences.ts</path>
+          <kind>New Utility</kind>
+          <reason>Required for storing and retrieving user's language preference.</reason>
+        </entry>
+      </code>
+      <dependencies>
+        <node>
+          <package name="supabase" version="^2.63.1" location="./package.json" />
+          <package name="@google/generative-ai" version="^0.24.1" location="sentiabot/package.json" />
+          <package name="@radix-ui/react-slot" version="^1.2.4" location="sentiabot/package.json" />
+          <package name="@supabase/supabase-js" version="^2.86.0" location="sentiabot/package.json" />
+          <package name="@testing-library/user-event" version="^14.6.1" location="sentiabot/package.json" />
+          <package name="class-variance-authority" version="0.7.1" location="sentiabot/package.json" />
+          <package name="clsx" version="^2.1.1" location="sentiabot/package.json" />
+          <package name="lucide-react" version="^0.555.0" location="sentiabot/package.json" />
+          <package name="next" version="16.0.6" location="sentiabot/package.json" />
+          <package name="react" version="19.2.0" location="sentiabot/package.json" />
+          <package name="react-dom" version="19.2.0" location="sentiabot/package.json" />
+          <package name="tailwind-merge" version="^3.4.0" location="sentiabot/package.json" />
+        </node>
+      </dependencies>
+    </artifacts>
+  
+    <constraints>
+        <constraint>
+          <description>Multilingual support will involve updating the AI integration strategy to handle language parameters in prompts.</description>
+        </constraint>
+        <constraint>
+          <description>Potential need for language-specific knowledge bases or content retrieval.</description>
+        </constraint>
+        <constraint>
+          <description>Frontend UI will need to manage and display language selection.</description>
+        </constraint>
+      </constraints>
+    <interfaces>
+        <interface>
+          <name>/api/chat</name>
+          <kind>REST endpoint</kind>
+          <signature>POST /api/chat { message: string, context: { subject: string, gradeLevel: string, language: string } }</signature>
+          <path>sentiabot/app/api/chat/route.ts</path>
+        </interface>
+      </interfaces>
+    <tests>
+      <standards>
+          Unit tests for new language selection components using Vitest and React Testing Library.
+          Integration tests for language parameter passing from frontend to backend.
+          End-to-end tests to verify language-specific responses.
+          Automated accessibility testing using Google Lighthouse and axe DevTools.
+          Manual accessibility testing for keyboard navigation, screen reader support, and color contrast.
+        </standards>
+        <locations>
+          Co-located with source code, using *.test.ts or *.spec.ts naming convention.
+        </locations>
+        <ideas>
+          - Unit test: LanguageSelector component renders correctly and dispatches language change events.
+          - Unit test: ChatInput component sends the correct language parameter with messages.
+          - Integration test: Frontend sends message with Norwegian language, backend processes it, and returns a Norwegian response.
+          - Integration test: Frontend sends message with English language, backend processes it, and returns an English response.
+          - End-to-end test: User selects Norwegian, asks a question, verifies response is in Norwegian.
+          - End-to-end test: User selects English, asks a question, verifies response is in English.
+        </ideas>
+      </tests>
+  </story-context>
+  </story-context>
