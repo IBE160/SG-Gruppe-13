@@ -57,7 +57,7 @@ so that the answers I get are more relevant to what I'm studying.
 
 ### References
 
-- [Source: docs/fase-2-plan/epics.md#Epic-2-Knowledge-Driven-Contextual-Chat] - Epic 2 definition and Acceptance Criteria for Story 2.2.
+- [Source: docs/fase-2-plan/epics.md#story-22-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying] - Epic 2 definition and Acceptance Criteria for Story 2.2.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#APIs-and-Interfaces] - Updated `/api/chat` contract for `context`.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#Data-Models-and-Contracts] - `chat_sessions` table and `knowledge_base_entries` table.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#Services-and-Modules] - Details on Knowledge Base Service and AI Context Service.
