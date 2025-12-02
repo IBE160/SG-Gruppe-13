@@ -1,6 +1,6 @@
 # Story 2.2: As a student, I want to choose a subject category before chatting so that the answers I get are more relevant to what I'm studying.
 
-Status: drafted
+Status: ready-for-dev
 
 ## Story
 
@@ -54,10 +54,7 @@ so that the answers I get are more relevant to what I'm studying.
 
 ### References
 
-<<<<<<< HEAD
 - [Source: docs/fase-2-plan/epics.md#story-22-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying] - Epic 2 definition and Acceptance Criteria for Story 2.2.
-=======
->>>>>>> 16d0cb00a55b6a983e50da969b2a086d336172b6
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#APIs-and-Interfaces] - Updated `/api/chat` contract for `context`.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#Data-Models-and-Contracts] - `chat_sessions` table and `knowledge_base_entries` table.
 - [Source: docs/sprint-artifacts/tech-spec-epic-2.md#Services-and-Modules] - Details on Knowledge Base Service and AI Context Service.
@@ -69,7 +66,7 @@ so that the answers I get are more relevant to what I'm studying.
 
 ### Context Reference
 
-<!-- Path(s) to story context XML will be added here by context workflow -->
+- [Generated Story Context XML: docs/sprint-artifacts/2-2-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying.context.xml]
 
 ### Agent Model Used
 

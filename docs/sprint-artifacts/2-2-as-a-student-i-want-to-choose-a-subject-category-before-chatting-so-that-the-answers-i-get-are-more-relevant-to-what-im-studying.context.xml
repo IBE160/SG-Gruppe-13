@@ -1,0 +1,204 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>2</epicId>
+    <storyId>2</storyId>
+    <title>As a student, I want to choose a subject category before chatting so that the answers I get are more relevant to what I'm studying.</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-02</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>c:\Users\CEPTER\Documents\Programmering med KI\SG-Gruppe-13\docs\sprint-artifacts\2-2-as-a-student-i-want-to-choose-a-subject-category-before-chatting-so-that-the-answers-i-get-are-more-relevant-to-what-im-studying.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As a student,</asA>
+    <iWant>I want to choose a subject category before chatting,</iWant>
+    <soThat>so that the answers I get are more relevant to what I'm studying.</soThat>
+    <tasks>
+- [ ] **Task 2.2.1: Implement Subject Selection UI (AC: 1)**
+  - [ ] Add a subject selection component (e.g., dropdown from Shadcn UI) to the `WelcomeScreen`.
+  - [ ] Populate subject options (e.g., "Biology", "Geology").
+  - [ ] Ensure the component is clearly visible and selectable.
+  - [ ] Add UI tests to verify the subject selection component is rendered and selectable.
+- [ ] **Task 2.2.2: Store Subject Selection in Frontend State (AC: 2)**
+  - [ ] Implement state management (e.g., React Context, Zustand) to store the user's selected subject.
+  - [ ] Update the state when the user makes a selection.
+  - [ ] Add unit/integration tests to verify the selected subject is correctly stored and updated in the frontend state.
+- [ ] **Task 2.2.3: Pass Subject to Backend Chat API (AC: 3)**
+  - [ ] Modify the frontend logic that sends chat messages to the `/api/chat` endpoint.
+  - [ ] Include the selected subject in the `context` object of the request body.
+  - [ ] Add integration tests to verify the selected subject is included in the `/api/chat` request payload.
+- [ ] **Task 2.2.4: Backend Logic to Filter KB Search by Subject (AC: 4)**
+  - [ ] Enhance the knowledge base search logic in the backend (Knowledge Base Service) to accept a `subject` parameter.
+  - [ ] Use the `subject` parameter to filter the `pgvector` semantic search on the `knowledge_base_entries` table.
+  - [ ] Add unit tests to verify subject-based filtering.
+- [ ] **Task 2.2.5: AI Response Reflects Subject (AC: 5)**
+  - [ ] Verify that the AI's generated response in the `/api/chat` endpoint is influenced by the subject context provided (e.g., by logging the final prompt sent to Gemini).
+  - [ ] Conduct functional tests to ensure asking a subject-specific question with the correct subject selected yields a more relevant answer.
+- [ ] **Task 2.2.6: Record Subject in `chat_sessions` Table (AC: 6)**
+  - [ ] Modify the `/api/chat` endpoint to update the `chat_sessions` table with the selected `subject` for the current conversation.
+  - [ ] Add integration tests to confirm the `subject` is correctly stored in the database.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+1.  The `WelcomeScreen` (or equivalent initial UI) includes a visible and selectable UI element (e.g., dropdown, buttons) for choosing a subject category (e.g., "Biology", "Geology").
+2.  When a user selects a subject category, this selection is stored in the frontend state.
+3.  Given a subject category is selected,
+    When a chat message is sent to the backend,
+    Then the selected subject category is included in the `context` of the `/api/chat` request.
+4.  The backend successfully uses the `subject` from the request context to filter semantic searches on the `knowledge_base_entries` table.
+5.  The AI's generated response reflects the chosen subject category, making the answer more relevant.
+6.  The `chat_sessions` table records the `subject` for the session.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <entry>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 2: Knowledge-Driven, Contextual Chat</section>
+        <snippet>Goal: Enhance the chatbot by connecting it to a dedicated knowledge base and allowing users to specify their context, ensuring answers are relevant and accurate. Story 2.2: As a student, I want to choose a subject category before chatting, so that the answers I get are more relevant to what I'm studying. Acceptance Criteria: 1. Given I am on the home page. 2. I can see options for "Biology" and "Geology". 3. When I select a category, my choice is stored. 4. Then the AI uses this category as context when generating answers.</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Executive Summary</section>
+        <snippet>Core functionality is an AI chatbot for elementary school students. Includes features for contextualization (subject, grade level), multilingual support (Norwegian/English), and chatlog download. Project emphasizes user-friendly UI, responsiveness, and accessibility (WCAG 2.1 Level AA).</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Decision Summary</section>
+        <snippet>Data Persistence: Supabase with PostgreSQL. API Pattern: REST. AI Integration Strategy: RAG with Google Gemini, Prompt Engineering, pgvector. Deployment Target: Local Development Environment Only.</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Epic to Architecture Mapping</section>
+        <snippet>**Epic 2: Knowledge-Driven, Contextual Chat** Supabase PostgreSQL (with `pgvector` extension), Next.js API Routes (knowledge base interaction, prompt generation), Google Gemini API (contextual prompts), Supabase Realtime (for dynamic updates).</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Technology Stack Details</section>
+        <snippet>Frontend Framework: Next.js, Programming Language: TypeScript, Styling: Tailwind CSS, UI Component Library: Shadcn UI, Database: PostgreSQL (pgvector), BaaS: Supabase, LLM: Google Gemini API, API Pattern: REST. Integration Points: Frontend to Backend (/api/chat), Backend to Supabase (PostgreSQL), Backend to Google Gemini API (context/payload).</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Data Architecture - Data Models and Relationships</section>
+        <snippet>`knowledge_base_entries` Table (embedding, subject, grade_level), `chat_sessions` Table (subject, grade_level, language).</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>API Contracts - Chat API (`/api/chat`)</section>
+        <snippet>Purpose: Handles user chat interactions with the AI. Request Body includes `sessionId`, `message`, `context` (`subject`, `gradeLevel`, `language`). Response Body includes `sessionId`, `aiResponse`, `sourceReferences`.</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Security Architecture - Row Level Security (RLS) in PostgreSQL</section>
+        <snippet>RLS policies will be applied to critical database tables (e.g., `knowledge_base_entries`, `chat_sessions`) to ensure authorized access.</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Performance Considerations - Optimized Data Retrieval and Storage</section>
+        <snippet>Database Indexing: `knowledge_base_entries.subject`, `grade_level`, `chat_sessions.user_id`. `pgvector` Optimization for fast similarity searches.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>Executive Summary</section>
+        <snippet>Sentiabot is an AI-powered educational tool. Core experience: interactive chat. Goal: trustworthy, engaging, minimalist web application making students feel efficient, productive, curious. Accessible on desktops, laptops, and tablets.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>1.1 Design System Choice</section>
+        <snippet>Decision: Shadcn UI. Rationale: Flexible, custom, minimalist aesthetic, Radix UI for accessibility, precise customization with Next.js, Tailwind CSS.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>2.1 Defining Experience</section>
+        <snippet>Core experience: interactive conversation with AI chatbot. Chat window is critical. Text input field must be effortless and immediately discoverable. Desired Emotional Response: Efficient and Productive, Curious.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>2.2 Defining Experience (User Confirmation)</section>
+        <snippet>Defining experience for Sentiabot: "the app where you can ask science questions and get simple, sourced answers."</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>4.1 Chosen Design Approach</section>
+        <snippet>Direction Name: Source-Integrated Chat with Clean Header Options. Personality: Trustworthy, Educational, and User-Controlled. Layout: Single column, chat-focused. Source Integration: Sources visually part of each bot message. Header: Minimalist, displays current context (e.g., "Science (Grade 3)") and "Options" button.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>5.1 Critical User Paths - Primary Journey: Asking a Science Question</section>
+        <snippet>Chosen Approach: Two-Screen Approach (Welcome Screen -&gt; Chat Screen). Welcome Screen: User sees Subject selector, Grade Level selector, Start Chatting button. User does: Selects grade level, Clicks Start Chatting. Chat Screen: User sees chat interface, welcoming message, text input field, Send button, header displaying context and Options button. User does: Types question, Clicks Send/Enter. Answer Display: Bot's answer with source. Visual Flow (Mermaid Diagram) included.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>6.1 Component Strategy</section>
+        <snippet>Component strategy centers on leveraging Shadcn UI. Standard Components: Select / Dropdown Menu (Subject, Grade Level selection), Input (chat text entry). Custom Components: `ChatBubble` (sourced link integration, user/bot variants), `WelcomeScreen` (subject/grade selectors).</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>7.1 Consistency Rules - Form Patterns (for Welcome Screen)</section>
+        <snippet>Labels: Large, clear labels above Select components for "Subject" and "Grade Level". Interaction: "Start Chatting" button disabled until subject/grade selected.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>8.2 Accessibility Strategy</section>
+        <snippet>WCAG Compliance Target: WCAG 2.1 Level AA. Key Requirements: Keyboard Navigation, Focus Indicators, Screen Reader Support, Color Contrast, Scalable Text, Touch Target Size. Testing Strategy: Automated Testing, Manual Testing.</snippet>
+      </entry>
+    </docs>
+    <code>
+      <entry>
+        <path>sentiabot/app/api/chat/route.ts</path>
+        <kind>API Route</kind>
+        <symbol>POST</symbol>
+        <reason>Handles incoming chat messages and calls the Gemini API. This is where context (including subject) will be integrated.</reason>
+      </entry>
+    </code>
+    <dependencies></dependencies>
+  </artifacts>
+
+  <constraints></constraints>
+  <interfaces>
+    <interface>
+      <name>Chat API</name>
+      <kind>REST endpoint</kind>
+      <signature>POST /api/chat (expects `message` and `context: { subject, gradeLevel, language }` in body)</signature>
+      <path>sentiabot/app/api/chat/route.ts</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      <standard>Automated Accessibility Testing: Google Lighthouse, `axe DevTools`.</standard>
+      <standard>Manual Accessibility Testing: Keyboard-only navigation, Screen readers (NVDA, VoiceOver, TalkBack), Color contrast checkers.</standard>
+    </standards>
+    <locations>
+      <location>Co-located with the source code they test, using the `*.test.ts` or `*.spec.ts` naming convention.</location>
+    </locations>
+    <ideas>
+      <idea ac_id="1">UI tests: Verify subject selection component is rendered and selectable on `WelcomeScreen`.</idea>
+      <idea ac_id="2">Unit/Integration tests: Verify selected subject is correctly stored and updated in frontend state.</idea>
+      <idea ac_id="3">Integration tests: Verify selected subject is included in the `/api/chat` request payload.</idea>
+      <idea ac_id="4">Unit tests: Verify subject-based filtering in Knowledge Base Service.</idea>
+      <idea ac_id="5">Functional tests: Ensure AI response is more relevant with correct subject selected.</idea>
+      <idea ac_id="6">Integration tests: Confirm `subject` is correctly stored in `chat_sessions` table.</idea>
+      <idea>API Input Validation tests for `/api/chat` endpoint.</idea>
+      <idea>Database Indexing and `pgvector` optimization tests.</idea>
+    </ideas>
+  </tests>
+</story-context>
