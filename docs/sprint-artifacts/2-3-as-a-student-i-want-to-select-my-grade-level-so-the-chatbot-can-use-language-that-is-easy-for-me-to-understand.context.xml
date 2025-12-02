@@ -1,0 +1,144 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>2</epicId>
+    <storyId>3</storyId>
+    <title>Grade Level Selection</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-02</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>D:\Programming-With-AI\SG-Gruppe-13/docs/sprint-artifacts/2-3-as-a-student-i-want-to-select-my-grade-level-so-the-chatbot-can-use-language-that-is-easy-for-me-to-understand.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As a student,</asA>
+    <iWant>I want to select my grade level,</iWant>
+    <soThat>so that the chatbot can use language that is easy for me to understand.</soThat>
+    <tasks>- [ ] Implement UI for grade level selection on the home page (AC: 1, 2)
+  - [ ] Develop dropdown/buttons for grade levels 1-6
+  - [ ] Integrate selection with application state
+- [ ] Implement backend logic to store selected grade level (AC: 3)
+  - [ ] Create/update user preference storage mechanism
+  - [ ] Ensure grade level is associated with user session
+- [ ] Implement logic to update chatbot's system prompt based on grade level (AC: 4)
+  - [ ] Integrate grade level into prompt generation
+  - [ ] Verify AI response tailoring to selected grade
+- [ ] Write unit tests for grade level selection component and state management (AC: 1, 2)
+- [ ] Write integration tests for storing selected grade level on backend (AC: 3)
+- [ ] Write integration tests for system prompt update with grade level context (AC: 4)
+- [ ] Write E2E test: Verify grade level selection on homepage (AC: 1, 2)
+- [ ] Write E2E test: Verify AI response is tailored to selected grade level (AC: 4)</tasks>
+  </story>
+
+  <acceptanceCriteria>1.  Given I am on the home page.
+2.  I can select a grade level from a list (e.g., 1-6).
+3.  When I select a grade level, my choice is stored.
+4.  Then the chatbot's system prompt is updated to instruct the AI to tailor its language for my grade.</acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>5.1 Critical User Paths - Screen 1: Welcome / Selection Screen</section>
+        <snippet>User sees: A "Grade Level" selector (e.g., a dropdown or buttons for grades 1-7). User does: Selects their grade level. Clicks the "Start Chatting" button.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>7.1 Consistency Rules - Form Patterns (for Welcome Screen)</section>
+        <snippet>Labels: Large, clear, and friendly labels will be placed directly above the Select components for "Subject" and "Grade Level" for maximum clarity.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>6. Component Library - Standard Components (from Shadcn UI)</section>
+        <snippet>Select / Dropdown Menu: For "Subject" and "Grade Level" selection on the welcome screen.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 2: Knowledge-Driven, Contextual Chat - Story 2.3</section>
+        <snippet>As a student, I want to select my grade level, so the chatbot can use language that is easy for me to understand. Acceptance Criteria: I can select a grade level from a list (e.g., 1-6).</snippet>
+      </doc>
+    </docs>
+    <code>
+      <artifact>
+        <path>sentiabot/components/ui/input.tsx</path>
+        <kind>UI Component</kind>
+        <symbol>Input</symbol>
+        <lines>5-21</lines>
+        <reason>Existing generic input component, likely reusable for grade level selection or input.</reason>
+      </artifact>
+      <artifact>
+        <path>sentiabot/components/ChatInput.tsx</path>
+        <kind>UI Component</kind>
+        <symbol>ChatInput</symbol>
+        <lines>11-36</lines>
+        <reason>Demonstrates usage of Input component and React.useState for managing input value, relevant for grade level selection UI.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem name="Node.js">
+        <package name="@google/generative-ai" version="^0.24.1" type="dependency"/>
+        <package name="@radix-ui/react-slot" version="^1.2.4" type="dependency"/>
+        <package name="@supabase/supabase-js" version="^2.86.0" type="dependency"/>
+        <package name="@testing-library/user-event" version="^14.6.1" type="dependency"/>
+        <package name="class-variance-authority" version="^0.7.1" type="dependency"/>
+        <package name="clsx" version="^2.1.1" type="dependency"/>
+        <package name="lucide-react" version="^0.555.0" type="dependency"/>
+        <package name="next" version="16.0.6" type="dependency"/>
+        <package name="react" version="19.2.0" type="dependency"/>
+        <package name="react-dom" version="19.2.0" type="dependency"/>
+        <package name="tailwind-merge" version="^3.4.0" type="dependency"/>
+        <package name="@tailwindcss/postcss" version="^4" type="devDependency"/>
+        <package name="@testing-library/jest-dom" version="^6.9.1" type="devDependency"/>
+        <package name="@testing-library/react" version="^16.3.0" type="devDependency"/>
+        <package name="@types/node" version="^20" type="devDependency"/>
+        <package name="@types/react" version="^19" type="devDependency"/>
+        <package name="@types/react-dom" version="^19" type="devDependency"/>
+        <package name="@vitejs/plugin-react" version="^5.1.1" type="devDependency"/>
+        <package name="@vitest/coverage-v8" version="^4.0.14" type="devDependency"/>
+        <package name="eslint" version="^9" type="devDependency"/>
+        <package name="eslint-config-next" version="16.0.6" type="devDependency"/>
+        <package name="jsdom" version="^27.2.0" type="devDependency"/>
+        <package name="tailwindcss" version="^4" type="devDependency"/>
+        <package name="tw-animate-css" version="^1.4.0" type="devDependency"/>
+        <package name="typescript" version="^5" type="devDependency"/>
+        <package name="vitest" version="^4.0.14" type="devDependency"/>
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <rule>UI components for grade level selection should reuse existing Shadcn UI components (e.g., Select, Dropdown, Button, Input) or follow established patterns for custom components.</rule>
+      <reason>Maintain visual and functional consistency with the existing application design system.</reason>
+    </constraint>
+    <constraint>
+      <rule>Client-side state management for the selected grade level should follow existing React patterns (e.g., React.useState, or a more global state management solution if already in use for other preferences).</rule>
+      <reason>Align with existing frontend architecture and development practices.</reason>
+    </constraint>
+    <constraint>
+      <rule>Integration with AI prompt generation for grade level context must be handled on the backend to ensure security and prevent prompt injection vulnerabilities.</rule>
+      <reason>Secure and robust AI interaction.</reason>
+    </constraint>
+  </constraints>
+  <interfaces>{{interfaces}}</interfaces>
+  <tests>
+    <standards>
+      Unit tests for individual functions and components. Integration tests for API endpoints and data persistence. E2E tests for full user flow and AI response verification. The project uses Vitest for testing.
+    </standards>
+    <locations>
+      <location>sentiabot/__tests__/</location>
+      <location>sentiabot/vitest.config.ts</location>
+      <location>sentiabot/vitest.setup.ts</location>
+    </locations>
+    <ideas>
+      <idea ac_id="1, 2">Write unit tests for grade level selection component and state management.</idea>
+      <idea ac_id="3">Write integration tests for storing selected grade level on backend.</idea>
+      <idea ac_id="4">Write integration tests for system prompt update with grade level context.</idea>
+      <idea ac_id="1, 2">Write E2E test: Verify grade level selection on homepage.</idea>
+      <idea ac_id="4">Write E2E test: Verify AI response is tailored to selected grade level.</idea>
+    </ideas>
+  </tests>
+</story-context>
