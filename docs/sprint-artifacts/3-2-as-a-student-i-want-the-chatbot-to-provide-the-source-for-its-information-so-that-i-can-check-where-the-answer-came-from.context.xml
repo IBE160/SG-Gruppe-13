@@ -1,0 +1,210 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>2</storyId>
+    <title>As a student, I want the chatbot to provide the source for its information, so that I can check where the answer came from</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-02</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>C:\Work\Projects\sentiabot-applikasjon\SG-Gruppe-13/docs/sprint-artifacts/3-2-as-a-student-i-want-the-chatbot-to-provide-the-source-for-its-information-so-that-i-can-check-where-the-answer-came-from.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>a student</asA>
+    <iWant>the chatbot to provide the source for its information</iWant>
+    <soThat>I can check where the answer came from</soThat>
+    <tasks>
+- Implement UI to display source link within chat bubble (AC: 2)
+  - Style source link to be clearly distinguishable and clickable
+  - Ensure source link opens in a new tab
+- Backend: Modify chat API to return source references (AC: 1)
+  - Update `chat_messages` data model to store `source_references`
+  - Integrate RAG process to extract and provide relevant source URLs
+  - Update `/api/chat` endpoint to include `sourceReferences` in response
+- Frontend: Process `sourceReferences` from API and render in UI (AC: 2, 3)
+  - Add logic to `ChatBubble` component to conditionally render source link
+  - Implement click handler for source link to navigate to URL
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+1. Given the chatbot provides an answer based on the knowledge base.
+2. Then a "Source" link is displayed beneath the answer.
+3. When I click the link, I am taken to the original source document or page.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>Executive Summary</section>
+        <snippet>The design will ensure the text input is always obvious, inviting, and persistently available, while minimizing UI "chrome" to prevent distraction... While providing complex information, these tools prioritize clarity in their presentation. For Sentiabot, this principle will be applied by ensuring that sources for information are clearly and simply cited with each response, building trust and reinforcing the educational mission.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>2.1 Defining Experience - Actionable Insights for Sentiabot</section>
+        <snippet>A core design challenge will be presenting source information in a way that is clear and useful to a child, without cluttering the interface.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>2.4 Core Experience Principles - Trust & Reliability</section>
+        <snippet>Trust is paramount. Every answer provided by Sentiabot must be factually accurate and clearly linked to its source. This transparency builds confidence for both students and parents.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>4.1 Chosen Design Approach - Key Characteristics - Source Integration</section>
+        <snippet>Sources are visually part of each bot message, enhancing transparency and educational value.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>5.1 Critical User Paths - Screen 2: Chat Screen (Answer Display)</section>
+        <snippet>A clearly labeled, clickable source is integrated into the message bubble (e.g., "🔗 Source: Encyclopedia Britannica").</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>6.1 Component Strategy - Detailed Component: ChatBubble - Sourced Link</section>
+        <snippet>(Bot-only) A clearly distinguishable, clickable link integrated at the bottom of the bubble, displaying the source of the information.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>8.2 Accessibility Strategy - Key Requirements - Color Contrast</section>
+        <snippet>All text and critical UI elements will adhere to WCAG 2.1 Level AA contrast ratios... to ensure readability for users with low vision or color blindness.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 3: Enhanced User Experience and Features - Story 3.2</section>
+        <snippet>As a student, I want the chatbot to provide the source for its information, so that I can check where the answer came from.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 3: Enhanced User Experience and Features - Story 3.2 - Acceptance Criteria</section>
+        <snippet>1. Given the chatbot provides an answer based on the knowledge base. 2. Then a "Source" link is displayed beneath the answer. 3. When I click the link, I am taken to the original source document or page.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>sentiabot/app/api/chat/route.ts</path>
+        <kind>backend API route</kind>
+        <symbol>POST function</symbol>
+        <reason>The primary API endpoint for chat interactions. It currently contains a placeholder for sourceReferences, which needs to be implemented.</reason>
+      </artifact>
+      <artifact>
+        <path>sentiabot/components/ChatBubble.tsx</path>
+        <kind>frontend UI component</kind>
+        <symbol>ChatBubble</symbol>
+        <reason>Displays chat messages and already includes conditional rendering for a source link. This component will need to correctly receive and display the sourceReferences data.</reason>
+      </artifact>
+      <artifact>
+        <path>sentiabot/components/SourcedLink.tsx</path>
+        <kind>frontend UI component</kind>
+        <symbol>SourcedLink</symbol>
+        <reason>A utility component to render a clickable source link. It's ready to be used with the new source data.</reason>
+      </artifact>
+      <artifact>
+        <path>sentiabot/lib/supabase.ts</path>
+        <kind>Supabase client</kind>
+        <symbol>supabase</symbol>
+        <reason>Provides the connection to the Supabase database, which will be used to store and retrieve source_references in the chat_messages table, and potentially access knowledge base entries.</reason>
+      </artifact>
+      <artifact>
+        <path>sentiabot/types/index.ts</path>
+        <kind>TypeScript type definition</kind>
+        <symbol>Message interface</symbol>
+        <reason>Defines the Message interface with a source property, ready to accommodate the source information.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem>Node.js (sentiabot/package.json)</ecosystem>
+      <package>@google/generative-ai@^0.24.1</package>
+      <package>@radix-ui/react-slot@^1.2.4</package>
+      <package>@supabase/supabase-js@^2.86.0</package>
+      <package>class-variance-authority@^0.7.1</package>
+      <package>clsx@^2.1.1</package>
+      <package>lucide-react@^0.555.0</package>
+      <package>next@16.0.6</package>
+      <package>react@19.2.0</package>
+      <package>react-dom@19.2.0</package>
+      <package>tailwind-merge@^3.4.0</package>
+      <ecosystem>Node.js Dev Dependencies (sentiabot/package.json)</ecosystem>
+      <package>@tailwindcss/postcss@^4</package>
+      <package>@types/node@^20</package>
+      <package>@types/react@^19</package>
+      <package>@types/react-dom@^19</package>
+      <package>@vitejs/plugin-react@^5.1.1</package>
+      <package>@vitest/coverage-v8@^4.0.14</package>
+      <package>eslint@^9</package>
+      <package>eslint-config-next@16.0.6</package>
+      <package>jsdom@^27.2.0</package>
+      <package>tailwindcss@^4</package>
+      <package>tw-animate-css@^1.4.0</package>
+      <package>typescript@^5</package>
+      <package>vitest@^4.0.14</package>
+      <ecosystem>Node.js Dev Dependencies (package.json)</ecosystem>
+      <package>supabase@^2.63.1</package>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <description>AI Integration Strategy</description>
+      <details>RAG with Google Gemini, Prompt Engineering, and pgvector</details>
+    </constraint>
+    <constraint>
+      <description>Data Model</description>
+      <details>chat_messages table includes source_references (text array, nullable, referencing knowledge_base_entries.source_url).</details>
+    </constraint>
+    <constraint>
+      <description>Frontend UI Framework</description>
+      <details>Shadcn UI for component base, Tailwind CSS for styling.</details>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>/api/chat</name>
+      <kind>REST endpoint</kind>
+      <signature>async function POST(request: Request)</signature>
+      <path>sentiabot/app/api/chat/route.ts</path>
+      <notes>Currently returns sourceReferences: []. Needs to be updated to return actual source references.</notes>
+    </interface>
+    <interface>
+      <name>ChatBubbleProps</name>
+      <kind>React Component Interface</kind>
+      <signature>{ message: string; sender: "user" | "bot"; source?: string; }</signature>
+      <path>sentiabot/components/ChatBubble.tsx</path>
+    </interface>
+    <interface>
+      <name>Message</name>
+      <kind>TypeScript Interface</kind>
+      <signature>interface Message { id: string; text: string; sender: "user" | "bot"; source?: string; }</signature>
+      <path>sentiabot/types/index.ts</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>
+      Unit testing for backend API logic.
+      Unit/integration testing for frontend components.
+      End-to-end testing for the user journey.
+      Frameworks: Vitest, React Testing Library.
+    </standards>
+    <locations>
+      Backend API tests: Likely alongside the API route (`sentiabot/app/api/chat/__tests__/route.test.ts` or similar).
+      Frontend component tests: Likely alongside the components (`sentiabot/components/__tests__/ChatBubble.test.tsx` or similar).
+      End-to-end tests: In a dedicated `e2e` folder or similar.
+    </locations>
+    <ideas>
+      - Verify that `sourceReferences` are correctly returned from the `/api/chat` endpoint when RAG is implemented.
+      - Test that the `ChatBubble` component correctly renders the source link when `source` prop is provided.
+      - Test that clicking the source link in `ChatBubble` opens the correct URL in a new tab.
+      - Implement an end-to-end test where a user asks a question, receives a sourced answer, and the source link is clickable and functional.
+    </ideas>
+  </tests>
+</story-context>
