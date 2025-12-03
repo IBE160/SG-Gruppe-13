@@ -74,6 +74,9 @@ so that I can use the language I'm most comfortable with.
 ### References
 - [Source: docs/fase-2-plan/epics.md#Epic-3-Enhanced-User-Experience-and-Features]
 
+### Context Reference
+`docs\sprint-artifacts\3-3-as-a-student-i-want-to-be-able-to-ask-questions-and-get-answers-in-both-norwegian-and-english.context.xml`
+
 ## Change Log
 
 - 2025-12-02: Story drafted.
