@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, within } from '@testing-library/react'; // Import within
 import Home from './page';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom';
@@ -21,13 +21,32 @@ describe('Home page - Chat Integration Test', () => {
         const mockApiResponse = {
             aiResponse: 'This is a test response.',
             sourceReferences: ['http://example.com/source'],
+            sessionId: 'test-session-id',
         };
-        // (fetch as any).mockResolvedValueOnce({
-        //     ok: true,
-        //     json: () => Promise.resolve(mockApiResponse),
-        // });
 
         render(<Home />);
+
+        // --- Simulate WelcomeScreen interaction ---
+        // 1. Select Subject
+        const subjectSelectTrigger = screen.getByLabelText('Subject');
+        fireEvent.click(subjectSelectTrigger);
+        await waitFor(() => screen.getByText('Biology'));
+        fireEvent.click(screen.getByText('Biology'));
+
+        // 2. Select Grade Level
+        const gradeSelectTrigger = screen.getByLabelText('Grade Level');
+        fireEvent.click(gradeSelectTrigger);
+        await waitFor(() => screen.getByText('Grade 1'));
+        fireEvent.click(screen.getByText('Grade 1'));
+
+        // 3. Click Start Chatting
+        fireEvent.click(screen.getByRole('button', { name: 'Start Chatting' }));
+
+        // Assert welcome message from bot
+        await waitFor(() => {
+            expect(screen.getByText(/I'm ready to help you with biology for Grade 1/i)).toBeInTheDocument();
+        });
+        // --- End WelcomeScreen interaction ---
 
         const inputElement = screen.getByPlaceholderText('Type your message...');
         const sendButton = screen.getByText('Send');
@@ -65,7 +84,14 @@ describe('Home page - Chat Integration Test', () => {
         expect(fetch).toHaveBeenCalledWith('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: 'Hello Sentiabot' }),
+            body: JSON.stringify({
+                message: 'Hello Sentiabot',
+                context: {
+                    subject: 'biology',
+                    gradeLevel: '1',
+                },
+                sessionId: null, // Expecting sessionId to be null for the first message
+            }),
         });
     });
 });

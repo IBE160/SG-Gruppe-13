@@ -2,6 +2,34 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import * as route from './route'; 
 import { geminiModel } from '@/lib/gemini';
 import { semanticSearch } from '@/lib/knowledgeBaseService';
+import { supabase } from '@/lib/supabase'; // Import supabase client to mock it
+
+// Mock Supabase
+vi.mock('@/lib/supabase', () => ({
+  supabase: {
+    from: vi.fn((tableName: string) => {
+      if (tableName === 'chat_sessions') {
+        return {
+          insert: vi.fn(() => Promise.resolve({ error: null })),
+          update: vi.fn(() => ({
+            eq: vi.fn(() => Promise.resolve({ error: null })),
+          })),
+        };
+      } else if (tableName === 'chat_messages') {
+        return {
+          insert: vi.fn(() => Promise.resolve({ error: null })),
+        };
+      }
+      return {};
+    }),
+    rpc: vi.fn(), // Mock rpc for semanticSearch, not directly used here but good to have
+  },
+}));
+
+// Mock uuid
+vi.mock('uuid', () => ({
+  v4: vi.fn(() => 'mock-uuid'),
+}));
 
 // Use vi.mock for reliable hoisting
 vi.mock('@/lib/gemini', () => ({
@@ -29,6 +57,22 @@ describe('POST /api/chat', () => {
       response: { text: () => 'This is a mocked AI response.' },
     });
     vi.mocked(semanticSearch).mockResolvedValue(mockSemanticSearchResults);
+    // Ensure supabase mocks are reset and returning success
+    vi.mocked(supabase.from).mockImplementation((tableName: string) => {
+        if (tableName === 'chat_sessions') {
+            return {
+                insert: vi.fn(() => Promise.resolve({ error: null })),
+                update: vi.fn(() => ({
+                    eq: vi.fn(() => Promise.resolve({ error: null })),
+                })),
+            } as any;
+        } else if (tableName === 'chat_messages') {
+            return {
+                insert: vi.fn(() => Promise.resolve({ error: null })),
+            } as any;
+        }
+        return {} as any;
+    });
   });
 
   it('should return an AI response on success', async () => {
