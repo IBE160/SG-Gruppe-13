@@ -6,16 +6,17 @@ import { SourcedLink } from "./SourcedLink";
 interface ChatBubbleProps {
   message: string;
   sender: "user" | "bot";
-  source?: string;
+  sourceReferences?: string[];
 }
 
-export function ChatBubble({ message, sender, source }: ChatBubbleProps) {
+export function ChatBubble({ message, sender, sourceReferences }: ChatBubbleProps) {
   const isUser = sender === "user";
 
   return (
     <div
       className={cn(
         "flex",
+        "mb-4", // Add margin-bottom for spacing between bubbles
         isUser ? "justify-end" : "justify-start"
       )}
     >
@@ -27,9 +28,15 @@ export function ChatBubble({ message, sender, source }: ChatBubbleProps) {
             : "bg-gray-200 text-gray-800"
         )}
       >
-        <CardContent className="p-2">
+        <CardContent className="p-3">
           <p>{message}</p>
-          {!isUser && source && <SourcedLink source={source} />}
+          {!isUser && sourceReferences && sourceReferences.length > 0 && (
+            <div className="mt-2 flex flex-col items-start">
+              {sourceReferences.map((source, index) => (
+                <SourcedLink key={index} source={source} />
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

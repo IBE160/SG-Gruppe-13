@@ -46,10 +46,15 @@
     </Tasks>
     <DevNotes>
         <Section title="Project Structure Notes">
-            <Note>This story will introduce significant changes to the backend API layer within `sentiabot/app/api/chat/route.ts` for integrating knowledge base search and prompt construction.</Note>
+            <Note>This story will introduce significant changes to the backend API layer within `sentiabot/app/api/chat/route.ts`, specifically impacting the `POST` function where `semanticSearch` will be integrated and the AI prompt constructed.</Note>
             <Note>New database schema changes for `knowledge_base_entries` will be managed via Supabase migrations.</Note>
             <Note>Frontend UI changes will involve enhancing the `ChatBubble` component and potentially the `WelcomeScreen` and `ChatHeader` (if not done in a preceding story) to handle context selection.</Note>
             <Note>All new code should adhere to the naming conventions and code organization principles outlined in `docs/fase-3-solutioning/architecture.md`.</Note>
+        </Section>
+        <Section title="Testing Standards and Locations">
+            <Note>Unit tests for functions like embedding generation and semantic search (e.g., in `lib/knowledgeBaseService.ts`) should be placed in `sentiabot/__tests__/unit/` or alongside the module in `sentiabot/lib/*.test.ts` using Vitest.</Note>
+            <Note>Integration tests for the `/api/chat` endpoint's interaction with the knowledge base and Gemini should be in `sentiabot/__tests__/integration/api.test.ts`.</Note>
+            <Note>End-to-End tests verifying the AI response grounding and source display will be conducted using Playwright (as per project standards) and located in `sentiabot/__tests__/e2e/chat.test.ts`.</Note>
         </Section>
         <Section title="References">
             <Reference>Source: docs/fase-2-plan/epics.md</Reference>

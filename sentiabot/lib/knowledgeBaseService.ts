@@ -1,0 +1,65 @@
+import { generateEmbedding } from './embeddings';
+import { supabase } from './supabase';
+
+interface SearchOptions {
+  subject?: string;
+  gradeLevel?: string;
+  limit?: number;
+}
+
+// Define a type for the knowledge base entry for better type safety
+export interface KnowledgeBaseEntry {
+  id: number;
+  title: string;
+  content: string;
+  source_url: string;
+}
+
+export async function semanticSearch(
+  query: string,
+  options?: SearchOptions
+): Promise<KnowledgeBaseEntry[]> {
+  try {
+    const queryEmbedding = await generateEmbedding(query);
+
+    // Prepare the parameters for the RPC call
+    const params: {
+      query_embedding: number[];
+      match_threshold: number;
+      match_count: number;
+      p_subject?: string;
+      p_grade_level?: string;
+    } = {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.78, // Default threshold
+      match_count: options?.limit || 5,
+    };
+
+    // Add optional filters to the RPC parameters
+    if (options?.subject) {
+      params.p_subject = options.subject;
+    }
+    if (options?.gradeLevel) {
+      params.p_grade_level = options.gradeLevel;
+    }
+    
+    // Perform the semantic search using the RPC function
+    const { data, error } = await supabase.rpc('match_documents', params);
+
+    if (error) {
+      console.error('Error performing semantic search via RPC:', error);
+      throw new Error('Failed to perform semantic search.');
+    }
+
+    return data as KnowledgeBaseEntry[];
+
+  } catch (error) {
+    // Catch and re-throw errors from generateEmbedding or other issues
+    console.error('An unexpected error occurred in semanticSearch:', error);
+    // Avoid re-throwing the same error object if it's already the one we threw
+    if (error instanceof Error && error.message === 'Failed to perform semantic search.') {
+      throw error;
+    }
+    throw new Error('An unexpected error occurred during semantic search.');
+  }
+}

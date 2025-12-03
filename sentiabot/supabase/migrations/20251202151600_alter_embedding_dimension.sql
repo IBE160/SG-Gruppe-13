@@ -1,0 +1,1 @@
+ALTER TABLE public.knowledge_base_entries ALTER COLUMN embedding TYPE extensions.vector(768) USING embedding::extensions.vector(768);
