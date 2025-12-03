@@ -2,7 +2,7 @@
 
 **Document:** docs/sprint-artifacts/2-1.context.xml
 **Checklist:** .bmad/bmm/workflows/4-implementation/story-context/checklist.md
-**Date:** tirsdag 2. desember 2025
+**Date:** Tuesday 2. December 2025
 
 ## Summary
 - Overall: 7/10 passed (70%)
