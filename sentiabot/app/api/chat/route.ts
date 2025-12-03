@@ -21,7 +21,7 @@ export async function POST(request: Request) {
     // --- End Input Validation ---
 
     let currentSessionId = clientSessionId;
-    let userId = 'anonymous'; // Placeholder for user ID until authentication is implemented
+    let userId: string | null = null; // Placeholder for user ID; use null if no authenticated user
 
     // Manage chat session
     if (!currentSessionId) {
