@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChatInput } from "@/components/ChatInput";
 import { ChatBubble } from "@/components/ChatBubble";
 import { TypingIndicator } from "@/components/TypingIndicator";
@@ -10,8 +10,18 @@ import { Message } from "@/types";
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
 
   const handleSendMessage = async (text: string) => {
+    if (!text.trim()) return;
     const newUserMessage: Message = { id: Date.now().toString(), text, sender: "user" };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
     setIsLoading(true);
@@ -22,7 +32,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ message: text }), // Send user's message as 'message'
+        body: JSON.stringify({ message: text }),
       });
 
       if (!response.ok) {
@@ -32,9 +42,9 @@ export default function Home() {
       const data = await response.json();
       const newBotMessage: Message = {
         id: Date.now().toString() + "-bot",
-        text: data.aiResponse, // Assuming the backend response has an 'aiResponse' field
+        text: data.aiResponse,
         sender: "bot",
-        source: data.sourceReferences?.[0], // Take the first source if it exists
+        sourceReferences: data.sourceReferences, // Pass the whole array
       };
       setMessages((prevMessages) => [...prevMessages, newBotMessage]);
     } catch (error) {
@@ -51,16 +61,22 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <div className="flex flex-col flex-grow w-full justify-end overflow-auto p-4 space-y-4">
+    <div className="flex flex-col h-screen bg-zinc-50 font-sans dark:bg-black">
+      <header className="p-4 border-b dark:border-zinc-800">
+        <h1 className="text-xl font-bold">Sentiabot</h1>
+      </header>
+      <main className="flex-grow overflow-hidden">
+        <div className="h-full overflow-y-auto p-4 space-y-4">
           {messages.map((msg) => (
-            <ChatBubble key={msg.id} message={msg.text} sender={msg.sender} source={msg.source} />
+            <ChatBubble key={msg.id} message={msg.text} sender={msg.sender} sourceReferences={msg.sourceReferences} />
           ))}
           {isLoading && <TypingIndicator />}
+          <div ref={messagesEndRef} />
         </div>
-        <ChatInput onSendMessage={handleSendMessage} />
       </main>
+      <footer className="p-4 border-t dark:border-zinc-800">
+        <ChatInput onSendMessage={handleSendMessage} />
+      </footer>
     </div>
   );
 }

@@ -4,9 +4,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import '@testing-library/jest-dom';
 
 describe('Home page - Chat Integration Test', () => {
+    let resolveFetch: (value: any) => void;
+    let rejectFetch: (reason?: any) => void;
+
     beforeEach(() => {
         // Mock the fetch API before each test
-        global.fetch = vi.fn();
+        global.fetch = vi.fn(() => {
+            return new Promise((resolve, reject) => {
+                resolveFetch = resolve;
+                rejectFetch = reject;
+            });
+        });
     });
 
     it('should handle the full chat flow: user message, loading indicator, and bot response with source', async () => {
@@ -14,10 +22,10 @@ describe('Home page - Chat Integration Test', () => {
             aiResponse: 'This is a test response.',
             sourceReferences: ['http://example.com/source'],
         };
-        (fetch as any).mockResolvedValueOnce({
-            ok: true,
-            json: () => Promise.resolve(mockApiResponse),
-        });
+        // (fetch as any).mockResolvedValueOnce({
+        //     ok: true,
+        //     json: () => Promise.resolve(mockApiResponse),
+        // });
 
         render(<Home />);
 
@@ -36,6 +44,12 @@ describe('Home page - Chat Integration Test', () => {
         // 3. Assert loading indicator is displayed while waiting for the bot's response
         await waitFor(() => {
             expect(screen.getByTestId('typing-indicator')).toBeInTheDocument();
+        });
+
+        // Now, resolve the fetch call
+        resolveFetch({
+            ok: true,
+            json: () => Promise.resolve(mockApiResponse),
         });
 
         // 4. Assert bot's response and source link appear after fetch completes

@@ -78,7 +78,7 @@ so that I can focus on learning without getting distracted.
 ## Dev Agent Record
 
 ### Context Reference
-- docs/sprint-artifacts/3-1-as-a-student-i-want-to-interact-with-a-simple-colorful-and-easy-to-navigate-interface-so-that-i-can-focus-on-learning-without-getting-distracted.context.xml
+- `docs/sprint-artifacts/3-1-as-a-student-i-want-to-interact-with-a-simple-colorful-and-easy-to-navigate-interface-so-that-i-can-focus-on-learning-without-getting-distracted.context.xml`
 
 ### Agent Model Used
 
