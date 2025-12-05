@@ -1,58 +1,40 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { ChatInput } from "@/components/ChatInput";
-import { ChatBubble } from "@/components/ChatBubble";
-import { TypingIndicator } from "@/components/TypingIndicator";
-import WelcomeScreen from "@/components/WelcomeScreen"; // Import the new WelcomeScreen
+import { useState, useEffect, useCallback } from "react"; // Import useEffect and useCallback
+import { WelcomeScreen } from "@/components/WelcomeScreen";
+import { ChatInterface } from "@/components/ChatInterface";
 
-import { Message } from "@/types";
+interface Message {
+  text: string;
+  isUser: boolean;
+  source?: string;
+}
 
 export default function Home() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const [showChat, setShowChat] = useState(false);
-  const [selectedSubject, setSelectedSubject] = useState<string>('');
-  const [selectedGradeLevel, setSelectedGradeLevel] = useState<string>('');
-  const [sessionId, setSessionId] = useState<string | null>(null); // New sessionId state
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [subject, setSubject] = useState<string | null>(null);
+  const [gradeLevel, setGradeLevel] = useState<string | null>(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  const handleSendMessage = useCallback(async (messageText: string) => {
+    if (messageText.trim() === "") return;
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isLoading, showChat]);
-
-  const handleStartChat = (subject: string, gradeLevel: string) => {
-    setSelectedSubject(subject);
-    setSelectedGradeLevel(gradeLevel);
-    setShowChat(true);
-    // Optionally add a welcome message from the bot
-    setMessages([{ id: Date.now().toString(), text: `Hello! I'm ready to help you with ${subject} for Grade ${gradeLevel}. Ask me anything!`, sender: "bot" }]);
-  };
-
-  const handleSendMessage = async (text: string) => {
-    if (!text.trim()) return;
-    const newUserMessage: Message = { id: Date.now().toString(), text, sender: "user" };
+    const newUserMessage: Message = { text: messageText, isUser: true };
     setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    setInput("");
     setIsLoading(true);
 
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: text,
-          context: {
-            subject: selectedSubject,
-            gradeLevel: selectedGradeLevel,
-            // language: "en", // Assuming English for now, will be dynamic in future stories
-          },
-          sessionId: sessionId, // Pass current sessionId
+          message: messageText,
+          context: { subject, gradeLevel },
+          sessionId: sessionId,
         }),
       });
 
@@ -61,53 +43,51 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setSessionId(data.sessionId); // Update sessionId from backend response
+      setSessionId(data.sessionId); // Update sessionId for subsequent messages
 
-      const newBotMessage: Message = {
-        id: Date.now().toString() + "-bot",
+      const botMessage: Message = {
         text: data.aiResponse,
-        sender: "bot",
-        sourceReferences: data.sourceReferences, // Pass the whole array
+        isUser: false,
+        source: data.sourceReferences && data.sourceReferences.length > 0 ? data.sourceReferences[0] : undefined,
       };
-      setMessages((prevMessages) => [...prevMessages, newBotMessage]);
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {
-      console.error("Error sending message to backend:", error);
-      const errorMessage: Message = {
-        id: Date.now().toString() + "-error",
-        text: "Error: Could not get a response from Sentiabot.",
-        sender: "bot",
-      };
-      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+      console.error("Error sending message:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "Error: Could not get a response from Sentiabot.", isUser: false },
+      ]);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [subject, gradeLevel, sessionId]); // Dependencies for useCallback
+
+  const handleStartChat = useCallback((selectedSubject: string, selectedGradeLevel: string) => {
+    setSubject(selectedSubject);
+    setGradeLevel(selectedGradeLevel);
+    setShowChat(true); // Transition to chat interface
+
+    // Set the initial welcome message from the bot
+    setMessages([{ text: `I'm ready to help you with ${selectedSubject} for Grade ${selectedGradeLevel}.`, isUser: false }]);
+  }, []);
 
   if (!showChat) {
     return (
-      <div className="h-screen bg-zinc-50 font-sans dark:bg-black">
+      <div>
         <WelcomeScreen onStartChat={handleStartChat} />
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen bg-zinc-50 font-sans dark:bg-black">
-      <header className="p-4 border-b dark:border-zinc-800">
-        <h1 className="text-xl font-bold">Sentiabot - {selectedSubject} (Grade {selectedGradeLevel})</h1>
-      </header>
-      <main className="flex-grow overflow-hidden">
-        <div className="h-full overflow-y-auto p-4 space-y-4">
-          {messages.map((msg) => (
-            <ChatBubble key={msg.id} message={msg.text} sender={msg.sender} sourceReferences={msg.sourceReferences} />
-          ))}
-          {isLoading && <TypingIndicator />}
-          <div ref={messagesEndRef} />
-        </div>
-      </main>
-      <footer className="p-4 border-t dark:border-zinc-800">
-        <ChatInput onSendMessage={handleSendMessage} />
-      </footer>
+    <div>
+      <ChatInterface
+        messages={messages}
+        onSendMessage={handleSendMessage}
+        isLoading={isLoading}
+        input={input}
+        setInput={setInput}
+      />
     </div>
   );
 }

@@ -1,81 +1,51 @@
-// sentiabot/components/WelcomeScreen.tsx
-import React, { useState } from 'react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-interface WelcomeScreenProps {
-  onStartChat: (subject: string, gradeLevel: string) => void;
-}
+export function WelcomeScreen({ onStartChat }: { onStartChat: (subject: string, grade: string) => void }) {
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
+  const [selectedGrade, setSelectedGrade] = useState<string | null>(null);
 
-const WelcomeScreen: React.FC<WelcomeScreenProps> = ({ onStartChat }) => {
-  const [selectedSubject, setSelectedSubject] = useState<string>('');
-  const [selectedGradeLevel, setSelectedGradeLevel] = useState<string>(''); // Placeholder for future grade level
-
-  const handleStartChat = () => {
-    if (selectedSubject && selectedGradeLevel) {
-      onStartChat(selectedSubject, selectedGradeLevel);
-    } else if (selectedSubject && !selectedGradeLevel) {
-      onStartChat(selectedSubject, 'Not Selected'); // Default for now
-    }
-  };
+  const isStartChatDisabled = !selectedSubject || !selectedGrade;
 
   return (
-    <div className="flex flex-col items-center justify-center h-full p-4">
-      <h2 className="text-2xl font-bold mb-4">Welcome to Sentiabot!</h2>
-      <p className="text-lg text-center mb-8">
-        Choose a subject and grade level to start chatting.
-      </p>
-
-      <div className="w-full max-w-xs mb-4">
-        <label htmlFor="subject-select" className="block text-sm font-medium text-gray-700 mb-2">
-          Subject
-        </label>
-        <Select onValueChange={setSelectedSubject}>
-          <SelectTrigger className="w-full" id="subject-select">
-            <SelectValue placeholder="Select a subject" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="biology">Biology</SelectItem>
-            <SelectItem value="geology">Geology</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Placeholder for future grade level selection */}
-      <div className="w-full max-w-xs mb-8">
-        <label htmlFor="grade-select" className="block text-sm font-medium text-gray-700 mb-2">
-          Grade Level
-        </label>
-        <Select onValueChange={setSelectedGradeLevel}>
-          <SelectTrigger className="w-full" id="grade-select">
-            <SelectValue placeholder="Select a grade level" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="1">Grade 1</SelectItem>
-            <SelectItem value="2">Grade 2</SelectItem>
-            <SelectItem value="3">Grade 3</SelectItem>
-            <SelectItem value="4">Grade 4</SelectItem>
-            <SelectItem value="5">Grade 5</SelectItem>
-            <SelectItem value="6">Grade 6</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-
-      <button
-        onClick={handleStartChat}
-        className="px-6 py-3 bg-blue-500 text-white rounded-lg text-lg disabled:opacity-50"
-        disabled={!selectedSubject || !selectedGradeLevel}
-      >
-        Start Chatting
-      </button>
+    <div className="flex items-center justify-center h-screen">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-center">Welcome to Sentiabot!</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <label htmlFor="subject">Subject</label>
+            <Select onValueChange={setSelectedSubject}>
+              <SelectTrigger id="subject">
+                <SelectValue placeholder="Select your subject" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="biology">Biology</SelectItem>
+                <SelectItem value="geology">Geology</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="space-y-2">
+            <label htmlFor="grade">Grade Level</label>
+            <Select onValueChange={setSelectedGrade}>
+              <SelectTrigger id="grade">
+                <SelectValue placeholder="Select your grade level" />
+              </SelectTrigger>
+              <SelectContent>
+                {[1, 2, 3, 4, 5, 6, 7].map((grade) => (
+                  <SelectItem key={grade} value={String(grade)}>
+                    Grade {grade}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <Button className="w-full" onClick={() => onStartChat(selectedSubject!, selectedGrade!)} disabled={isStartChatDisabled}>Start Chatting</Button>
+        </CardContent>
+      </Card>
     </div>
   );
-};
-
-export default WelcomeScreen;
+}

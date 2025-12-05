@@ -66,7 +66,7 @@ describe('Chat API Integration - Grade Level Storage (AC: 3)', () => {
     expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
     expect(mockInsert).toHaveBeenCalledWith([
       expect.objectContaining({
-        user_id: 'anonymous',
+        user_id: null,
         subject: 'biology',
         grade_level: '3',
       }),
@@ -137,7 +137,7 @@ describe('Chat API Integration - Grade Level Storage (AC: 3)', () => {
     expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
     expect(mockInsert).toHaveBeenCalledWith([
         expect.objectContaining({
-            user_id: 'anonymous',
+            user_id: null,
             subject: 'math',
             grade_level: undefined, // Expect grade_level to be undefined
         }),

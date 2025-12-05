@@ -1,43 +1,42 @@
-import * as React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-import { SourcedLink } from "./SourcedLink";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Copy } from "lucide-react";
 
 interface ChatBubbleProps {
-  message: string;
-  sender: "user" | "bot";
-  sourceReferences?: string[];
+  message: {
+    text: string;
+    isUser: boolean;
+    source?: string;
+  };
 }
 
-export function ChatBubble({ message, sender, sourceReferences }: ChatBubbleProps) {
-  const isUser = sender === "user";
+export function ChatBubble({ message }: ChatBubbleProps) {
+  const { text, isUser, source } = message;
 
   return (
-    <div
-      className={cn(
-        "flex",
-        "mb-4", // Add margin-bottom for spacing between bubbles
-        isUser ? "justify-end" : "justify-start"
-      )}
-    >
-      <Card
-        className={cn(
-          "max-w-[70%]",
-          isUser
-            ? "bg-blue-500 text-white"
-            : "bg-gray-200 text-gray-800"
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
+      <Card className={`p-4 max-w-lg ${isUser ? "bg-primary text-primary-foreground" : "bg-muted"}`}>
+        <div className="flex justify-between items-start">
+          <p className="whitespace-pre-wrap">{text}</p>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => navigator.clipboard.writeText(text)}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </div>
+        {source && !isUser && (
+          <a
+            href={source}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-xs text-muted-foreground mt-2 underline"
+          >
+            Source
+          </a>
         )}
-      >
-        <CardContent className="p-3">
-          <p>{message}</p>
-          {!isUser && sourceReferences && sourceReferences.length > 0 && (
-            <div className="mt-2 flex flex-col items-start">
-              {sourceReferences.map((source, index) => (
-                <SourcedLink key={index} source={source} />
-              ))}
-            </div>
-          )}
-        </CardContent>
       </Card>
     </div>
   );
