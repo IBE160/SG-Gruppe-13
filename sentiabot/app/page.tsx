@@ -4,10 +4,12 @@ import { useState, useEffect, useCallback } from "react"; // Import useEffect an
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { ChatInterface } from "@/components/ChatInterface";
 
+import { SourceReference } from "@/types";
+
 interface Message {
   text: string;
   isUser: boolean;
-  source?: string;
+  sourceReferences?: SourceReference[];
 }
 
 export default function Home() {
@@ -48,7 +50,7 @@ export default function Home() {
       const botMessage: Message = {
         text: data.aiResponse,
         isUser: false,
-        source: data.sourceReferences && data.sourceReferences.length > 0 ? data.sourceReferences[0] : undefined,
+        sourceReferences: data.sourceReferences, // Assign array directly
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
     } catch (error) {

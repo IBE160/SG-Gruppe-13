@@ -1,9 +1,10 @@
 import { ChatBubble } from "@/components/ChatBubble";
+import { SourceReference } from "@/types";
 
 interface Message {
   text: string;
   isUser: boolean;
-  source?: string;
+  sourceReferences?: SourceReference[];
 }
 
 interface ChatHistoryProps {

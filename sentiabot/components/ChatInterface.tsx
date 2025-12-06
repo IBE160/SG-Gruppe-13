@@ -5,10 +5,12 @@ import { ChatHistory } from "@/components/ChatHistory";
 import { TypingIndicator } from "@/components/TypingIndicator";
 import { OptionsModal } from "@/components/OptionsModal";
 
+import { SourceReference } from "@/types";
+
 interface Message {
   text: string;
   isUser: boolean;
-  source?: string;
+  sourceReferences?: SourceReference[];
 }
 
 interface ChatInterfaceProps {

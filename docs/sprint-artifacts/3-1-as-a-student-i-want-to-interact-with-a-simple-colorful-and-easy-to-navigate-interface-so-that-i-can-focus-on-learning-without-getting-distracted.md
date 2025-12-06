@@ -1,6 +1,6 @@
 # Story 3.1: As a student, I want to interact with a simple, colorful, and easy-to-navigate interface, so that I can focus on learning without getting distracted
 
-Status: completed
+Status: done
 
 ## Story
 

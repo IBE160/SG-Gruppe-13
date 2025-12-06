@@ -6,7 +6,7 @@ import '@testing-library/jest-dom';
 describe('Home page - Chat Integration Test', () => {
     const mockApiResponse = {
         aiResponse: 'This is a test response.',
-        sourceReferences: ['http://example.com/source'],
+        sourceReferences: [{ label: 'Example Source', url: 'http://example.com/source' }],
         sessionId: 'test-session-id',
     };
 
@@ -60,7 +60,7 @@ describe('Home page - Chat Integration Test', () => {
         // Assert bot's response and source link appear after fetch completes
         await waitFor(() => {
             expect(screen.getByText('This is a test response.')).toBeInTheDocument();
-            expect(screen.getByText('Source')).toHaveAttribute('href', 'http://example.com/source');
+            expect(screen.getByText('Example Source')).toHaveAttribute('href', 'http://example.com/source');
         });
 
         // Verify fetch was called correctly

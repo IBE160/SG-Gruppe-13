@@ -56,14 +56,14 @@ User's Question: ${message}
 
 `;
 
-    let sourceReferences: string[] = [];
+    let sourceReferences: { label: string, url: string }[] = [];
 
     if (searchResults && searchResults.length > 0) {
       prompt += `Context from Knowledge Base:\n`;
       searchResults.forEach((result: any, index: number) => {
         prompt += `Document ${index + 1} (Source: ${result.source_url}):\n${result.content}\n\n`;
-        if (result.source_url && !sourceReferences.includes(result.source_url)) {
-          sourceReferences.push(result.source_url);
+        if (result.source_url && !sourceReferences.some(ref => ref.url === result.source_url)) {
+          sourceReferences.push({ label: result.title, url: result.source_url });
         }
       });
     } else {
@@ -84,7 +84,7 @@ User's Question: ${message}
 
     // Store AI response
     const { error: aiMessageError } = await supabase.from('chat_messages').insert([
-      { session_id: currentSessionId, sender: 'ai', content: text, timestamp: new Date().toISOString(), source_references: sourceReferences },
+      { session_id: currentSessionId, sender: 'ai', content: text, timestamp: new Date().toISOString(), source_references: sourceReferences.map(ref => ref.url) },
     ]);
     if (aiMessageError) console.error('Error saving AI message:', aiMessageError);
 
