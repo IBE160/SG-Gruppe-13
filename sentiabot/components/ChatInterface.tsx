@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChatHistory } from "@/components/ChatHistory";
 import { TypingIndicator } from "@/components/TypingIndicator";
-import { OptionsModal } from "@/components/OptionsModal";
 
 import { SourceReference } from "@/types";
 
@@ -29,12 +28,8 @@ export function ChatInterface({ messages, onSendMessage, isLoading, input, setIn
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <header className="p-4 border-b flex justify-between items-center">
-        <h1 className="text-xl font-bold">Sentiabot</h1>
-        <OptionsModal />
-      </header>
-      <div className="flex-1 overflow-y-auto">
+    <div className="flex flex-col flex-1">
+      <div className="flex-1 overflow-y-auto p-4">
         <ChatHistory messages={messages} />
         {isLoading && <TypingIndicator />}
       </div>

@@ -72,6 +72,7 @@ describe('Home page - Chat Integration Test', () => {
                 context: {
                     subject: 'biology',
                     gradeLevel: '1',
+                    language: 'en', // <-- Add this line
                 },
                 sessionId: null, // Expecting sessionId to be null for the first message
             }),

@@ -9,7 +9,7 @@ const MAX_MESSAGE_LENGTH = 2000;
 export async function POST(request: Request) {
   try {
     const { message, context, sessionId: clientSessionId } = await request.json();
-    const { subject, gradeLevel } = context || {}; // Extract subject and gradeLevel from context or default to empty object
+    const { subject, gradeLevel, language = 'en' } = context || {}; // Extract subject, gradeLevel, and language
 
     // --- Input Validation ---
     if (typeof message !== 'string' || message.trim().length === 0) {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       // Create a new session
       currentSessionId = uuidv4();
       const { error: sessionError } = await supabase.from('chat_sessions').insert([
-        { id: currentSessionId, user_id: userId, started_at: new Date().toISOString(), subject, grade_level: gradeLevel },
+        { id: currentSessionId, user_id: userId, started_at: new Date().toISOString(), subject, grade_level: gradeLevel, language },
       ]);
 
       if (sessionError) {
@@ -36,9 +36,9 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Failed to create chat session' }, { status: 500 });
       }
     } else {
-      // Update existing session (e.g., if subject/gradeLevel changes mid-session or for initial setting)
+      // Update existing session
       const { error: sessionError } = await supabase.from('chat_sessions')
-        .update({ subject, grade_level: gradeLevel, ended_at: null }) // Set ended_at to null to indicate active
+        .update({ subject, grade_level: gradeLevel, language, ended_at: null }) // Set ended_at to null to indicate active
         .eq('id', currentSessionId);
 
       if (sessionError) {
@@ -50,7 +50,10 @@ export async function POST(request: Request) {
     // Perform semantic search
     const searchResults = await semanticSearch(message, { subject, gradeLevel, limit: 3 }); // Limit to top 3 results
 
-    let prompt = `You are a helpful and informative AI assistant focused on providing educational content for elementary school students. Your responses should be tailored for a student in Grade ${gradeLevel} and focus on the subject of ${subject}. Answer the user's question based ONLY on the provided context. If the answer is not in the context, state "I don't have enough information to answer that question."
+    let prompt = `You are a helpful and informative AI assistant for elementary school students.
+Please respond in this language: ${language}.
+Your response should be tailored for a student in Grade ${gradeLevel} and focus on the subject of ${subject}.
+Answer the user's question based ONLY on the provided context. If the answer is not in the context, state that you don't have enough information.
 
 User's Question: ${message}
 

@@ -1,39 +1,36 @@
-import { Button } from "@/components/ui/button";
+'use client';
+
+import * as React from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import LanguageSelector from '@/components/LanguageSelector';
+import { Settings } from 'lucide-react';
 
-export function OptionsModal() {
+const OptionsModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Options</Button>
+        <Button variant="outline" size="icon">
+          <Settings className="h-4 w-4" />
+        </Button>
       </DialogTrigger>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Options</DialogTitle>
         </DialogHeader>
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <label htmlFor="language">Language</label>
-            <Select defaultValue="en">
-              <SelectTrigger id="language">
-                <SelectValue placeholder="Select a language" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="en">English</SelectItem>
-                <SelectItem value="no">Norwegian</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <Button variant="secondary" className="w-full">Download Chat</Button>
+        <div className="grid gap-4 py-4">
+          <LanguageSelector />
+          {/* Other options like download chat history can be added here later */}
         </div>
       </DialogContent>
     </Dialog>
   );
-}
+};
+
+export default OptionsModal;

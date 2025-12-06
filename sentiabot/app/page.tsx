@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react"; // Import useEffect and useCallback
+import { useState, useEffect, useCallback } from "react";
 import { WelcomeScreen } from "@/components/WelcomeScreen";
 import { ChatInterface } from "@/components/ChatInterface";
+import OptionsModal from "@/components/OptionsModal";
+import { getLanguagePreference } from "@/lib/user-preferences"; // Import the utility
 
 import { SourceReference } from "@/types";
 
@@ -20,6 +22,15 @@ export default function Home() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [subject, setSubject] = useState<string | null>(null);
   const [gradeLevel, setGradeLevel] = useState<string | null>(null);
+  const [language, setLanguage] = useState('en'); // Add language state
+
+  // Effect to load language preference on mount
+  useEffect(() => {
+    const preferredLanguage = getLanguagePreference();
+    if (preferredLanguage) {
+      setLanguage(preferredLanguage);
+    }
+  }, []);
 
   const handleSendMessage = useCallback(async (messageText: string) => {
     if (messageText.trim() === "") return;
@@ -35,7 +46,7 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           message: messageText,
-          context: { subject, gradeLevel },
+          context: { subject, gradeLevel, language }, // Include language in the context
           sessionId: sessionId,
         }),
       });
@@ -62,7 +73,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [subject, gradeLevel, sessionId]); // Dependencies for useCallback
+  }, [subject, gradeLevel, sessionId, language]); // Add language to dependency array
 
   const handleStartChat = useCallback((selectedSubject: string, selectedGradeLevel: string) => {
     setSubject(selectedSubject);
@@ -82,7 +93,11 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
+      <header className="flex items-center justify-between p-4 bg-gray-100 border-b">
+        <h1 className="text-xl font-bold">Sentiabot</h1>
+        <OptionsModal />
+      </header>
       <ChatInterface
         messages={messages}
         onSendMessage={handleSendMessage}
