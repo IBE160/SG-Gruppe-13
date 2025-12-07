@@ -96,7 +96,7 @@ export default function Home() {
     <div className="flex flex-col h-screen">
       <header className="flex items-center justify-between p-4 bg-gray-100 border-b">
         <h1 className="text-xl font-bold">Sentiabot</h1>
-        <OptionsModal />
+        <OptionsModal sessionId={sessionId || ''} />
       </header>
       <ChatInterface
         messages={messages}
