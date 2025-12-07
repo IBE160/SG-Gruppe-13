@@ -87,7 +87,7 @@ describe('Chat API - Session Management', () => {
     expect(mockInsertChatSessions).toHaveBeenCalledWith(
       expect.arrayContaining([
         expect.objectContaining({
-          user_id: 'anonymous',
+          user_id: null,
           subject: mockSubject,
           grade_level: mockGradeLevel,
         }),

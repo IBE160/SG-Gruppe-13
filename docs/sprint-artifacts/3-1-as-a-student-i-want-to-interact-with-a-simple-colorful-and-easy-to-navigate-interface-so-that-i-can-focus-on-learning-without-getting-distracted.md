@@ -1,6 +1,6 @@
 # Story 3.1: As a student, I want to interact with a simple, colorful, and easy-to-navigate interface, so that I can focus on learning without getting distracted
 
-Status: ready-for-dev
+Status: done
 
 ## Story
 
@@ -17,22 +17,22 @@ so that I can focus on learning without getting distracted.
 
 ## Tasks / Subtasks
 
-- [ ] **Frontend Development (UI Components):**
-  - [ ] Implement and style core UI components (`Button`, `Input`, `Select`, `Card`) using Shadcn UI and Tailwind CSS.
-  - [ ] Develop custom `ChatBubbleComponent`, `ChatHistory`, `WelcomeScreen`, `TypingIndicator` based on UX spec.
-  - [ ] Ensure consistent application of the "Trustworthy Learner" color palette across all UI elements.
-- [ ] **Layout and Responsiveness:**
-  - [ ] Implement responsive layouts for `ChatInterfaceModule`, `WelcomeScreenModule`, and `OptionsModalModule`.
-  - [ ] Verify full functionality and correct adaptation on desktop, laptop, and tablet screen sizes according to breakpoints.
-- [ ] **Interactive Elements and Accessibility:**
-  - [ ] Ensure all interactive elements (`Button`, `Input`, `Select`) are clearly labeled and meet the minimum touch target size (44x44 CSS pixels).
-  - [ ] Implement keyboard navigation and focus indicators for all interactive elements.
-  - [ ] Verify screen reader support for key UI components.
-  - [ ] Conduct color contrast checks to ensure WCAG 2.1 Level AA compliance.
-- [ ] **Testing:**
-  - [ ] Unit tests for individual UI components (e.g., `ChatBubbleComponent`, `WelcomeScreen`).
-  - [ ] E2E tests for main user journeys on different screen sizes to validate responsiveness.
-  - [ ] Manual UI/UX testing for visual consistency, interactivity, and accessibility.
+- [x] **Frontend Development (UI Components):**
+  - [x] Implement and style core UI components (`Button`, `Input`, `Select`, `Card`) using Shadcn UI and Tailwind CSS.
+  - [x] Develop custom `ChatBubbleComponent`, `ChatHistory`, `WelcomeScreen`, `TypingIndicator` based on UX spec.
+  - [x] Ensure consistent application of the "Trustworthy Learner" color palette across all UI elements.
+- [x] **Layout and Responsiveness:**
+  - [x] Implement responsive layouts for `ChatInterfaceModule`, `WelcomeScreenModule`, and `OptionsModalModule`.
+  - [x] Verify full functionality and correct adaptation on desktop, laptop, and tablet screen sizes according to breakpoints.
+- [x] **Interactive Elements and Accessibility:**
+  - [x] Ensure all interactive elements (`Button`, `Input`, `Select`) are clearly labeled and meet the minimum touch target size (44x44 CSS pixels).
+  - [x] Implement keyboard navigation and focus indicators for all interactive elements.
+  - [x] Verify screen reader support for key UI components.
+  - [x] Conduct color contrast checks to ensure WCAG 2.1 Level AA compliance.
+- [x] **Testing:**
+  - [x] Unit tests for individual UI components (e.g., `ChatBubbleComponent`, `WelcomeScreen`).
+  - [x] E2E tests for main user journeys on different screen sizes to validate responsiveness.
+  - [x] Manual UI/UX testing for visual consistency, interactivity, and accessibility.
 
 ## Dev Notes
 

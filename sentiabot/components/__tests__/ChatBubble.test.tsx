@@ -1,59 +1,82 @@
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
+import { vi } from 'vitest';
 import { ChatBubble } from '../ChatBubble';
+import { SourcedLink } from '../SourcedLink'; // Import the actual SourcedLink component
+
+// Mock the SourcedLink component to track its usage and simplify tests
+vi.mock('../SourcedLink', () => ({
+  SourcedLink: vi.fn(({ source }) => <div data-testid="mock-sourced-link">{source.label}</div>),
+}));
 
 describe('ChatBubble', () => {
-  it('renders a user message correctly', () => {
-    render(<ChatBubble message="Hello user" sender="user" />);
-    const messageElement = screen.getByText('Hello user');
-    expect(messageElement).toBeInTheDocument();
-    
-    // Check for user-specific styling
-    const card = messageElement.closest('.bg-blue-500');
-    expect(card).toBeInTheDocument();
+  beforeEach(() => {
+    // Clear mock calls before each test
+    vi.clearAllMocks();
   });
 
-  it('renders a bot message correctly', () => {
-    render(<ChatBubble message="Hello from bot" sender="bot" />);
-    const messageElement = screen.getByText('Hello from bot');
-    expect(messageElement).toBeInTheDocument();
+  it('renders a user message correctly without sources', () => {
+    const userMessage = { text: 'Hello, Sentiabot!', isUser: true };
+    render(<ChatBubble message={userMessage} />);
 
-    // Check for bot-specific styling
-    const card = messageElement.closest('.bg-gray-200');
-    expect(card).toBeInTheDocument();
+    expect(screen.getByText('Hello, Sentiabot!')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /copy message/i })).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-sourced-link')).not.toBeInTheDocument();
+    expect(SourcedLink).not.toHaveBeenCalled(); // Ensure SourcedLink was not called
   });
 
-  it('does not render source links for a user message', () => {
-    render(<ChatBubble message="Test" sender="user" sourceReferences={['http://source.com']} />);
-    const sourceLink = screen.queryByText('Source');
-    expect(sourceLink).not.toBeInTheDocument();
+  it('renders a bot message correctly without sources', () => {
+    const botMessage = { text: 'Hello! How can I help you today?', isUser: false };
+    render(<ChatBubble message={botMessage} />);
+
+    expect(screen.getByText('Hello! How can I help you today?')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /copy message/i })).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-sourced-link')).not.toBeInTheDocument();
+    expect(SourcedLink).not.toHaveBeenCalled(); // Ensure SourcedLink was not called
   });
 
-  it('does not render source links when none are provided for a bot message', () => {
-    render(<ChatBubble message="No sources here" sender="bot" />);
-    const sourceLink = screen.queryByText('Source');
-    expect(sourceLink).not.toBeInTheDocument();
+  it('renders a bot message with a single source reference', () => {
+    const botMessageWithSource = {
+      text: 'Here is some information.',
+      isUser: false,
+      sourceReferences: [{ label: 'Source 1', url: 'http://example.com/source1' }],
+    };
+    render(<ChatBubble message={botMessageWithSource} />);
+
+    expect(screen.getByText('Here is some information.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /copy message/i })).toBeInTheDocument();
+    expect(screen.getByTestId('mock-sourced-link')).toBeInTheDocument(); // Expect the mock to be rendered
+    expect(SourcedLink).toHaveBeenCalledTimes(1);
+    expect(SourcedLink).toHaveBeenCalledWith(expect.objectContaining({ source: { label: 'Source 1', url: 'http://example.com/source1' } }), undefined);
   });
 
-  it('renders a single source link for a bot message', () => {
-    const sources = ['http://source.com/1'];
-    render(<ChatBubble message="One source" sender="bot" sourceReferences={sources} />);
-    
-    const sourceLinks = screen.getAllByText('Source');
-    expect(sourceLinks).toHaveLength(1);
+  it('renders a bot message with multiple source references', () => {
+    const botMessageWithSources = {
+      text: 'Multiple sources for you.',
+      isUser: false,
+      sourceReferences: [
+        { label: 'Source A', url: 'http://example.com/sourceA' },
+        { label: 'Source B', url: 'http://example.com/sourceB' },
+      ],
+    };
+    render(<ChatBubble message={botMessageWithSources} />);
 
-    const linkElement = sourceLinks[0] as HTMLAnchorElement;
-    expect(linkElement.href).toBe(sources[0]);
+    expect(screen.getByText('Multiple sources for you.')).toBeInTheDocument();
+    expect(screen.getAllByTestId('mock-sourced-link')).toHaveLength(2); // Expect two mock links
+    expect(SourcedLink).toHaveBeenCalledTimes(2);
+    expect(SourcedLink).toHaveBeenCalledWith(expect.objectContaining({ source: { label: 'Source A', url: 'http://example.com/sourceA' } }), undefined);
+    expect(SourcedLink).toHaveBeenCalledWith(expect.objectContaining({ source: { label: 'Source B', url: 'http://example.com/sourceB' } }), undefined);
   });
 
-  it('renders multiple source links for a bot message', () => {
-    const sources = ['http://source.com/1', 'http://source.com/2'];
-    render(<ChatBubble message="Two sources" sender="bot" sourceReferences={sources} />);
-    
-    const sourceLinks = screen.getAllByText('Source');
-    expect(sourceLinks).toHaveLength(2);
+  it('does not render source references for a user message, even if provided', () => {
+    const userMessageWithSource = {
+      text: 'My question from a source.',
+      isUser: true,
+      sourceReferences: [{ label: 'My Source', url: 'http://example.com/myquestion' }],
+    };
+    render(<ChatBubble message={userMessageWithSource} />);
 
-    expect((sourceLinks[0] as HTMLAnchorElement).href).toBe(sources[0]);
-    expect((sourceLinks[1] as HTMLAnchorElement).href).toBe(sources[1]);
+    expect(screen.getByText('My question from a source.')).toBeInTheDocument();
+    expect(screen.queryByTestId('mock-sourced-link')).not.toBeInTheDocument();
+    expect(SourcedLink).not.toHaveBeenCalled();
   });
 });

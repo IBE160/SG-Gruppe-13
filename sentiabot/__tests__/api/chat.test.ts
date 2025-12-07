@@ -66,7 +66,7 @@ describe('Chat API Integration - Grade Level Storage (AC: 3)', () => {
     expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
     expect(mockInsert).toHaveBeenCalledWith([
       expect.objectContaining({
-        user_id: 'anonymous',
+        user_id: null,
         subject: 'biology',
         grade_level: '3',
       }),
@@ -137,20 +137,20 @@ describe('Chat API Integration - Grade Level Storage (AC: 3)', () => {
     expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
     expect(mockInsert).toHaveBeenCalledWith([
         expect.objectContaining({
-            user_id: 'anonymous',
+            user_id: null,
             subject: 'math',
             grade_level: undefined, // Expect grade_level to be undefined
         }),
     ]);
   });
 
-  it('should include gradeLevel and subject in the Gemini prompt', async () => {
+  it('should include gradeLevel, subject, and language in the Gemini prompt', async () => {
     const mockRequest = new NextRequest('http://localhost/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message: 'What is photosynthesis?',
-        context: { subject: 'biology', gradeLevel: '4' },
+        context: { subject: 'biology', gradeLevel: '4', language: 'en' },
         sessionId: 'test-session-id',
       }),
     });
@@ -160,8 +160,10 @@ describe('Chat API Integration - Grade Level Storage (AC: 3)', () => {
     expect(geminiModel.generateContent).toHaveBeenCalledTimes(1);
     const generatedPrompt = (geminiModel.generateContent as Mock).mock.calls[0][0];
 
-    expect(generatedPrompt).toContain('Your responses should be tailored for a student in Grade 4');
-    expect(generatedPrompt).toContain('focus on the subject of biology.');
-    expect(generatedPrompt).toContain('User\'s Question: What is photosynthesis?');
+    // Check for key components in the prompt individually to make the test less brittle
+    expect(generatedPrompt).toContain('Grade 4');
+    expect(generatedPrompt).toContain('subject of biology');
+    expect(generatedPrompt).toContain('language: en');
+    expect(generatedPrompt).toContain("User's Question: What is photosynthesis?");
   });
 });

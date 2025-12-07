@@ -1,0 +1,398 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>1</storyId>
+    <title>As an administrator, I need a secure way to log in, so that only authorized users can manage the system</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-07</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/4-1-as-an-administrator-i-need-a-secure-way-to-log-in-so-that-only-authorized-users-can-manage-the-system.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As a administrator</asA>
+    <iWant>I want need a secure way to log in</iWant>
+    <soThat>so that only authorized users can manage the system.</soThat>
+    <tasks>
+- **Task 1: Set up Supabase Authentication** (AC: #1, #2, #3)
+    - Subtask 1.1: Enable and configure Supabase Auth in the Supabase project.
+    - Subtask 1.2: Create a new 'admin' role in Supabase.
+    - Subtask 1.3: Create at least one admin user for testing.
+- **Task 2: Create Admin Login Page** (AC: #1)
+    - Subtask 2.1: Create a new route for the admin login page (e.g., `/admin/login`).
+    - Subtask 2.2: Design a simple login form with email and password fields.
+- **Task 3: Implement Login Logic** (AC: #2, #3)
+    - Subtask 3.1: Create a Next.js API route to handle login requests.
+    - Subtask 3.2: Use the Supabase client library to sign in the user.
+    - Subtask 3.3: On successful login, redirect the user to a placeholder admin dashboard page.
+    - Subtask 3.4: On failed login, display an error message on the login page.
+- **Task 4: Create Placeholder Admin Dashboard** (AC: #2)
+    - Subtask 4.1: Create a new protected route for the admin dashboard (e.g., `/admin/dashboard`).
+    - Subtask 4.2: Add a message to the dashboard page confirming successful login.
+- **Task 5: Testing** (AC: #1, #2, #3)
+    - Subtask 5.1: Write a test to verify that the admin login page is accessible.
+    - Subtask 5.2: Write a test to verify that a user with valid credentials can log in successfully.
+    - Subtask 5.3: Write a test to verify that a user with invalid credentials receives an error message.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+1.  There is a separate login page for administrators.
+2.  Given I enter valid administrator credentials, I am granted access to the admin dashboard.
+3.  Given I enter invalid credentials, I am shown an error message and denied access.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs><doc>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Technical Specification: Epic 4</title>
+        <section>2.3. APIs and Interfaces</section>
+        <snippet>Defines the API endpoint for admin login: POST /api/admin/login. It also specifies the expected workflow for admin authentication.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Authentication and Authorization</section>
+        <snippet>Specifies that Supabase Auth is the designated technology for handling all user authentication, including for administrators, and will be integrated with Next.js API Routes.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Epics</title>
+        <section>Epic 4, Story 4.1</section>
+        <snippet>Contains the original user story and acceptance criteria for the admin login feature.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>N/A</section>
+        <snippet>This document focuses on the student-facing chat interface. No specific designs for the administrator login page are included. A simple, clean form is assumed.</snippet>
+      </doc></docs>
+    <code>
+      <file>
+        <path>sentiabot/package.json</path>
+        <kind>config</kind>
+        <reason>Core project dependencies and scripts, necessary for setting up the development environment.</reason>
+      </file>
+      <file>
+        <path>sentiabot/tsconfig.json</path>
+        <kind>config</kind>
+        <reason>TypeScript configuration for the project, ensures type-safe development for admin login components and API routes.</reason>
+      </file>
+      <file>
+        <path>sentiabot/next.config.ts</path>
+        <kind>config</kind>
+        <reason>Next.js configuration, defines how the application behaves, including routing and API configurations.</reason>
+      </file>
+      <file>
+        <path>sentiabot/tailwind.config.js</path>
+        <kind>config</kind>
+        <reason>Tailwind CSS configuration, relevant for styling the admin login page and dashboard.</reason>
+      </file>
+      <file>
+        <path>sentiabot/eslint.config.mjs</path>
+        <kind>config</kind>
+        <reason>ESLint configuration for code quality and style enforcement across the project, including new admin code.</reason>
+      </file>
+      <file>
+        <path>sentiabot/lib/supabase.ts</path>
+        <kind>library</kind>
+        <symbol>createClient</symbol>
+        <reason>Existing Supabase client setup, which will be used for authenticating administrators.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/app/admin/login/page.tsx</path>
+        <kind>page</kind>
+        <reason>New file to be created for the admin login interface.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/app/admin/dashboard/page.tsx</path>
+        <kind>page</kind>
+        <reason>New file to be created as a placeholder for the admin dashboard, accessible after successful login.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/app/api/auth/login/route.ts</path>
+        <kind>api-route</kind>
+        <reason>New API route to be created for handling administrator login requests using Supabase Auth.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/components/admin/</path>
+        <kind>directory</kind>
+        <reason>New directory to house admin-specific UI components, ensuring modularity.</reason>
+      </file>
+    </code>
+    <dependencies>
+      <ecosystem name="npm">
+        <package name="@google/generative-ai" version="^0.24.1" />
+        <package name="@radix-ui/react-dialog" version="^1.1.15" />
+        <package name="@radix-ui/react-select" version="^2.2.6" />
+        <package name="@radix-ui/react-slot" version="^1.2.4" />
+        <package name="@supabase/supabase-js" version="^2.86.0" />
+        <package name="@testing-library/user-event" version="^14.6.1" />
+        <package name="class-variance-authority" version="^0.7.1" />
+        <package name="clsx" version="^2.1.1" />
+        <package name="lucide-react" version="^0.555.0" />
+        <package name="next" version="16.0.6" />
+        <package name="react" version="19.2.0" />
+        <package name="react-dom" version="19.2.0" />
+        <package name="tailwind-merge" version="^3.4.0" />
+        <package name="tailwindcss-animate" version="^1.0.7" />
+        <package name="uuid" version="^13.0.0" />
+      </ecosystem>
+      <ecosystem name="npm-devDependencies">
+        <package name="@tailwindcss/postcss" version="^4" />
+        <package name="@testing-library/jest-dom" version="^6.9.1" />
+        <package name="@testing-library/react" version="^16.3.0" />
+        <package name="@types/node" version="^20.19.25" />
+        <package name="@types/react" version="^19" />
+        <package name="@types/react-dom" version="^19" />
+        <package name="@vitejs/plugin-react" version="^5.1.1" />
+        <package name="@vitest/coverage-v8" version="^4.0.14" />
+        <package name="autoprefixer" version="^10.4.22" />
+        <package name="eslint" version="^9" />
+        <package name="eslint-config-next" version="16.0.6" />
+        <package name="jsdom" version="^27.2.0" />
+        <package name="tailwindcss" version="^4" />
+        <package name="tsx" version="^4.21.0" />
+        <package name="tw-animate-css" version="^1.4.0" />
+        <package name="typescript" version="^5" />
+        <package name="vitest" version="^4.0.14" />
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Authentication</type>
+      <description>Supabase Auth must be used for all user authentication and authorization, including administrators.</description>
+    </constraint>
+    <constraint>
+      <type>API Implementation</type>
+      <description>The login functionality must be implemented as a RESTful API using Next.js API Routes, with the endpoint located under `/api/auth`.</description>
+    </constraint>
+    <constraint>
+      <type>Authorization Role</type>
+      <description>The 'admin' role must be utilized to protect and grant access to the administrative routes and features.</description>
+    </constraint>
+    <constraint>
+      <type>Project Structure</type>
+      <description>All new files and components must adhere to the existing Next.js project structure and naming conventions as outlined in the architecture and story Dev Notes.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>Supabase Auth `signInWithPassword`</name>
+      <kind>Function Signature</kind>
+      <signature>async function signInWithPassword(credentials: { email: string; password: string }): Promise<{ data: { user: User | null; session: Session | null }; error: AuthError | null }></signature>
+      <path>sentiabot/lib/supabase.ts</path>
+    </interface>
+    <interface>
+      <name>Admin Login API Endpoint</name>
+      <kind>REST Endpoint</kind>
+      <signature>POST /api/auth/login</signature>
+      <path>sentiabot/src/app/api/auth/login/route.ts</path>
+    </interface>
+  </interfaces>
+  <tests>
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>1</storyId>
+    <title>As an administrator, I need a secure way to log in, so that only authorized users can manage the system</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-07</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/4-1-as-an-administrator-i-need-a-secure-way-to-log-in-so-that-only-authorized-users-can-manage-the-system.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As a administrator</asA>
+    <iWant>I want need a secure way to log in</iWant>
+    <soThat>so that only authorized users can manage the system.</soThat>
+    <tasks>
+- **Task 1: Set up Supabase Authentication** (AC: #1, #2, #3)
+    - Subtask 1.1: Enable and configure Supabase Auth in the Supabase project.
+    - Subtask 1.2: Create a new 'admin' role in Supabase.
+    - Subtask 1.3: Create at least one admin user for testing.
+- **Task 2: Create Admin Login Page** (AC: #1)
+    - Subtask 2.1: Create a new route for the admin login page (e.g., `/admin/login`).
+    - Subtask 2.2: Design a simple login form with email and password fields.
+- **Task 3: Implement Login Logic** (AC: #2, #3)
+    - Subtask 3.1: Create a Next.js API route to handle login requests.
+    - Subtask 3.2: Use the Supabase client library to sign in the user.
+    - Subtask 3.3: On successful login, redirect the user to a placeholder admin dashboard page.
+    - Subtask 3.4: On failed login, display an error message on the login page.
+- **Task 4: Create Placeholder Admin Dashboard** (AC: #2)
+    - Subtask 4.1: Create a new protected route for the admin dashboard (e.g., `/admin/dashboard`).
+    - Subtask 4.2: Add a message to the dashboard page confirming successful login.
+- **Task 5: Testing** (AC: #1, #2, #3)
+    - Subtask 5.1: Write a test to verify that the admin login page is accessible.
+    - Subtask 5.2: Write a test to verify that a user with valid credentials can log in successfully.
+    - Subtask 5.3: Write a test to verify that a user with invalid credentials receives an error message.
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+1.  There is a separate login page for administrators.
+2.  Given I enter valid administrator credentials, I am granted access to the admin dashboard.
+3.  Given I enter invalid credentials, I am shown an error message and denied access.
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs><doc>
+        <path>docs/sprint-artifacts/tech-spec-epic-4.md</path>
+        <title>Technical Specification: Epic 4</title>
+        <section>2.3. APIs and Interfaces</section>
+        <snippet>Defines the API endpoint for admin login: POST /api/admin/login. It also specifies the expected workflow for admin authentication.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-3-solutioning/architecture.md</path>
+        <title>Architecture</title>
+        <section>Authentication and Authorization</section>
+        <snippet>Specifies that Supabase Auth is the designated technology for handling all user authentication, including for administrators, and will be integrated with Next.js API Routes.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Epics</title>
+        <section>Epic 4, Story 4.1</section>
+        <snippet>Contains the original user story and acceptance criteria for the admin login feature.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>UX Design Specification</title>
+        <section>N/A</section>
+        <snippet>This document focuses on the student-facing chat interface. No specific designs for the administrator login page are included. A simple, clean form is assumed.</snippet>
+      </doc></docs>
+    <code>
+      <file>
+        <path>sentiabot/package.json</path>
+        <kind>config</kind>
+        <reason>Core project dependencies and scripts, necessary for setting up the development environment.</reason>
+      </file>
+      <file>
+        <path>sentiabot/tsconfig.json</path>
+        <kind>config</kind>
+        <reason>TypeScript configuration for the project, ensures type-safe development for admin login components and API routes.</reason>
+      </file>
+      <file>
+        <path>sentiabot/next.config.ts</path>
+        <kind>config</kind>
+        <reason>Next.js configuration, defines how the application behaves, including routing and API configurations.</reason>
+      </file>
+      <file>
+        <path>sentiabot/tailwind.config.js</path>
+        <kind>config</kind>
+        <reason>Tailwind CSS configuration, relevant for styling the admin login page and dashboard.</reason>
+      </file>
+      <file>
+        <path>sentiabot/eslint.config.mjs</path>
+        <kind>config</kind>
+        <reason>ESLint configuration for code quality and style enforcement across the project, including new admin code.</reason>
+      </file>
+      <file>
+        <path>sentiabot/lib/supabase.ts</path>
+        <kind>library</kind>
+        <symbol>createClient</symbol>
+        <reason>Existing Supabase client setup, which will be used for authenticating administrators.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/app/admin/login/page.tsx</path>
+        <kind>page</kind>
+        <reason>New file to be created for the admin login interface.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/app/admin/dashboard/page.tsx</path>
+        <kind>page</kind>
+        <reason>New file to be created as a placeholder for the admin dashboard, accessible after successful login.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/app/api/auth/login/route.ts</path>
+        <kind>api-route</kind>
+        <reason>New API route to be created for handling administrator login requests using Supabase Auth.</reason>
+      </file>
+      <file>
+        <path>sentiabot/src/components/admin/</path>
+        <kind>directory</kind>
+        <reason>New directory to house admin-specific UI components, ensuring modularity.</reason>
+      </file>
+    </code>
+    <dependencies>
+      <ecosystem name="npm">
+        <package name="@google/generative-ai" version="^0.24.1" />
+        <package name="@radix-ui/react-dialog" version="^1.1.15" />
+        <package name="@radix-ui/react-select" version="^2.2.6" />
+        <package name="@radix-ui/react-slot" version="^1.2.4" />
+        <package name="@supabase/supabase-js" version="^2.86.0" />
+        <package name="@testing-library/user-event" version="^14.6.1" />
+        <package name="class-variance-authority" version="^0.7.1" />
+        <package name="clsx" version="^2.1.1" />
+        <package name="lucide-react" version="^0.555.0" />
+        <package name="next" version="16.0.6" />
+        <package name="react" version="19.2.0" />
+        <package name="react-dom" version="19.2.0" />
+        <package name="tailwind-merge" version="^3.4.0" />
+        <package name="tailwindcss-animate" version="^1.0.7" />
+        <package name="uuid" version="^13.0.0" />
+      </ecosystem>
+      <ecosystem name="npm-devDependencies">
+        <package name="@tailwindcss/postcss" version="^4" />
+        <package name="@testing-library/jest-dom" version="^6.9.1" />
+        <package name="@testing-library/react" version="^16.3.0" />
+        <package name="@types/node" version="^20.19.25" />
+        <package name="@types/react" version="^19" />
+        <package name="@types/react-dom" version="^19" />
+        <package name="@vitejs/plugin-react" version="^5.1.1" />
+        <package name="@vitest/coverage-v8" version="^4.0.14" />
+        <package name="autoprefixer" version="^10.4.22" />
+        <package name="eslint" version="^9" />
+        <package name="eslint-config-next" version="16.0.6" />
+        <package name="jsdom" version="^27.2.0" />
+        <package name="tailwindcss" version="^4" />
+        <package name="tsx" version="^4.21.0" />
+        <package name="tw-animate-css" version="^1.4.0" />
+        <package name="typescript" version="^5" />
+        <package name="vitest" version="^4.0.14" />
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>
+      <type>Authentication</type>
+      <description>Supabase Auth must be used for all user authentication and authorization, including administrators.</description>
+    </constraint>
+    <constraint>
+      <type>API Implementation</type>
+      <description>The login functionality must be implemented as a RESTful API using Next.js API Routes, with the endpoint located under `/api/auth`.</description>
+    </constraint>
+    <constraint>
+      <type>Authorization Role</type>
+      <description>The 'admin' role must be utilized to protect and grant access to the administrative routes and features.</description>
+    </constraint>
+    <constraint>
+      <type>Project Structure</type>
+      <description>All new files and components must adhere to the existing Next.js project structure and naming conventions as outlined in the architecture and story Dev Notes.</description>
+    </constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>Supabase Auth `signInWithPassword`</name>
+      <kind>Function Signature</kind>
+      <signature>async function signInWithPassword(credentials: { email: string; password: string }): Promise<{ data: { user: User | null; session: Session | null }; error: AuthError | null }></signature>
+      <path>sentiabot/lib/supabase.ts</path>
+    </interface>
+    <interface>
+      <name>Admin Login API Endpoint</name>
+      <kind>REST Endpoint</kind>
+      <signature>POST /api/auth/login</signature>
+      <path>sentiabot/src/app/api/auth/login/route.ts</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>{{test_standards}}</standards>
+    <locations>{{test_locations}}</locations>
+    <ideas>{{test_ideas}}</ideas>
+  </tests>
+</story-context>
+
+  </tests>
+</story-context>

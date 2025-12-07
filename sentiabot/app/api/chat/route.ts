@@ -9,7 +9,7 @@ const MAX_MESSAGE_LENGTH = 2000;
 export async function POST(request: Request) {
   try {
     const { message, context, sessionId: clientSessionId } = await request.json();
-    const { subject, gradeLevel } = context || {}; // Extract subject and gradeLevel from context or default to empty object
+    const { subject, gradeLevel, language = 'en' } = context || {}; // Extract subject, gradeLevel, and language
 
     // --- Input Validation ---
     if (typeof message !== 'string' || message.trim().length === 0) {
@@ -21,14 +21,14 @@ export async function POST(request: Request) {
     // --- End Input Validation ---
 
     let currentSessionId = clientSessionId;
-    let userId = 'anonymous'; // Placeholder for user ID until authentication is implemented
+    let userId: string | null = null; // Placeholder for user ID; use null if no authenticated user
 
     // Manage chat session
     if (!currentSessionId) {
       // Create a new session
       currentSessionId = uuidv4();
       const { error: sessionError } = await supabase.from('chat_sessions').insert([
-        { id: currentSessionId, user_id: userId, started_at: new Date().toISOString(), subject, grade_level: gradeLevel },
+        { id: currentSessionId, user_id: userId, started_at: new Date().toISOString(), subject, grade_level: gradeLevel, language },
       ]);
 
       if (sessionError) {
@@ -36,9 +36,9 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: 'Failed to create chat session' }, { status: 500 });
       }
     } else {
-      // Update existing session (e.g., if subject/gradeLevel changes mid-session or for initial setting)
+      // Update existing session
       const { error: sessionError } = await supabase.from('chat_sessions')
-        .update({ subject, grade_level: gradeLevel, ended_at: null }) // Set ended_at to null to indicate active
+        .update({ subject, grade_level: gradeLevel, language, ended_at: null }) // Set ended_at to null to indicate active
         .eq('id', currentSessionId);
 
       if (sessionError) {
@@ -50,20 +50,23 @@ export async function POST(request: Request) {
     // Perform semantic search
     const searchResults = await semanticSearch(message, { subject, gradeLevel, limit: 3 }); // Limit to top 3 results
 
-    let prompt = `You are a helpful and informative AI assistant focused on providing educational content for elementary school students. Your responses should be tailored for a student in Grade ${gradeLevel} and focus on the subject of ${subject}. Answer the user's question based ONLY on the provided context. If the answer is not in the context, state "I don't have enough information to answer that question."
+    let prompt = `You are a helpful and informative AI assistant for elementary school students.
+Please respond in this language: ${language}.
+Your response should be tailored for a student in Grade ${gradeLevel} and focus on the subject of ${subject}.
+Answer the user's question based ONLY on the provided context. If the answer is not in the context, state that you don't have enough information.
 
 User's Question: ${message}
 
 `;
 
-    let sourceReferences: string[] = [];
+    let sourceReferences: { label: string, url: string }[] = [];
 
     if (searchResults && searchResults.length > 0) {
       prompt += `Context from Knowledge Base:\n`;
       searchResults.forEach((result: any, index: number) => {
         prompt += `Document ${index + 1} (Source: ${result.source_url}):\n${result.content}\n\n`;
-        if (result.source_url && !sourceReferences.includes(result.source_url)) {
-          sourceReferences.push(result.source_url);
+        if (result.source_url && !sourceReferences.some(ref => ref.url === result.source_url)) {
+          sourceReferences.push({ label: result.title, url: result.source_url });
         }
       });
     } else {
@@ -84,7 +87,7 @@ User's Question: ${message}
 
     // Store AI response
     const { error: aiMessageError } = await supabase.from('chat_messages').insert([
-      { session_id: currentSessionId, sender: 'ai', content: text, timestamp: new Date().toISOString(), source_references: sourceReferences },
+      { session_id: currentSessionId, sender: 'ai', content: text, timestamp: new Date().toISOString(), source_references: sourceReferences.map(ref => ref.url) },
     ]);
     if (aiMessageError) console.error('Error saving AI message:', aiMessageError);
 

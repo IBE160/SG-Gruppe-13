@@ -1,0 +1,187 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>3</epicId>
+    <storyId>4</storyId>
+    <title>Download Chat History</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-07</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>docs/sprint-artifacts/3-4.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As a student,</asA>
+    <iWant>I want to download my chat history,</iWant>
+    <soThat>so that I can save it and look at it later.</soThat>
+    <tasks>
+      <task>Frontend: Implement "Download Chat" Button and Modal Logic (AC: 1)
+        <subtask>Create or update the `OptionsModalModule` component.</subtask>
+        <subtask>Add a "Download Chat" button to the modal, styled as a secondary action as per the UX Design Specification.</subtask>
+        <subtask>On button click, trigger the chat history download process.</subtask>
+      </task>
+      <task>Frontend: Implement Chat History Download Logic (AC: 2, 3)
+        <subtask>Create a function to make a `GET` request to the `/api/chat/history/{sessionId}` endpoint.</subtask>
+        <subtask>On receiving the chat history data (`ChatMessage[]`), format it into a `.txt` string, ensuring timestamps and sender (`user`/`bot`) are included for each message.</subtask>
+        <subtask>Implement client-side logic to create a blob from the formatted string and trigger the browser's file download.</subtask>
+      </task>
+      <task>Backend: Implement Chat History API Endpoint (AC: 2, 3)
+        <subtask>Create the `GET /api/chat/history/{sessionId}` endpoint in the Next.js API routes.</subtask>
+        <subtask>Implement the service logic to retrieve all `ChatMessage`s for a given `sessionId` from the database (Supabase).</subtask>
+        <subtask>Ensure the endpoint returns the chat messages in the correct `ChatMessage[]` format as defined in the architecture.</subtask>
+      </task>
+      <task>Testing
+        <subtask>Unit Test: `OptionsModalModule` to verify button presence and click handler.</subtask>
+        <subtask>Unit Test: Frontend formatting function to ensure correct `.txt` output.</subtask>
+        <subtask>Integration Test: Backend API endpoint `GET /api/chat/history/{sessionId}`.</subtask>
+        <subtask>E2E Test: Full user journey: chat -> open modal -> click download -> verify downloaded file content.</subtask>
+      </task>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">A "Download Chat" button is available within the options modal.</criterion>
+    <criterion id="2">After a conversation, clicking the "Download Chat" button triggers a download of a `.txt` file containing the full chat log.</criterion>
+    <criterion id="3">The downloaded `.txt` file includes timestamps and distinguishes between user and bot messages.</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>4.1 Chosen Design Approach</section>
+        <snippet>The addition of a clean, subtle header with an accessible "Options" button provides clear control for students to manage settings like grade level, language, or to download chat history without cluttering the primary conversational interface.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>6. Component Library</section>
+        <snippet>Dialog / Modal: For presenting the "Options" menu and its contents (e.g., language selection, download chat).</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>7. UX Pattern Decisions</section>
+        <snippet>Secondary Action: ...Used for important but less critical actions like "Download Chat" within the "Options" modal.</snippet>
+      </entry>
+      <entry>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>7. UX Pattern Decisions</section>
+        <snippet>Modal Patterns (for "Options"): A simple, centered `Dialog` will overlay the chat interface... The modal can be dismissed by clicking an explicit "Close" (X) button...</snippet>
+      </entry>
+      <entry>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 3: Enhanced User Experience and Features</section>
+        <snippet>Story 3.4: As a student, I want to download my chat history, so that I can save it and look at it later.</snippet>
+      </entry>
+    </docs>
+    <code>
+      <entry>
+        <path>sentiabot/__tests__/chatSession.test.ts</path>
+        <kind>test</kind>
+        <symbol>mockInsertChatMessages, mockEqChatSessions, mockUpdateChatSessions</symbol>
+        <lines></lines>
+        <reason>Tests related to ChatSession and ChatMessage handling, indicating existing data models/services.</reason>
+      </entry>
+      <entry>
+        <path>sentiabot/components/ui/dialog.tsx</path>
+        <kind>component</kind>
+        <symbol>Dialog</symbol>
+        <lines></lines>
+        <reason>Shadcn UI Dialog component, likely to be used for the Options modal.</reason>
+      </entry>
+      <entry>
+        <path>sentiabot/components/ui/button.tsx</path>
+        <kind>component</kind>
+        <symbol>Button</symbol>
+        <lines></lines>
+        <reason>Shadcn UI Button component, to be used for "Download Chat" button and other actions.</reason>
+      </entry>
+    </code>
+    <dependencies>
+      <ecosystem name="Node.js">
+        <package name="@google/generative-ai" version="^0.24.1" />
+        <package name="@radix-ui/react-dialog" version="^1.1.15" />
+        <package name="@radix-ui/react-select" version="^2.2.6" />
+        <package name="@radix-ui/react-slot" version="^1.2.4" />
+        <package name="@supabase/supabase-js" version="^2.86.0" />
+        <package name="@testing-library/user-event" version="^14.6.1" />
+        <package name="class-variance-authority" version="^0.7.1" />
+        <package name="clsx" version="^2.1.1" />
+        <package name="lucide-react" version="^0.555.0" />
+        <package name="next" version="16.0.6" />
+        <package name="react" version="19.2.0" />
+        <package name="react-dom" version="19.2.0" />
+        <package name="tailwind-merge" version="^3.4.0" />
+        <package name="tailwindcss-animate" version="^1.0.7" />
+        <package name="uuid" version="^13.0.0" />
+      </ecosystem>
+      <ecosystem name="Node.js Dev Dependencies">
+        <package name="@tailwindcss/postcss" version="^4" />
+        <package name="@testing-library/jest-dom" version="^6.9.1" />
+        <package name="@testing-library/react" version="^16.3.0" />
+        <package name="@types/node" version="^20.19.25" />
+        <package name="@types/react" version="^19" />
+        <package name="@types/react-dom" version="^19" />
+        <package name="@vitejs/plugin-react" version="^5.1.1" />
+        <package name="@vitest/coverage-v8" version="^4.0.14" />
+        <package name="autoprefixer" version="^10.4.22" />
+        <package name="eslint" version="^9" />
+        <package name="eslint-config-next" version="16.0.6" />
+        <package name="jsdom" version="^27.2.0" />
+        <package name="tailwindcss" version="^4" />
+        <package name="tsx" version="^4.21.0" />
+        <package name="tw-animate-css" version="^1.4.0" />
+        <package name="typescript" version="^5" />
+        <package name="vitest" version="^4.0.14" />
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+
+  <interfaces>
+    <interface>
+      <name>GET /api/chat/history/{sessionId}</name>
+      <kind>REST endpoint</kind>
+      <signature>GET /api/chat/history/{sessionId} -> ChatMessage[]</signature>
+      <path>src/app/api/chat/history/[sessionId]/route.ts</path>
+    </interface>
+    <interface>
+      <name>ChatMessage</name>
+      <kind>data model/type</kind>
+      <signature>ChatMessage as defined in architecture/existing code.</signature>
+      <path>sentiabot/__tests__/chatSession.test.ts (inferred from usage)</path>
+    </interface>
+    <interface>
+      <name>ChatSession</name>
+      <kind>data model/type</kind>
+      <signature>ChatSession as defined in architecture/existing code.</signature>
+      <path>sentiabot/__tests__/chatSession.test.ts (inferred from usage)</path>
+    </interface>
+  </interfaces>
+  <constraints>
+    <constraint>FR009: The ability for students to download their chatlog locally.</constraint>
+    <constraint>Architecture: Local file system interaction for download. Backend will expose a REST endpoint. Data models ChatSession and ChatMessage will be used.</constraint>
+    <constraint>UX Integration: "Download Chat" button in "Options" modal, styled as a secondary action.</constraint>
+    <constraint>Component Reusability: Existing Dialog component from Shadcn UI to be used for OptionsModalModule.</constraint>
+    <constraint>Accessibility: Functionality and button must be keyboard navigable and screen reader accessible (WCAG 2.1 Level AA compliant).</constraint>
+    <constraint>Performance: Chat history retrieval must be efficient.</constraint>
+    <constraint>API Route: New backend endpoint at src/app/api/chat/history/[sessionId]/route.ts.</constraint>
+    <constraint>Frontend Logic: Fetching and downloading logic encapsulated within OptionsModalModule or a dedicated service hook (e.g., useChatHistory).</constraint>
+  </constraints>
+  <tests>
+    <standards>The project uses Vitest for unit and integration testing. E2E tests are also planned for critical user journeys.</standards>
+    <locations>
+      <location>sentiabot/__tests__/</location>
+      <location>vitest.config.ts</location>
+      <location>vitest.setup.ts</location>
+    </locations>
+    <ideas>
+      <idea ac-id="1">Unit Test: `OptionsModalModule` to verify button presence and click handler.</idea>
+      <idea ac-id="2,3">Unit Test: Frontend formatting function to ensure correct `.txt` output.</idea>
+      <idea ac-id="2,3">Integration Test: Backend API endpoint `GET /api/chat/history/{sessionId}`.</idea>
+      <idea ac-id="full">E2E Test: Full user journey: chat -> open modal -> click download -> verify downloaded file content.</idea>
+    </ideas>
+  </tests>
+</story-context>
