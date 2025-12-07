@@ -50,8 +50,8 @@ development_status:
   3-3-as-a-student-i-want-to-be-able-to-ask-questions-and-get-answers-in-both-norwegian-and-english-so-that-i-can-use-the-language-im-most-comfortable-with: done
   3-4-as-a-student-i-want-to-download-my-chat-history-so-that-i-can-save-it-and-look-at-it-later: ready-for-dev
   epic-3-retrospective: optional
-  epic-4: backlog
-  4-1-as-an-administrator-i-need-a-secure-way-to-log-in-so-that-only-authorized-users-can-manage-the-system: backlog
+  epic-4: contexted
+  4-1-as-an-administrator-i-need-a-secure-way-to-log-in-so-that-only-authorized-users-can-manage-the-system: ready-for-dev
   4-2-as-an-administrator-i-want-an-interface-to-add-edit-and-delete-content-in-the-knowledge-base-so-that-i-can-keep-the-information-accurate-and-up-to-date: backlog
   4-3-as-an-administrator-i-want-to-be-able-to-modify-the-chatbots-system-prompt-so-that-i-can-refine-its-behavior-and-tone-without-needing-to-redeploy-the-application: backlog
   epic-4-retrospective: optional
