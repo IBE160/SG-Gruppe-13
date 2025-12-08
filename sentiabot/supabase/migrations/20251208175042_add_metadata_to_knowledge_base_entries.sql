@@ -1,0 +1,1 @@
+ALTER TABLE public.knowledge_base_entries ADD COLUMN metadata jsonb;

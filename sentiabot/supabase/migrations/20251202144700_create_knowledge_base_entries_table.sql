@@ -4,7 +4,7 @@ CREATE TABLE public.knowledge_base_entries (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     title text NOT NULL,
     content text NOT NULL,
-    embedding extensions.vector(1536),
+    embedding extensions.vector(768),
     subject text,
     grade_level text,
     source_url text,
