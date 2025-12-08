@@ -2,14 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '../../../../lib/supabase';
 import { generateEmbedding } from '../../../../lib/embeddings'; // Import generateEmbedding
 
-interface KnowledgeBaseEntry {
-  id: number;
-  title: string;
-  content: string;
-  source_url: string;
-  embedding?: number[]; // Allow embedding to be optional when reading, but ensure it's set on creation/update
-  // Add other fields as per your Supabase table schema if needed
-}
+import { KnowledgeBaseEntry } from '@/types/knowledge-base';
 
 export async function GET(request: Request) {
   try {
@@ -31,14 +24,34 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
-    const { title, content, source_url } = await request.json();
-    console.log('POST: Received data:', { title, content: content.substring(0, 50) + '...', source_url });
+    const { title, content, source_url, subject, grade_level } = await request.json();
+    console.log('POST: Received data:', { title, content: content.substring(0, 50) + '...', source_url, subject, grade_level });
+
+    // --- Input Validation ---
+    if (!title || typeof title !== 'string' || title.trim().length < 3 || title.trim().length > 255) {
+      return NextResponse.json({ message: 'Title is required and must be a string between 3 and 255 characters.' }, { status: 400 });
+    }
+    if (!content || typeof content !== 'string' || content.trim().length < 10) {
+      return NextResponse.json({ message: 'Content is required and must be a string with at least 10 characters.' }, { status: 400 });
+    }
+    if (source_url && (typeof source_url !== 'string' || !/^https?:\/\/\S+$/.test(source_url))) {
+      return NextResponse.json({ message: 'Source URL must be a valid URL.' }, { status: 400 });
+    }
+    const allowedSubjects = ['Biology', 'Geography', 'Math']; // Define allowed subjects
+    if (!subject || typeof subject !== 'string' || !allowedSubjects.includes(subject)) {
+      return NextResponse.json({ message: `Subject is required and must be one of: ${allowedSubjects.join(', ')}.` }, { status: 400 });
+    }
+    const parsedGradeLevel = parseInt(grade_level);
+    if (isNaN(parsedGradeLevel) || parsedGradeLevel < 1 || parsedGradeLevel > 12) {
+      return NextResponse.json({ message: 'Grade level is required and must be an integer between 1 and 12.' }, { status: 400 });
+    }
+    // --- End Input Validation ---
 
     // Generate embedding for the content
     const embedding = await generateEmbedding(content);
     console.log('POST: Generated embedding (first 5 values):', embedding.slice(0, 5), 'Length:', embedding.length);
 
-    const payload = { title, content, source_url, embedding };
+    const payload = { title, content, source_url, subject, grade_level: parsedGradeLevel, embedding };
     console.log('POST: Payload to Supabase:', { ...payload, embedding: '...' }); // Avoid logging full embedding
 
     const { data, error } = await supabase
@@ -67,17 +80,37 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const { id, title, content, source_url, subject, grade_level } = await request.json();
-    console.log('PUT: Received data:', { id, title, content: content.substring(0, 50) + '...', source_url });
+    console.log('PUT: Received data:', { id, title, content: content.substring(0, 50) + '...', source_url, subject, grade_level });
 
     if (!id) {
       return NextResponse.json({ message: 'Missing ID for knowledge base entry update.' }, { status: 400 });
     }
 
+    // --- Input Validation ---
+    if (!title || typeof title !== 'string' || title.trim().length < 3 || title.trim().length > 255) {
+      return NextResponse.json({ message: 'Title is required and must be a string between 3 and 255 characters.' }, { status: 400 });
+    }
+    if (!content || typeof content !== 'string' || content.trim().length < 10) {
+      return NextResponse.json({ message: 'Content is required and must be a string with at least 10 characters.' }, { status: 400 });
+    }
+    if (source_url && (typeof source_url !== 'string' || !/^https?:\/\/\S+$/.test(source_url))) {
+      return NextResponse.json({ message: 'Source URL must be a valid URL.' }, { status: 400 });
+    }
+    const allowedSubjects = ['Biology', 'Geography', 'Math']; // Define allowed subjects
+    if (!subject || typeof subject !== 'string' || !allowedSubjects.includes(subject)) {
+      return NextResponse.json({ message: `Subject is required and must be one of: ${allowedSubjects.join(', ')}.` }, { status: 400 });
+    }
+    const parsedGradeLevel = parseInt(grade_level);
+    if (isNaN(parsedGradeLevel) || parsedGradeLevel < 1 || parsedGradeLevel > 12) {
+      return NextResponse.json({ message: 'Grade level is required and must be an integer between 1 and 12.' }, { status: 400 });
+    }
+    // --- End Input Validation ---
+
     // Generate embedding for the updated content
     const embedding = await generateEmbedding(content);
     console.log('PUT: Generated embedding (first 5 values):', embedding.slice(0, 5), 'Length:', embedding.length);
 
-    const payload = { title, content, source_url, subject, grade_level, embedding };
+    const payload = { title, content, source_url, subject, grade_level: parsedGradeLevel, embedding };
     console.log('PUT: Payload to Supabase:', { ...payload, embedding: '...' }); // Avoid logging full embedding
 
     const { data, error } = await supabase

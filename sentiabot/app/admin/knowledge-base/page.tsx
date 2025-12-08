@@ -23,19 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
 // In a real application, this would come from a proper authentication context (e.g., Supabase Auth).
 const isAdminAuthenticated = true; 
 
-// Dummy KnowledgeBaseEntry interface (will be replaced by actual type from lib/knowledgeBaseService.ts)
-interface KnowledgeBaseEntry {
-  id: string; // Changed to string as Supabase IDs are typically UUIDs
-  title: string;
-  content: string;
-  source_url: string;
-  subject: string; // Now required as we are setting it
-  grade_level: number; // Now required as we are setting it
-  embedding: number[]; // Include embedding from backend
-  created_at: string; // Include timestamps from backend
-  updated_at: string; // Include timestamps from backend
-  metadata: any | null; // Include metadata from backend
-}
+import { KnowledgeBaseEntry } from '@/types/knowledge-base';
 
 export default function KnowledgeBaseManagementPage() {
   const [knowledgeBaseEntries, setKnowledgeBaseEntries] = useState<KnowledgeBaseEntry[]>([]);
@@ -159,7 +147,7 @@ export default function KnowledgeBaseManagementPage() {
           <CardTitle>Knowledge Base Management</CardTitle>
           <Button onClick={() => {
             setEditingEntry({
-              id: uuidv4(), // Generate a unique ID for new entry
+              id: 'new', // Use 'new' as a temporary ID for new entries
               title: '',
               content: '',
               source_url: '',
@@ -179,22 +167,21 @@ export default function KnowledgeBaseManagementPage() {
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                   <DialogTitle>
-                    {editingEntry?.id === 0 ? 'Create New Entry' : `Edit Entry: ${editingEntry?.title}`}
+                    {editingEntry?.id === 'new' ? 'Create New Entry' : `Edit Entry: ${editingEntry?.title}`}
                   </DialogTitle>
                   <DialogDescription>
                     {editingEntry?.id === 0 ? 'Fill in the details for your new knowledge base document.' : 'Make changes to your knowledge base entry here.'}
                   </DialogDescription>
                 </DialogHeader>
                 <KnowledgeBaseEntryForm
-                  isEditMode={editingEntry?.id !== 0}
-                  initialData={editingEntry?.id !== 0 ? editingEntry : undefined}
-                  onSave={(data) => {
-                    if (editingEntry?.id === 0) {
-                      handleCreateEntry(data);
-                    } else {
-                      handleSaveEditedEntry(data);
-                    }
-                    setEditingEntry(null);
+                                      isEditMode={editingEntry?.id !== 'new'}
+                                      initialData={editingEntry?.id !== 'new' ? editingEntry : undefined}
+                                      onSave={(data) => {
+                                        if (editingEntry?.id === 'new') {
+                                          handleCreateEntry(data);
+                                        } else {
+                                          handleSaveEditedEntry(data);
+                                        }                    setEditingEntry(null);
                     setShowForm(false);
                   }}
                   onCancel={() => {
