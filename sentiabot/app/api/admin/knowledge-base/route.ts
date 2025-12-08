@@ -66,7 +66,7 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   try {
-    const { id, title, content, source_url } = await request.json();
+    const { id, title, content, source_url, subject, grade_level } = await request.json();
     console.log('PUT: Received data:', { id, title, content: content.substring(0, 50) + '...', source_url });
 
     if (!id) {
@@ -77,7 +77,7 @@ export async function PUT(request: Request) {
     const embedding = await generateEmbedding(content);
     console.log('PUT: Generated embedding (first 5 values):', embedding.slice(0, 5), 'Length:', embedding.length);
 
-    const payload = { title, content, source_url, embedding };
+    const payload = { title, content, source_url, subject, grade_level, embedding };
     console.log('PUT: Payload to Supabase:', { ...payload, embedding: '...' }); // Avoid logging full embedding
 
     const { data, error } = await supabase

@@ -76,12 +76,14 @@ export default function Home() {
   }, [subject, gradeLevel, sessionId, language]); // Add language to dependency array
 
   const handleStartChat = useCallback((selectedSubject: string, selectedGradeLevel: string) => {
-    setSubject(selectedSubject);
+    // Ensure 'biology' is always capitalized if that's the desired matching case in Supabase
+    const formattedSubject = selectedSubject.toLowerCase() === 'biology' ? 'Biology' : selectedSubject;
+    setSubject(formattedSubject);
     setGradeLevel(selectedGradeLevel);
     setShowChat(true); // Transition to chat interface
 
     // Set the initial welcome message from the bot
-    setMessages([{ text: `I'm ready to help you with ${selectedSubject} for Grade ${selectedGradeLevel}.`, isUser: false }]);
+    setMessages([{ text: `I'm ready to help you with ${formattedSubject} for Grade ${selectedGradeLevel}.`, isUser: false }]);
   }, []);
 
   if (!showChat) {

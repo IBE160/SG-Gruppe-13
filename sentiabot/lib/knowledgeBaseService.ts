@@ -29,10 +29,10 @@ export async function semanticSearch(
       match_threshold: number;
       match_count: number;
       p_subject?: string;
-      p_grade_level?: string;
+      p_grade_level?: number; // Changed from string to number
     } = {
       query_embedding: queryEmbedding,
-      match_threshold: 0.1, // Temporarily lowered for debugging
+      match_threshold: 0.1, // Reverted to original debugging threshold // Temporarily lowered for debugging
       match_count: options?.limit || 5,
     };
 
@@ -43,6 +43,8 @@ export async function semanticSearch(
     if (options?.gradeLevel) {
       params.p_grade_level = options.gradeLevel;
     }
+    
+    console.log("Parameters sent to match_documents RPC:", params); // Log the parameters
     
     // Perform the semantic search using the RPC function
     const { data, error } = await supabase.rpc('match_documents', params);

@@ -43,7 +43,11 @@ export function WelcomeScreen({ onStartChat }: { onStartChat: (subject: string, 
               </SelectContent>
             </Select>
           </div>
-          <Button className="w-full" onClick={() => onStartChat(selectedSubject!, selectedGrade!)} disabled={isStartChatDisabled}>Start Chatting</Button>
+          <Button className="w-full" onClick={() => {
+            console.log("Selected Subject from WelcomeScreen:", selectedSubject);
+            console.log("Selected Grade from WelcomeScreen:", selectedGrade);
+            onStartChat(selectedSubject!, selectedGrade!);
+          }} disabled={isStartChatDisabled}>Start Chatting</Button>
         </CardContent>
       </Card>
     </div>

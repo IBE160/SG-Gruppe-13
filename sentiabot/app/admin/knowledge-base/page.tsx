@@ -16,6 +16,8 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { v4 as uuidv4 } from 'uuid';
 
 // For demonstration purposes: Simulate an authenticated admin.
 // In a real application, this would come from a proper authentication context (e.g., Supabase Auth).
@@ -23,16 +25,23 @@ const isAdminAuthenticated = true;
 
 // Dummy KnowledgeBaseEntry interface (will be replaced by actual type from lib/knowledgeBaseService.ts)
 interface KnowledgeBaseEntry {
-  id: number;
+  id: string; // Changed to string as Supabase IDs are typically UUIDs
   title: string;
   content: string;
   source_url: string;
+  subject: string; // Now required as we are setting it
+  grade_level: number; // Now required as we are setting it
+  embedding: number[]; // Include embedding from backend
+  created_at: string; // Include timestamps from backend
+  updated_at: string; // Include timestamps from backend
+  metadata: any | null; // Include metadata from backend
 }
 
 export default function KnowledgeBaseManagementPage() {
   const [knowledgeBaseEntries, setKnowledgeBaseEntries] = useState<KnowledgeBaseEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingEntry, setEditingEntry] = useState<KnowledgeBaseEntry | null>(null);
+  const [showForm, setShowForm] = useState(false);
 
   const fetchEntries = async () => {
     setIsLoading(true);
@@ -55,7 +64,7 @@ export default function KnowledgeBaseManagementPage() {
     fetchEntries();
   }, []);
 
-  const handleCreateEntry = async (newEntry: { title: string; content: string; source_url: string }) => {
+  const handleCreateEntry = async (newEntry: { title: string; content: string; source_url: string; subject: string; grade_level: number }) => {
     try {
       const response = await fetch('/api/admin/knowledge-base', {
         method: 'POST',
@@ -82,9 +91,10 @@ export default function KnowledgeBaseManagementPage() {
 
   const handleEditEntry = (entry: KnowledgeBaseEntry) => {
     setEditingEntry(entry);
+    setShowForm(true);
   };
 
-  const handleSaveEditedEntry = async (updatedEntryData: { title: string; content: string; source_url: string }) => {
+  const handleSaveEditedEntry = async (updatedEntryData: { title: string; content: string; source_url: string; subject: string; grade_level: number }) => {
     console.log('handleSaveEditedEntry triggered for:', editingEntry?.id);
     if (!editingEntry) return;
 
@@ -107,7 +117,6 @@ export default function KnowledgeBaseManagementPage() {
           entry.id === editingEntry.id ? result.entry : entry
         )
       );
-      setEditingEntry(null); // Close the edit form
     } catch (error) {
       console.error('Error updating knowledge base entry:', error);
       // Optionally, show an error message to the user
@@ -148,9 +157,54 @@ export default function KnowledgeBaseManagementPage() {
       <Card className="w-full max-w-4xl">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle>Knowledge Base Management</CardTitle>
-          <KnowledgeBaseEntryForm onSave={handleCreateEntry} />
+          <Button onClick={() => {
+            setEditingEntry({
+              id: uuidv4(), // Generate a unique ID for new entry
+              title: '',
+              content: '',
+              source_url: '',
+              subject: '',
+              grade_level: 0,
+              embedding: [], // Default empty array for embedding
+              created_at: new Date().toISOString(), // Default current timestamp
+              updated_at: new Date().toISOString(), // Default current timestamp
+              metadata: null, // Default null metadata
+            });
+            setShowForm(true);
+          }}>Create New Document</Button>
         </CardHeader>
         <CardContent>
+          {showForm && (
+            <Dialog open={showForm} onOpenChange={setShowForm}>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>
+                    {editingEntry?.id === 0 ? 'Create New Entry' : `Edit Entry: ${editingEntry?.title}`}
+                  </DialogTitle>
+                  <DialogDescription>
+                    {editingEntry?.id === 0 ? 'Fill in the details for your new knowledge base document.' : 'Make changes to your knowledge base entry here.'}
+                  </DialogDescription>
+                </DialogHeader>
+                <KnowledgeBaseEntryForm
+                  isEditMode={editingEntry?.id !== 0}
+                  initialData={editingEntry?.id !== 0 ? editingEntry : undefined}
+                  onSave={(data) => {
+                    if (editingEntry?.id === 0) {
+                      handleCreateEntry(data);
+                    } else {
+                      handleSaveEditedEntry(data);
+                    }
+                    setEditingEntry(null);
+                    setShowForm(false);
+                  }}
+                  onCancel={() => {
+                    setEditingEntry(null);
+                    setShowForm(false);
+                  }}
+                />
+              </DialogContent>
+            </Dialog>
+          )}
           {isLoading ? (
             <div className="text-center">Loading knowledge base entries...</div>
           ) : (
@@ -170,11 +224,7 @@ export default function KnowledgeBaseManagementPage() {
                     <TableCell>{entry.title}</TableCell>
                     <TableCell>{entry.source_url}</TableCell>
                     <TableCell className="text-right">
-                      <KnowledgeBaseEntryForm
-                        isEditMode
-                        initialData={entry}
-                        onSave={(updatedFields) => handleSaveEditedEntry({ ...entry, ...updatedFields })}
-                      />
+                      <Button variant="ghost" onClick={() => handleEditEntry(entry)}>Edit</Button>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
                           <Button variant="ghost" className="text-red-500 hover:bg-red-50 hover:text-red-600">Delete</Button>

@@ -16,7 +16,17 @@ const MAX_MESSAGE_LENGTH = 2000;
 export async function POST(request: Request) {
   try {
     const { message, context, sessionId: clientSessionId } = await request.json();
-    const { subject, gradeLevel, language = 'en' } = context || {}; // Extract subject, gradeLevel, and language
+    const { subject, gradeLevel: gradeLevelStr, language = 'en' } = context || {}; // Extract subject, gradeLevel string, and language
+
+    let gradeLevel: number | undefined;
+    if (gradeLevelStr) {
+      const parsedGradeLevel = parseInt(gradeLevelStr, 10);
+      if (!isNaN(parsedGradeLevel)) {
+        gradeLevel = parsedGradeLevel;
+      } else {
+        console.warn(`Invalid gradeLevel received: ${gradeLevelStr}. Proceeding without gradeLevel filter.`);
+      }
+    }
 
     // --- Input Validation ---
     if (typeof message !== 'string' || message.trim().length === 0) {
@@ -56,6 +66,8 @@ export async function POST(request: Request) {
 
     // Perform semantic search
     const searchResults = await semanticSearch(message, { subject, gradeLevel, limit: 3 }); // Limit to top 3 results
+
+    console.log("Matching entries from semantic search:", JSON.stringify(searchResults, null, 2));
 
     let prompt = `You are a helpful and informative AI assistant for elementary school students.
 Please respond in this language: ${language}.
