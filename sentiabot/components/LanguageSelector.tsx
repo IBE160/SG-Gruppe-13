@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react'; // Removed useEffect import
 import {
   Select,
   SelectContent,
@@ -12,14 +12,13 @@ import {
 import { getLanguagePreference, setLanguagePreference } from '@/lib/user-preferences';
 
 const LanguageSelector = () => {
-  const [language, setLanguage] = useState('en');
-
-  useEffect(() => {
+  const [language, setLanguage] = useState<string>(() => {
+    // Lazy initializer: runs only once during initial render
     const preferredLanguage = getLanguagePreference();
-    if (preferredLanguage) {
-      setLanguage(preferredLanguage);
-    }
-  }, []);
+    return preferredLanguage || 'en'; // Default to 'en' if no preference
+  });
+
+  // Removed useEffect for initial language setting
 
   const handleLanguageChange = (value: string) => {
     setLanguage(value);

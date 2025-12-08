@@ -21,7 +21,8 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    "baseUrl": "." // Added baseUrl
   },
   "include": [
     "next-env.d.ts",
@@ -31,5 +32,5 @@
     ".next/dev/types/**/*.ts",
     "**/*.mts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "__tests__/e2e/download-chat.spec.DISABLED.ts"]
 }

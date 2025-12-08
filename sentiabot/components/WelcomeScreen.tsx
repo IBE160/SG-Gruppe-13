@@ -19,7 +19,7 @@ export function WelcomeScreen({ onStartChat }: { onStartChat: (subject: string, 
           <div className="space-y-2">
             <label htmlFor="subject">Subject</label>
             <Select onValueChange={setSelectedSubject}>
-              <SelectTrigger id="subject">
+              <SelectTrigger id="subject" aria-label="Select Subject">
                 <SelectValue placeholder="Select your subject" />
               </SelectTrigger>
               <SelectContent>
@@ -31,7 +31,7 @@ export function WelcomeScreen({ onStartChat }: { onStartChat: (subject: string, 
           <div className="space-y-2">
             <label htmlFor="grade">Grade Level</label>
             <Select onValueChange={setSelectedGrade}>
-              <SelectTrigger id="grade">
+              <SelectTrigger id="grade" aria-label="Select Grade Level">
                 <SelectValue placeholder="Select your grade level" />
               </SelectTrigger>
               <SelectContent>

@@ -2,9 +2,12 @@
 // This is a placeholder E2E test. Playwright or Cypress setup is required to run it.
 
 import { test, expect } from '@playwright/test';
+import { vi } from 'vitest'; // Explicitly import vi
+
+type Mock = ReturnType<typeof vi.fn>; // Define Mock type
 
 test.describe('Chat History Download E2E', () => {
-  test('should allow user to download chat history as a .txt file', async ({ page }) => {
+  test('should allow user to download chat history as a .txt file', async ({ page }: { page: any }) => { // Typed page as any
     // Navigate to the chat application
     await page.goto('http://localhost:3000'); // Assuming the app runs on localhost:3000
 

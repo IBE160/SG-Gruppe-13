@@ -1,4 +1,4 @@
-import { useState } from "react";
+// Removed useState import
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChatHistory } from "@/components/ChatHistory";

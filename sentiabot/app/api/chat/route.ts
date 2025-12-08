@@ -4,6 +4,13 @@ import { semanticSearch } from '@/lib/knowledgeBaseService'; // Import semanticS
 import { supabase } from '@/lib/supabase'; // Import supabase client
 import { v4 as uuidv4 } from 'uuid'; // Import uuid for session IDs
 
+interface KnowledgeBaseSearchResult {
+  source_url: string;
+  content: string;
+  title: string;
+  // Add other properties if necessary based on semanticSearch's actual return type
+}
+
 const MAX_MESSAGE_LENGTH = 2000;
 
 export async function POST(request: Request) {
@@ -21,7 +28,7 @@ export async function POST(request: Request) {
     // --- End Input Validation ---
 
     let currentSessionId = clientSessionId;
-    let userId: string | null = null; // Placeholder for user ID; use null if no authenticated user
+    const userId: string | null = null; // Changed to const
 
     // Manage chat session
     if (!currentSessionId) {
@@ -59,11 +66,11 @@ User's Question: ${message}
 
 `;
 
-    let sourceReferences: { label: string, url: string }[] = [];
+    const sourceReferences: { label: string, url: string }[] = []; // Changed to const
 
     if (searchResults && searchResults.length > 0) {
       prompt += `Context from Knowledge Base:\n`;
-      searchResults.forEach((result: any, index: number) => {
+      searchResults.forEach((result: KnowledgeBaseSearchResult, index: number) => { // Typed result
         prompt += `Document ${index + 1} (Source: ${result.source_url}):\n${result.content}\n\n`;
         if (result.source_url && !sourceReferences.some(ref => ref.url === result.source_url)) {
           sourceReferences.push({ label: result.title, url: result.source_url });

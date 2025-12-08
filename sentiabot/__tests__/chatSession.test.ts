@@ -1,17 +1,18 @@
-// sentiabot/__tests__/chatSession.test.ts
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { POST } from '../app/api/chat/route';
 import { supabase } from '../lib/supabase';
 import { geminiModel } from '../lib/gemini';
 import { generateEmbedding } from '../lib/embeddings'; // For mocking semanticSearch dependency
 
+type Mock = ReturnType<typeof vi.fn>; // Define Mock type
+
 // Mocks for supabase chainable methods
-const mockEqChatSessions = vi.fn(() => Promise.resolve({ error: null }));
-const mockUpdateChatSessions = vi.fn(() => ({
+const mockEqChatSessions: Mock = vi.fn(() => Promise.resolve({ error: null }));
+const mockUpdateChatSessions: Mock = vi.fn(() => ({
   eq: mockEqChatSessions,
 }));
-const mockInsertChatSessions = vi.fn(() => Promise.resolve({ error: null }));
-const mockInsertChatMessages = vi.fn(() => Promise.resolve({ error: null }));
+const mockInsertChatSessions: Mock = vi.fn(() => Promise.resolve({ error: null }));
+const mockInsertChatMessages: Mock = vi.fn(() => Promise.resolve({ error: null }));
 
 // Mock supabase and geminiModel
 vi.mock('../lib/supabase', () => ({
@@ -58,16 +59,16 @@ describe('Chat API - Session Management', () => {
     mockEqChatSessions.mockClear();
     mockUpdateChatSessions.mockClear();
     mockInsertChatSessions.mockClear();
-    (supabase.from as vi.Mock).mockClear(); // Clear spy on from
-    (supabase.rpc as vi.Mock).mockClear(); // Clear spy on rpc
+    (supabase.from as Mock).mockClear(); // Clear spy on from
+    (supabase.rpc as Mock).mockClear(); // Clear spy on rpc
 
-    (geminiModel.generateContent as vi.Mock).mockResolvedValue({
+    (geminiModel.generateContent as Mock).mockResolvedValue({
       response: {
         text: () => mockAiResponse,
       },
     });
-    (generateEmbedding as vi.Mock).mockResolvedValue(mockEmbedding);
-    (supabase.rpc as vi.Mock).mockResolvedValue({ data: mockSemanticSearchResults, error: null });
+    (generateEmbedding as Mock).mockResolvedValue(mockEmbedding);
+    (supabase.rpc as Mock).mockResolvedValue({ data: mockSemanticSearchResults, error: null });
 
   });
 

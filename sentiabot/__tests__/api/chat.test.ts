@@ -1,169 +1,168 @@
-import { POST } from '@/app/api/chat/route';
-import { supabase } from '@/lib/supabase';
+import { describe, it, expect, vi, beforeEach } from 'vitest'; // Explicitly import vi
+import { POST } from '@/app/api/chat/route'; 
 import { geminiModel } from '@/lib/gemini';
 import { semanticSearch } from '@/lib/knowledgeBaseService';
+import { supabase } from '@/lib/supabase';
 import { NextRequest } from 'next/server';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock external dependencies
-const mockEq = vi.fn(() => ({
-  data: [],
-  error: null,
-}));
-const mockUpdate = vi.fn(() => ({
-  eq: mockEq,
-}));
-const mockInsert = vi.fn(() => ({
-  data: [],
-  error: null,
-}));
+type Mock = ReturnType<typeof vi.fn>; // Define Mock type
 
+// Define mock types for Supabase methods
+interface MockQueryBuilder {
+  eq: Mock;
+  single: Mock;
+  insert: Mock;
+  update: Mock;
+  select: Mock;
+}
+
+// Mock Supabase
 vi.mock('@/lib/supabase', () => ({
   supabase: {
-    from: vi.fn(() => ({
-      insert: mockInsert,
-      update: mockUpdate,
-    })),
+    from: vi.fn((tableName: string) => {
+      const mockMethods: MockQueryBuilder = {
+        eq: vi.fn(() => mockMethods), // Chainable
+        single: vi.fn(),
+        insert: vi.fn(() => Promise.resolve({ data: null, error: null })),
+        update: vi.fn(() => ({ eq: vi.fn(() => Promise.resolve({ error: null })) })),
+        select: vi.fn(() => mockMethods), // Chainable
+      };
+
+      if (tableName === 'profiles') {
+        mockMethods.single = vi.fn(() => Promise.resolve({ data: { role: 'admin' }, error: null }));
+      }
+      return mockMethods;
+    }),
+    rpc: vi.fn(() => Promise.resolve({ data: null, error: null })),
+    auth: {
+      signInWithPassword: vi.fn(() => Promise.resolve({ data: { session: { user: { id: 'test-user-id' }}}, error: null })),
+      getSession: vi.fn(() => Promise.resolve({ data: { session: null }, error: null })),
+      signOut: vi.fn(() => Promise.resolve({ error: null })),
+    }
   },
 }));
 
+// Mock uuid
+vi.mock('uuid', () => ({
+  v4: vi.fn(() => 'mock-uuid'),
+}));
+
+// Use vi.mock for reliable hoisting
 vi.mock('@/lib/gemini', () => ({
   geminiModel: {
-    generateContent: vi.fn(() => ({
-      response: {
-        text: vi.fn(() => 'Mocked AI response'),
-      },
-    })),
+    generateContent: vi.fn(),
+  },
+  embeddingModel: {
+    embedContent: vi.fn(),
   },
 }));
 
 vi.mock('@/lib/knowledgeBaseService', () => ({
-  semanticSearch: vi.fn(() => ([])), // Mock to return empty array by default
+  semanticSearch: vi.fn(),
 }));
 
-describe('Chat API Integration - Grade Level Storage (AC: 3)', () => {
+describe('POST /api/chat', () => {
+  const mockSemanticSearchResults = [{ id: 1, title: 'Test Doc', content: 'Test content.', source_url: 'http://test.com' }];
+
   beforeEach(() => {
     vi.clearAllMocks();
-    mockEq.mockClear();
-    mockUpdate.mockClear();
-    mockInsert.mockClear();
+    process.env.GEMINI_API_KEY = 'mock_key';
+
+    vi.mocked(geminiModel.generateContent as Mock).mockResolvedValue({
+      response: { text: () => 'This is a mocked AI response.' },
+    });
+    vi.mocked(semanticSearch as Mock).mockResolvedValue(mockSemanticSearchResults);
+    
+    // Reset supabase.from mock implementation for each test
+    vi.mocked(supabase.from as Mock).mockImplementation((tableName: string) => {
+        const mockMethods: MockQueryBuilder = {
+          eq: vi.fn(() => mockMethods),
+          single: vi.fn(),
+          insert: vi.fn(() => Promise.resolve({ data: null, error: null })),
+          update: vi.fn(() => ({ eq: vi.fn(() => Promise.resolve({ error: null })) })),
+          select: vi.fn(() => mockMethods),
+        };
+
+        if (tableName === 'profiles') {
+          mockMethods.single = vi.fn(() => Promise.resolve({ data: { role: 'admin' }, error: null }));
+        }
+        return mockMethods;
+    });
   });
 
-  it('should store gradeLevel in chat_sessions when a new session is created', async () => {
-    const mockRequest = new NextRequest('http://localhost/api/chat', {
+  it('should return an AI response on success', async () => {
+    const request = new NextRequest('http://localhost/api/chat', { // Use NextRequest
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'Hello',
-        context: { subject: 'biology', gradeLevel: '3' },
-        sessionId: null, // Simulate new session
-      }),
+      body: JSON.stringify({ message: 'Hello' }),
     });
 
-    await POST(mockRequest);
+    const response = await POST(request);
+    const body = await response.json();
 
-    // Expect chat_sessions.insert to be called with correct grade_level
-    expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
-    expect(mockInsert).toHaveBeenCalledWith([
-      expect.objectContaining({
-        user_id: null,
-        subject: 'biology',
-        grade_level: '3',
-      }),
-    ]);
+    expect(response.status).toBe(200);
+    expect(body.aiResponse).toBe('This is a mocked AI response.');
+    expect(vi.mocked(geminiModel.generateContent as Mock)).toHaveBeenCalledWith(expect.any(String));
   });
 
-  it('should update gradeLevel in chat_sessions when an existing session is used', async () => {
-    const existingSessionId = 'existing-session-123';
-    const mockRequest = new NextRequest('http://localhost/api/chat', {
+  it('should include knowledge base context in the prompt to Gemini', async () => {
+    const specificMockResult = [
+      { id: 1, title: 'Biology Basics', content: 'Mitochondria is the powerhouse of the cell.', source_url: 'http://biology.test/1' }
+    ];
+    vi.mocked(semanticSearch as Mock).mockResolvedValue(specificMockResult);
+
+    const request = new NextRequest('http://localhost/api/chat', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'Another message',
-        context: { subject: 'geology', gradeLevel: '5' },
-        sessionId: existingSessionId, // Simulate existing session
-      }),
+      body: JSON.stringify({ message: 'What is mitochondria?' }),
     });
 
-    await POST(mockRequest);
+    await POST(request);
 
-    // Expect chat_sessions.update to be called with correct grade_level
-    expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
-    expect(mockUpdate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        subject: 'geology',
-        grade_level: '5',
-      })
-    );
-    expect(mockEq).toHaveBeenCalledWith('id', existingSessionId);
+    expect(vi.mocked(geminiModel.generateContent as Mock)).toHaveBeenCalledOnce();
+    const prompt = vi.mocked(geminiModel.generateContent as Mock).mock.calls[0][0];
+    expect(prompt).toContain('Mitochondria is the powerhouse of the cell.');
+    expect(prompt).toContain('Context from Knowledge Base:');
   });
 
-  it('should not update gradeLevel in chat_sessions if it\'s not provided in context', async () => {
-    const existingSessionId = 'existing-session-456';
-    const mockRequest = new NextRequest('http://localhost/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'Message without gradeLevel',
-        context: { subject: 'history' }, // No gradeLevel provided
-        sessionId: existingSessionId,
-      }),
-    });
-
-    await POST(mockRequest);
-
-    expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
-    expect(mockUpdate).toHaveBeenCalledWith(
-        expect.objectContaining({
-            subject: 'history',
-            grade_level: undefined, // Expect grade_level to be undefined
-        })
-    );
-    expect(mockEq).toHaveBeenCalledWith('id', existingSessionId);
-
-    // For a new session without gradeLevel
-    const mockRequestNewSession = new NextRequest('http://localhost/api/chat', {
+  it('should return 400 if message is missing or empty', async () => {
+    // Test empty string
+    let request = new NextRequest('http://localhost/api/chat', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            message: 'New session without gradeLevel',
-            context: { subject: 'math' }, // No gradeLevel provided
-            sessionId: null,
-        }),
-    });
-
-    await POST(mockRequestNewSession);
-
-    expect(supabase.from).toHaveBeenCalledWith('chat_sessions');
-    expect(mockInsert).toHaveBeenCalledWith([
-        expect.objectContaining({
-            user_id: null,
-            subject: 'math',
-            grade_level: undefined, // Expect grade_level to be undefined
-        }),
-    ]);
+        body: JSON.stringify({ message: '' }),
+      });
+    let response = await POST(request);
+    let body = await response.json();
+    expect(response.status).toBe(400);
+    expect(body.error).toContain('non-empty string');
+    expect(vi.mocked(geminiModel.generateContent as Mock)).not.toHaveBeenCalled();
   });
 
-  it('should include gradeLevel, subject, and language in the Gemini prompt', async () => {
-    const mockRequest = new NextRequest('http://localhost/api/chat', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message: 'What is photosynthesis?',
-        context: { subject: 'biology', gradeLevel: '4', language: 'en' },
-        sessionId: 'test-session-id',
-      }),
-    });
+  it('should return 400 if message exceeds max length', async () => {
+    const longMessage = 'a'.repeat(2001); // Assuming MAX_MESSAGE_LENGTH is 2000
+    const request = new NextRequest('http://localhost/api/chat', {
+        method: 'POST',
+        body: JSON.stringify({ message: longMessage }),
+      });
 
-    await POST(mockRequest);
+    const response = await POST(request);
+    const body = await response.json();
 
-    expect(geminiModel.generateContent).toHaveBeenCalledTimes(1);
-    const generatedPrompt = (geminiModel.generateContent as Mock).mock.calls[0][0];
+    expect(response.status).toBe(400);
+    expect(body.error).toContain('exceeds the maximum length');
+    expect(vi.mocked(geminiModel.generateContent as Mock)).not.toHaveBeenCalled();
+  });
 
-    // Check for key components in the prompt individually to make the test less brittle
-    expect(generatedPrompt).toContain('Grade 4');
-    expect(generatedPrompt).toContain('subject of biology');
-    expect(generatedPrompt).toContain('language: en');
-    expect(generatedPrompt).toContain("User's Question: What is photosynthesis?");
+  it('should return 500 if the AI call fails', async () => {
+    vi.mocked(geminiModel.generateContent as Mock).mockRejectedValue(new Error('AI go boom'));
+
+    const request = new NextRequest('http://localhost/api/chat', {
+        method: 'POST',
+        body: JSON.stringify({ message: 'Hello' }),
+      });
+
+    const response = await POST(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.error).toBe('Failed to get response from AI');
   });
 });

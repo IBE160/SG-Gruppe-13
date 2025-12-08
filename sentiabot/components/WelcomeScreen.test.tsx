@@ -1,21 +1,28 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { WelcomeScreen } from './WelcomeScreen';
-import { vi } from 'vitest';
+import { vi, beforeEach } from 'vitest';
+import * as React from 'react';
+import * as SelectPrimitive from '@radix-ui/react-select';
+import * as ButtonActual from '@/components/ui/button';
+import * as CardActual from '@/components/ui/card';
+
+type Mock = ReturnType<typeof vi.fn>;
 
 // Mock shadcn/ui Select component for isolated testing of WelcomeScreen logic
-// This mock simplifies the Select component to make it testable with testing-library
 vi.mock('@/components/ui/select', async () => {
-  const React = await vi.importActual('react'); // Import React inside the factory
-  const { useState, useEffect } = React; // Destructure hooks
+  const ReactImported = await vi.importActual<typeof React>('react'); // Assert type here
+  const { useState, useEffect } = ReactImported;
 
-  const MockSelectTrigger = React.forwardRef(({ children, id, className, ...props }: any, ref) => (
+  type SelectTriggerProps = React.ComponentProps<typeof SelectPrimitive.Trigger>;
+  const MockSelectTrigger = ReactImported.forwardRef(({ children, id, className, ...props }: SelectTriggerProps, ref: React.ForwardedRef<HTMLButtonElement | HTMLDivElement>) => (
     <button
-      ref={ref}
+      ref={ref as React.ForwardedRef<HTMLButtonElement>}
       id={id}
       data-testid="select-trigger-mock"
       role="combobox"
       aria-haspopup="listbox"
-      aria-expanded={props['aria-expanded'] || false} // Add aria-expanded
+      aria-expanded={props['aria-expanded']}
+      aria-controls={id ? `${id}-listbox` : undefined}
       className={className}
       {...props}
     >
@@ -24,67 +31,72 @@ vi.mock('@/components/ui/select', async () => {
   ));
   MockSelectTrigger.displayName = 'SelectTrigger';
 
-  const MockSelectContent = ({ children }: any) => (
-    <div data-testid="select-content-mock" role="listbox">
+  type SelectContentProps = React.ComponentProps<typeof SelectPrimitive.Content>;
+  const MockSelectContent = ({ children, ...props }: SelectContentProps) => (
+    <div data-testid="select-content-mock" role="listbox" {...props}>
       {children}
     </div>
   );
   MockSelectContent.displayName = 'SelectContent';
 
-  const MockSelectItem = React.forwardRef(({ children, value, onClick, ...props }: any, ref) => (
-    <button
-      ref={ref}
-      role="option"
-      aria-selected={props['aria-selected']}
-      data-testid={`select-item-mock-${value}`}
-      onClick={onClick}
-      value={value}
-      {...props}
-    >
-      {children}
-    </button>
-  ));
+  type SelectItemProps = Omit<React.ComponentProps<typeof SelectPrimitive.Item>, 'ref'> & { onClick?: (event: React.MouseEvent) => void; ref?: React.Ref<HTMLButtonElement>; "data-testid"?: string; };
+  const MockSelectItem = ReactImported.forwardRef(({ children, value, onClick, ...props }: SelectItemProps, ref: React.Ref<HTMLButtonElement>) => {
+    return (
+      <button
+        ref={ref}
+        role="option"
+        aria-selected={props["aria-selected"]}
+        data-testid={props["data-testid"] || `select-item-mock-${value}`}
+        onClick={onClick}
+        value={value}
+        {...(props as any)} // Cast props to any to bypass type checking for the spread
+      >
+        {children}
+      </button>
+    );
+  });
   MockSelectItem.displayName = 'SelectItem';
 
-
+  type SelectProps = React.ComponentProps<typeof SelectPrimitive.Root> & { onValueChange?: (value: string) => void; defaultValue?: string; value?: string; };
   return {
-    Select: ({ children, onValueChange, defaultValue, value, ...props }: any) => {
+    Select: ({ children, onValueChange, defaultValue, value, ...props }: SelectProps) => {
       const [mockValue, setMockValue] = useState(defaultValue || value || '');
 
-      // Simulate onValueChange when the internal mockValue changes
       useEffect(() => {
         if (onValueChange) {
           onValueChange(mockValue);
         }
       }, [mockValue, onValueChange]);
 
-      // Render the children, intercepting SelectTrigger and SelectContent to inject mock logic
       return (
         <div data-testid="mock-select-root" {...props}>
-          {React.Children.map(children, child => {
-            if (child && child.type && child.type.displayName === 'SelectTrigger') {
-              return React.cloneElement(child, {
+          {ReactImported.Children.toArray(children).filter(ReactImported.isValidElement).map((child: React.ReactElement) => {
+            const childType = child.type as React.ComponentType & { displayName?: string };
+            const childProps = child.props as SelectTriggerProps | SelectContentProps; // Cast child.props
+            if (child && ReactImported.isValidElement(child) && childType.displayName === 'SelectTrigger') {
+              return ReactImported.cloneElement(child, {
                 onClick: () => { /* simulate dropdown open */ },
-                'aria-expanded': true, // Assume it opens on click for interaction
-                'aria-controls': child.props.id + '-listbox',
-                // How to pass the current value for display? SelectValue is nested.
-              });
+                'aria-expanded': true,
+                'aria-controls': (childProps as SelectTriggerProps).id ? `${(childProps as SelectTriggerProps).id}-listbox` : undefined,
+              } as SelectTriggerProps);
             }
-            if (child && child.type && child.type.displayName === 'SelectContent') {
-              return React.cloneElement(child, {
-                children: React.Children.map(child.props.children, item => {
-                  if (item && item.type && item.type.displayName === 'SelectItem') {
-                    return React.cloneElement(item, {
+            if (child && ReactImported.isValidElement(child) && childType.displayName === 'SelectContent') {
+              return ReactImported.cloneElement(child, {
+                children: ReactImported.Children.toArray(childProps.children).filter(ReactImported.isValidElement).map((item: React.ReactElement) => {
+                  const itemType = item.type as React.ComponentType & { displayName?: string };
+                  const itemProps = item.props as SelectItemProps; // Cast item.props
+                  if (item && ReactImported.isValidElement(item) && itemType.displayName === 'SelectItem') {
+                    return ReactImported.cloneElement(item, {
                       onClick: () => {
-                        setMockValue(item.props.value);
-                        // No need to call onValueChange here, useEffect will handle it
+                        setMockValue((itemProps as {value: string}).value);
                       },
-                      'aria-selected': mockValue === item.props.value, // Simulate selection
-                    });
+                      'aria-selected': mockValue === (itemProps as {value: string}).value,
+                      value: (itemProps as {value: string}).value, // Explicitly pass value
+                    } as SelectItemProps);
                   }
                   return item;
                 })
-              });
+              } as SelectContentProps);
             }
             return child;
           })}
@@ -92,14 +104,13 @@ vi.mock('@/components/ui/select', async () => {
       );
     },
     SelectTrigger: MockSelectTrigger,
-    SelectValue: ({ placeholder, ...props }: any) => (
+    SelectValue: ({ placeholder, ...props }: React.ComponentProps<typeof SelectPrimitive.Value>) => (
       <span {...props}>{placeholder || 'Mocked Value'}</span>
     ),
     SelectContent: MockSelectContent,
     SelectItem: MockSelectItem,
-    // Add mocks for other parts of the Select component if they are used
-    SelectGroup: ({ children }: any) => <div role="group">{children}</div>,
-    SelectLabel: ({ children }: any) => <span>{children}</span>,
+    SelectGroup: ({ children, ...props }: React.ComponentProps<typeof SelectPrimitive.Group>) => <div role="group" {...props}>{children}</div>,
+    SelectLabel: ({ children, ...props }: React.ComponentProps<typeof SelectPrimitive.Label>) => <span {...props}>{children}</span>,
     SelectSeparator: () => <hr />,
     SelectScrollUpButton: () => null,
     SelectScrollDownButton: () => null,
@@ -108,7 +119,7 @@ vi.mock('@/components/ui/select', async () => {
 
 // Mock shadcn/ui Button component
 vi.mock('@/components/ui/button', () => ({
-  Button: ({ children, onClick, disabled, ...props }: any) => (
+  Button: ({ children, onClick, disabled, ...props }: React.ComponentProps<typeof ButtonActual.Button>) => (
     <button onClick={onClick} disabled={disabled} {...props}>
       {children}
     </button>
@@ -117,10 +128,10 @@ vi.mock('@/components/ui/button', () => ({
 
 // Mock shadcn/ui Card components if they don't impact logic being tested
 vi.mock('@/components/ui/card', () => ({
-  Card: ({ children }: any) => <div data-testid="card">{children}</div>,
-  CardHeader: ({ children }: any) => <div data-testid="card-header">{children}</div>,
-  CardTitle: ({ children }: any) => <h2 data-testid="card-title">{children}</h2>,
-  CardContent: ({ children }: any) => <div data-testid="card-content">{children}</div>,
+  Card: ({ children, ...props }: React.ComponentProps<typeof CardActual.Card>) => <div data-testid="card" {...props}>{children}</div>,
+  CardHeader: ({ children, ...props }: React.ComponentProps<typeof CardActual.CardHeader>) => <div data-testid="card-header" {...props}>{children}</div>,
+  CardTitle: ({ children, ...props }: React.ComponentProps<typeof CardActual.CardTitle>) => <h2 data-testid="card-title" {...props}>{children}</h2>,
+  CardContent: ({ children, ...props }: React.ComponentProps<typeof CardActual.CardContent>) => <div data-testid="card-content" {...props}>{children}</div>,
 }));
 
 describe('WelcomeScreen', () => {

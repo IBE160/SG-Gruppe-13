@@ -15,4 +15,4 @@ if (typeof window !== 'undefined') {
 global.fetch = vi.fn(() => Promise.resolve({
   ok: true,
   json: () => Promise.resolve({}),
-})) as any;
+})) as unknown as typeof fetch; // Use type assertion to typeof fetch

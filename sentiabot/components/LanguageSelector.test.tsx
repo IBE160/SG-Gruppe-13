@@ -1,9 +1,9 @@
-// sentabot/components/LanguageSelector.test.tsx
-
 import { render, screen, fireEvent } from '@testing-library/react';
 import LanguageSelector from './LanguageSelector';
 import * as userPreferences from '@/lib/user-preferences';
-import { vi } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
+
+type Mock = ReturnType<typeof vi.fn>; // Define Mock type
 
 // Mock the user-preferences module
 vi.mock('@/lib/user-preferences', () => ({
@@ -24,7 +24,7 @@ describe('LanguageSelector', () => {
   });
 
   it('should render and default to English', () => {
-    (userPreferences.getLanguagePreference as vi.Mock).mockReturnValue(null);
+    (userPreferences.getLanguagePreference as Mock).mockReturnValue(null);
     render(<LanguageSelector />);
     
     expect(screen.getByText('Language')).toBeInTheDocument();
@@ -33,14 +33,14 @@ describe('LanguageSelector', () => {
   });
 
   it('should initialize with the language from localStorage', () => {
-    (userPreferences.getLanguagePreference as vi.Mock).mockReturnValue('no');
+    (userPreferences.getLanguagePreference as Mock).mockReturnValue('no');
     render(<LanguageSelector />);
     
     expect(screen.getByText('Norwegian')).toBeInTheDocument();
   });
 
   it('should change language, call setLanguagePreference, and reload the page', () => {
-    (userPreferences.getLanguagePreference as vi.Mock).mockReturnValue('en');
+    (userPreferences.getLanguagePreference as Mock).mockReturnValue('en');
     render(<LanguageSelector />);
 
     const trigger = screen.getByRole('combobox');

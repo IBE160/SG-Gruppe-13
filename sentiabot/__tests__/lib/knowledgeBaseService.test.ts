@@ -4,6 +4,8 @@ import { semanticSearch, KnowledgeBaseEntry } from '@/lib/knowledgeBaseService';
 import { embeddingModel } from '@/lib/gemini';
 import { supabase } from '@/lib/supabase';
 
+type Mock = ReturnType<typeof vi.fn>; // Define Mock type
+
 // Mock external dependencies
 vi.mock('@/lib/gemini', () => ({
   embeddingModel: {
@@ -30,17 +32,16 @@ describe('Embedding and Knowledge Base Service', () => {
   beforeEach(async () => {
     vi.clearAllMocks();
 
-    // Import the actual implementation for its own tests
     actualGenerateEmbedding = (await vi.importActual<typeof import('@/lib/embeddings')>('@/lib/embeddings')).generateEmbedding;
 
     // Default mock for Gemini's embedding model
-    (embeddingModel.embedContent as vi.Mock).mockResolvedValue({ embedding: { values: mockQueryEmbedding } });
+    vi.mocked(embeddingModel.embedContent as Mock).mockResolvedValue({ embedding: { values: mockQueryEmbedding } });
     
     // Default mock for our generateEmbedding wrapper (used by semanticSearch)
-    (generateEmbedding as vi.Mock).mockResolvedValue(mockQueryEmbedding);
+    vi.mocked(generateEmbedding as Mock).mockResolvedValue(mockQueryEmbedding);
 
     // Default mock for Supabase RPC call
-    (supabase.rpc as vi.Mock).mockResolvedValue({ data: mockSearchResults, error: null });
+    vi.mocked(supabase.rpc as Mock).mockResolvedValue({ data: mockSearchResults, error: null });
   });
 
   describe('generateEmbedding (actual implementation)', () => {
@@ -48,12 +49,12 @@ describe('Embedding and Knowledge Base Service', () => {
       const text = 'test query';
       const result = await actualGenerateEmbedding(text); 
 
-      expect(embeddingModel.embedContent).toHaveBeenCalledWith(text);
+      expect(vi.mocked(embeddingModel.embedContent as Mock)).toHaveBeenCalledWith(text);
       expect(result).toEqual(mockQueryEmbedding);
     });
 
     it('should throw an error if embedding generation fails', async () => {
-      (embeddingModel.embedContent as vi.Mock).mockRejectedValueOnce(new Error('API error'));
+      vi.mocked(embeddingModel.embedContent as Mock).mockRejectedValueOnce(new Error('API error'));
 
       const text = 'test query';
       await expect(actualGenerateEmbedding(text)).rejects.toThrow('Failed to generate embedding.');
@@ -65,8 +66,8 @@ describe('Embedding and Knowledge Base Service', () => {
       const query = 'biology question';
       const result = await semanticSearch(query);
 
-      expect(generateEmbedding).toHaveBeenCalledWith(query);
-      expect(supabase.rpc).toHaveBeenCalledWith('match_documents', {
+      expect(vi.mocked(generateEmbedding as Mock)).toHaveBeenCalledWith(query);
+      expect(vi.mocked(supabase.rpc as Mock)).toHaveBeenCalledWith('match_documents', {
         query_embedding: mockQueryEmbedding,
         match_threshold: 0.78,
         match_count: 5,
@@ -79,8 +80,8 @@ describe('Embedding and Knowledge Base Service', () => {
       const options = { subject: 'Biology', limit: 2 };
       await semanticSearch(query, options);
 
-      expect(generateEmbedding).toHaveBeenCalledWith(query);
-      expect(supabase.rpc).toHaveBeenCalledWith('match_documents', {
+      expect(vi.mocked(generateEmbedding as Mock)).toHaveBeenCalledWith(query);
+      expect(vi.mocked(supabase.rpc as Mock)).toHaveBeenCalledWith('match_documents', {
         query_embedding: mockQueryEmbedding,
         match_threshold: 0.78,
         match_count: 2,
@@ -90,25 +91,25 @@ describe('Embedding and Knowledge Base Service', () => {
 
     it('should perform semantic search with gradeLevel filter', async () => {
       const query = 'math question';
-      const options = { gradeLevel: '6' };
+      const options = { gradeLevel: '5' };
       await semanticSearch(query, options);
 
-      expect(generateEmbedding).toHaveBeenCalledWith(query);
-      expect(supabase.rpc).toHaveBeenCalledWith('match_documents', {
+      expect(vi.mocked(generateEmbedding as Mock)).toHaveBeenCalledWith(query);
+      expect(vi.mocked(supabase.rpc as Mock)).toHaveBeenCalledWith('match_documents', {
         query_embedding: mockQueryEmbedding,
         match_threshold: 0.78,
         match_count: 5,
-        p_grade_level: '6',
+        p_grade_level: '5',
       });
     });
 
-    it('should perform semantic search with all filters', async () => {
+    it('should apply both subject and gradeLevel filters when provided', async () => {
         const query = 'advanced biology';
         const options = { subject: 'Biology', gradeLevel: '12', limit: 10 };
         await semanticSearch(query, options);
   
-        expect(generateEmbedding).toHaveBeenCalledWith(query);
-        expect(supabase.rpc).toHaveBeenCalledWith('match_documents', {
+        expect(vi.mocked(generateEmbedding as Mock)).toHaveBeenCalledWith(query);
+        expect(vi.mocked(supabase.rpc as Mock)).toHaveBeenCalledWith('match_documents', {
           query_embedding: mockQueryEmbedding,
           match_threshold: 0.78,
           match_count: 10,
@@ -117,18 +118,20 @@ describe('Embedding and Knowledge Base Service', () => {
         });
       });
 
-    it('should throw an error if RPC call fails', async () => {
-      (supabase.rpc as vi.Mock).mockResolvedValue({ data: null, error: { message: 'DB error' } });
-
-      const query = 'failing query';
-      await expect(semanticSearch(query)).rejects.toThrow('Failed to perform semantic search.');
+    it('should return search results', async () => {
+      const query = 'test query';
+      const results = await semanticSearch(query);
+      expect(results).toEqual(mockSearchResults);
     });
 
-    it('should re-throw an error from generateEmbedding', async () => {
-        (generateEmbedding as vi.Mock).mockRejectedValueOnce(new Error('Embedding failed'));
-  
-        const query = 'another failing query';
-        await expect(semanticSearch(query)).rejects.toThrow('An unexpected error occurred during semantic search.');
-      });
+    it('should throw an error if embedding generation fails', async () => {
+      vi.mocked(generateEmbedding as Mock).mockRejectedValue(new Error('Embedding error'));
+      await expect(semanticSearch('query')).rejects.toThrow('An unexpected error occurred during semantic search.');
+    });
+
+    it('should throw an error if supabase rpc call fails', async () => {
+      vi.mocked(supabase.rpc as Mock).mockResolvedValue({ data: null, error: { message: 'RPC error' } });
+      await expect(semanticSearch('query')).rejects.toThrow('Failed to perform semantic search.');
+    });
   });
 });

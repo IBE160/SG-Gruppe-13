@@ -9,6 +9,8 @@ import {
   downloadChatHistoryFile,
 } from '@/lib/chat-history-service'; // Import the actual functions to access their mocked versions
 
+type Mock = ReturnType<typeof vi.fn>; // Define Mock type
+
 vi.mock('@/lib/chat-history-service'); // Vitest will hoist this and use its own factory function for creating mocks
 
 // Mock the Button component if it has complex logic, otherwise use actual
@@ -28,8 +30,8 @@ describe('OptionsModal', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(fetchChatHistory).mockResolvedValue([]); // Default mock resolved value
-    vi.mocked(formatChatHistoryAsText).mockReturnValue(''); // Default mock return value
+    vi.mocked(fetchChatHistory as Mock).mockResolvedValue([]); // Default mock resolved value
+    vi.mocked(formatChatHistoryAsText as Mock).mockReturnValue(''); // Default mock return value
   });
 
   it('renders the OptionsModal and the Download Chat button', () => {
@@ -50,8 +52,8 @@ describe('OptionsModal', () => {
     const mockFormattedText = '[1/1/2025, 12:00:00 PM] USER: Hi\n\n[1/1/2025, 12:01:00 PM] BOT: Hello\n';
     const expectedFilename = `sentiabot-chat-history-${mockSessionId}.txt`;
 
-    vi.mocked(fetchChatHistory).mockResolvedValue(mockHistory);
-    vi.mocked(formatChatHistoryAsText).mockReturnValue(mockFormattedText);
+    vi.mocked(fetchChatHistory as Mock).mockResolvedValue(mockHistory);
+    vi.mocked(formatChatHistoryAsText as Mock).mockReturnValue(mockFormattedText);
 
     render(<OptionsModal sessionId={mockSessionId} />);
 
@@ -62,14 +64,14 @@ describe('OptionsModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /Download Chat/i }));
 
     await waitFor(() => {
-      expect(vi.mocked(fetchChatHistory)).toHaveBeenCalledTimes(1);
-      expect(vi.mocked(fetchChatHistory)).toHaveBeenCalledWith(mockSessionId);
+      expect(vi.mocked(fetchChatHistory as Mock)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(fetchChatHistory as Mock)).toHaveBeenCalledWith(mockSessionId);
 
-      expect(vi.mocked(formatChatHistoryAsText)).toHaveBeenCalledTimes(1);
-      expect(vi.mocked(formatChatHistoryAsText)).toHaveBeenCalledWith(mockHistory);
+      expect(vi.mocked(formatChatHistoryAsText as Mock)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(formatChatHistoryAsText as Mock)).toHaveBeenCalledWith(mockHistory);
 
-      expect(vi.mocked(downloadChatHistoryFile)).toHaveBeenCalledTimes(1);
-      expect(vi.mocked(downloadChatHistoryFile)).toHaveBeenCalledWith(mockFormattedText, expectedFilename);
+      expect(vi.mocked(downloadChatHistoryFile as Mock)).toHaveBeenCalledTimes(1);
+      expect(vi.mocked(downloadChatHistoryFile as Mock)).toHaveBeenCalledWith(mockFormattedText, expectedFilename);
     });
   });
 
@@ -86,7 +88,7 @@ describe('OptionsModal', () => {
 
     await waitFor(() => {
       expect(consoleErrorSpy).toHaveBeenCalledWith('No session ID available for download.');
-      expect(vi.mocked(fetchChatHistory)).not.toHaveBeenCalled();
+      expect(vi.mocked(fetchChatHistory as Mock)).not.toHaveBeenCalled();
     });
 
     consoleErrorSpy.mockRestore();
@@ -94,7 +96,7 @@ describe('OptionsModal', () => {
 
   it('handles errors during chat history fetch', async () => {
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
-    vi.mocked(fetchChatHistory).mockRejectedValue(new Error('Network error'));
+    vi.mocked(fetchChatHistory as Mock).mockRejectedValue(new Error('Network error'));
 
     render(<OptionsModal sessionId={mockSessionId} />);
 
@@ -105,13 +107,13 @@ describe('OptionsModal', () => {
     fireEvent.click(screen.getByRole('button', { name: /Download Chat/i }));
 
     await waitFor(() => {
-      expect(vi.mocked(fetchChatHistory)).toHaveBeenCalledWith(mockSessionId);
+      expect(vi.mocked(fetchChatHistory as Mock)).toHaveBeenCalledWith(mockSessionId);
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Error during chat history download:',
         expect.any(Error)
       );
-      expect(vi.mocked(formatChatHistoryAsText)).not.toHaveBeenCalled();
-      expect(vi.mocked(downloadChatHistoryFile)).not.toHaveBeenCalled();
+      expect(vi.mocked(formatChatHistoryAsText as Mock)).not.toHaveBeenCalled();
+      expect(vi.mocked(downloadChatHistoryFile as Mock)).not.toHaveBeenCalled();
     });
 
     consoleErrorSpy.mockRestore();
