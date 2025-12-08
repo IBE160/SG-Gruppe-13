@@ -1,0 +1,33 @@
+Report: konverter_pdf.py Troubleshooting
+
+Problem:
+The Python script `konverter_pdf.py` failed to execute with a `ModuleNotFoundError` for the module 'fitz'. This indicated that a necessary library was not installed in the Python environment.
+
+Initial Error Traceback:
+```
+Traceback (most recent call last):
+  File "C:\Users\CEPTER\Documents\Programmering med KI\SG-Gruppe-13\sentiabot\pdfer\konverter_pdf.py", line 1, in <module>
+    import fitz # Importeres som fitz
+    ^^^^^^^^^^^
+ModuleNotFoundError: No module named 'fitz'
+```
+
+Resolution Steps:
+1. Identified that 'fitz' is part of the `PyMuPDF` library.
+2. Installed the `PyMuPDF` library using pip:
+   `pip install PyMuPDF`
+3. Reran the `konverter_pdf.py` script.
+
+Outcome:
+The `PyMuPDF` library was successfully installed, and the `konverter_pdf.py` script ran without errors. All specified PDF files (`bjorn.pdf`, `rodrev.pdf`, `gaupe.pdf`, `snomus.pdf`, `snougle.pdf`) were successfully converted to text files.
+
+Converted files are located in the following directory:
+`C:\Users\CEPTER\Documents\Programmering med KI\SG-Gruppe-13\sentiabot\pdfer\utdata_tekst\`
+
+List of converted files:
+- bjorn.txt
+- gaupe.txt
+- rodrev.txt
+- snomus.txt
+- snougle.txt
+
