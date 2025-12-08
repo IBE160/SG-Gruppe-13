@@ -21,6 +21,7 @@ export async function semanticSearch(
 ): Promise<KnowledgeBaseEntry[]> {
   try {
     const queryEmbedding = await generateEmbedding(query);
+    console.log("Query Embedding generated (first 5 values):", queryEmbedding.slice(0, 5), "Length:", queryEmbedding.length);
 
     // Prepare the parameters for the RPC call
     const params: {
@@ -31,7 +32,7 @@ export async function semanticSearch(
       p_grade_level?: string;
     } = {
       query_embedding: queryEmbedding,
-      match_threshold: 0.78, // Default threshold
+      match_threshold: 0.1, // Temporarily lowered for debugging
       match_count: options?.limit || 5,
     };
 
