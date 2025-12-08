@@ -4,14 +4,18 @@ Repository for SG-Gruppe-13 - IBE160 Programmering med KI.
 
 SETUP:
 
-1. Create '.env.local' in the sentiabot folder and populate it with:
+1. Create '.env.local' in SG-Gruppe-13\sentiabot and populate it with:
     NEXT_PUBLIC_SUPABASE_URL="https://qbsafyvbewcsxhfmicfb.supabase.co"
     NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFic2FmeXZiZXdjc3hoZm1pY2ZiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0OTk2MTQsImV4cCI6MjA4MDA3NTYxNH0.mnnBK7wrFdmC-yfLGJEoz3xR5lfQ1CHpZJhNl3CMWZ0"
+
     GEMINI_API_KEY="Your_Gemini_API_Key"
+
+    Make sure each variable is at its own line! If you get errors related to "invalid source map", "SupabaseURL is required", "missing API key", etc. Then your .env.local file is setup incorrectly, or in the wrong directory!
 
         Change "Your_Gemini_API_Key" with your own Gemini API key. DO NOT share this key with anyone - it uses your billing if you have billing set up!
 
     NOTE: You NEED a "Tier 1 Paid" key. No payment is required, only billing to be setup.
+
         How to setup an API key: https://ai.google.dev/gemini-api/docs/api-key
         Where to upgrade to tier 1: https://ai.google.dev/gemini-api/docs/billing 
 
