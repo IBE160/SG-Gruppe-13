@@ -1,0 +1,298 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>3</storyId>
+    <title>Admin Modify Chatbot System Prompt</title>
+    <status>drafted</status>
+    <generatedAt>2025-12-07</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>C:\Users\oi36\Desktop\julie skole\år 3\programmering med KI\SG-Gruppe-13\docs\sprint-artifacts/4-3.md</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>As an Administrator,</asA>
+    <iWant>I want to be able to modify the chatbot's system prompt,</iWant>
+    <soThat>so that I can refine its behavior and tone without needing to redeploy the application.</soThat>
+    <tasks>
+      <task id="AC1-1">Implement secure administrator login.</task>
+      <subtask id="AC1-1a">Create admin login page (`/admin/login`).</subtask>
+      <subtask id="AC1-1b">Integrate Supabase Auth for login functionality. (Source: `architecture.md`, `tech-spec-epic-4.md`)</subtask>
+      <subtask id="AC1-1c">Protect `/admin` routes using authentication middleware/guards. (Source: `architecture.md`, `tech-spec-epic-4.md`)</subtask>
+      <subtask id="AC1-1d">Redirect unauthenticated users from `/admin` routes to login page.</subtask>
+      <subtask id="AC1-1e">Testing: Unit test `AdminLoginPage` component.</subtask>
+      <subtask id="AC1-1f">Testing: E2E test: Successful admin login and redirection to dashboard. (Source: `tech-spec-epic-4.md`)</subtask>
+      <task id="AC2-1">Develop admin page to display system prompt.</task>
+      <subtask id="AC2-1a">Create admin page at `/admin/system-prompt`. (Source: `tech-spec-epic-4.md`)</subtask>
+      <subtask id="AC2-1b">Implement API endpoint `GET /api/admin/system-prompt` to fetch the current system prompt from `system_prompts` table. (Source: `architecture.md`, `tech-spec-epic-4.md`)</subtask>
+      <subtask id="AC2-1c">Create UI component (text editor, e.g., using `@radix-ui/react-textarea`) to display the `prompt_text`.</subtask>
+      <subtask id="AC2-1d">Testing: Unit test `GET /api/admin/system-prompt` endpoint. (Source: `tech-spec-epic-4.md`)</subtask>
+      <subtask id="AC2-1e">Testing: Unit test UI component for displaying prompt.</subtask>
+      <task id="AC3-1">Implement functionality to modify and save system prompt.</task>
+      <subtask id="AC3-1a">Implement API endpoint `PUT /api/admin/system-prompt` to update `prompt_text` in `system_prompts` table. (Source: `architecture.md`, `tech-spec-epic-4.md`)</subtask>
+      <subtask id="AC3-1b">Connect UI text editor to `PUT /api/admin/system-prompt` API endpoint.</subtask>
+      <subtask id="AC3-1c">Add save button and handle local state management for changes.</subtask>
+      <subtask id="AC3-1d">Testing: Unit test `PUT /api/admin/system-pompt` endpoint.</subtask>
+      <task id="AC4-1">Ensure chatbot uses updated system prompt.</task>
+      <subtask id="AC4-1a">Modify the core chat API (`/api/chat`) to retrieve the latest system prompt from the `system_prompts` table before passing it to the AI model. (Source: `architecture.md`)</subtask>
+      <subtask id="AC4-1b">Testing: E2E test: Admin modifies prompt, starts a new chat, and verifies chatbot behavior reflects the new prompt. (Source: `tech-spec-epic-4.md`)</subtask>
+    </tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">Given I am logged in as an administrator.</criterion>
+    <criterion id="2">I can see the current system prompt in a text editor.</criterion>
+    <criterion id="3">I can modify the prompt and save my changes.</criterion>
+    <criterion id="4">The next chat session uses the updated system prompt.</criterion>
+  </acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>4.1 Chosen Design Approach</section>
+        <snippet>The addition of a clean, subtle header with an accessible 'Options' button provides clear control for students to manage settings like grade level, language, or to download chat history without cluttering the primary conversational interface.</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>6. Component Library</section>
+        <snippet>Dialog / Modal: For presenting the 'Options' menu and its contents (e.g., language selection, download chat).</snippet>
+      </doc>
+      <doc>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>7.1 Consistency Rules (Modal Patterns)</section>
+        <snippet>A simple, centered `Dialog` will overlay the chat interface with a semi-transparent backdrop, focusing the user's attention on the available options.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 4: Administration and System Management</section>
+        <snippet>Create the necessary tools for administrators to manage the application's content and behavior securely.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Story 4.3: As an administrator, I want to be able to modify the chatbot's system prompt...</section>
+        <snippet>As an administrator, I want to be able to modify the chatbot's system prompt, so that I can refine its behavior and tone without needing to redeploy the application.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Story 4.1: As an administrator, I need a secure way to log in...</section>
+        <snippet>As an administrator, I need a secure way to log in, so that only authorized users can manage the system.</snippet>
+      </doc>
+      <doc>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Story 4.2: As an administrator, I want an interface to add, edit, and delete content...</section>
+        <snippet>As an administrator, I want an interface to add, edit, and delete content in the knowledge base, so that I can keep the information accurate and up-to-date.</snippet>
+      </doc>
+    </docs>
+
+    <code>
+      <code-artifact>
+        <path>sentiabot/src/lib/supabase.ts</path>
+        <kind>file</kind>
+        <symbol>Supabase Client Integration</symbol>
+        <reason>Placeholder for Supabase client setup</reason>
+      </code-artifact>
+      <code-artifact>
+        <path>sentiabot/app/api/chat/route.ts</path>
+        <kind>API route</kind>
+        <symbol>Chat API</symbol>
+        <reason>Existing API to be modified to retrieve latest system prompt</reason>
+      </code-artifact>
+      <code-artifact>
+        <path>sentiabot/app/admin/system-prompt</path>
+        <kind>directory</kind>
+        <symbol>Admin System Prompt Page</symbol>
+        <reason>New page and components for UI</reason>
+      </code-artifact>
+      <code-artifact>
+        <path>sentiabot/app/api/admin/system-prompt</path>
+        <kind>API route directory</kind>
+        <symbol>Admin System Prompt API</symbol>
+        <reason>New API routes for GET/PUT system prompt</reason>
+      </code-artifact>
+      <code-artifact>
+        <path>sentiabot/supabase/migrations</path>
+        <kind>directory</kind>
+        <symbol>Supabase Migrations</symbol>
+        <reason>Contains migrations for database schema, including system_prompts table</reason>
+      </code-artifact>
+    </code>
+    <dependencies>
+      <dependency>
+        <name>@google/generative-ai</name>
+        <version>^0.24.1</version>
+      </dependency>
+      <dependency>
+        <name>@radix-ui/react-dialog</name>
+        <version>^1.1.15</version>
+      </dependency>
+      <dependency>
+        <name>@radix-ui/react-select</name>
+        <version>^2.2.6</version>
+      </dependency>
+      <dependency>
+        <name>@radix-ui/react-slot</name>
+        <version>^1.2.4</version>
+      </dependency>
+      <dependency>
+        <name>@supabase/supabase-js</name>
+        <version>^2.86.0</version>
+      </dependency>
+      <dependency>
+        <name>@testing-library/user-event</name>
+        <version>^14.6.1</version>
+      </dependency>
+      <dependency>
+        <name>class-variance-authority</name>
+        <version>^0.7.1</version>
+      </dependency>
+      <dependency>
+        <name>clsx</name>
+        <version>^2.1.1</version>
+      </dependency>
+      <dependency>
+        <name>lucide-react</name>
+        <version>^0.555.0</version>
+      </dependency>
+      <dependency>
+        <name>next</name>
+        <version>16.0.6</version>
+      </dependency>
+      <dependency>
+        <name>react</name>
+        <version>19.2.0</version>
+      </dependency>
+      <dependency>
+        <name>react-dom</name>
+        <version>19.2.0</version>
+      </dependency>
+      <dependency>
+        <name>tailwind-merge</name>
+        <version>^3.4.0</version>
+      </dependency>
+      <dependency>
+        <name>tailwindcss-animate</name>
+        <version>^1.0.7</version>
+      </dependency>
+      <dependency>
+        <name>uuid</name>
+        <version>^13.0.0</version>
+      </dependency>
+      <dev-dependency>
+        <name>@tailwindcss/postcss</name>
+        <version>^4</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@testing-library/jest-dom</name>
+        <version>^6.9.1</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@testing-library/react</name>
+        <version>^16.3.0</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@types/node</name>
+        <version>^20.19.25</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@types/react</name>
+        <version>^19</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@types/react-dom</name>
+        <version>^19</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@vitejs/plugin-react</name>
+        <version>^5.1.1</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>@vitest/coverage-v8</name>
+        <version>^4.0.14</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>autoprefixer</name>
+        <version>^10.4.22</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>eslint</name>
+        <version>^9</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>eslint-config-next</name>
+        <version>16.0.6</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>jsdom</name>
+        <version>^27.2.0</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>tailwindcss</name>
+        <version>^4</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>tsx</name>
+        <version>^4.21.0</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>tw-animate-css</name>
+        <version>^1.4.0</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>typescript</name>
+        <version>^5</version>
+      </dev-dependency>
+      <dev-dependency>
+        <name>vitest</name>
+        <version>^4.0.14</version>
+      </dev-dependency>
+    </dependencies>
+  </artifacts>
+
+  <constraints>
+    <constraint>Authentication: Supabase Auth for admin access.</constraint>
+    <constraint>Data Persistence: System prompts stored in system_prompts table in Supabase PostgreSQL.</constraint>
+    <constraint>Security: RLS policies on system_prompts table to restrict access to administrators.</constraint>
+    <constraint>System prompt is crucial for RAG and prompt engineering with Google Gemini.</constraint>
+    <constraint>Required patterns: Admin interface under /admin routes, API endpoints under /api/admin.</constraint>
+    <constraint>Testing requirements: Unit tests for UI components and API endpoints, Integration tests for UI-to-API interaction, E2E tests for full admin workflow and chatbot behavior change, Security testing for admin routes.</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>GET /api/admin/system-prompt</name>
+      <kind>REST endpoint</kind>
+      <signature>GET /api/admin/system-prompt</signature>
+      <path>sentiabot/app/api/admin/system-prompt</path>
+    </interface>
+    <interface>
+      <name>PUT /api/admin/system-prompt</name>
+      <kind>REST endpoint</kind>
+      <signature>PUT /api/admin/system-prompt</signature>
+      <path>sentiabot/app/api/admin/system-prompt</path>
+    </interface>
+    <interface>
+      <name>POST /api/chat</name>
+      <kind>REST endpoint</kind>
+      <signature>POST /api/chat</signature>
+      <path>sentiabot/app/api/chat/route.ts</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>The project uses Vitest for unit and integration testing. E2E and Security testing are also required.</standards>
+    <locations>Unit tests for UI components will likely be co-located with components. API endpoint tests will be near the API routes (e.g., `route.test.ts` within `sentiabot/app/api/chat`). E2E tests are typically in a separate `e2e` directory or similar. Co-located tests also found in sentiabot/app/api/chat/route.test.ts</locations>
+    <ideas>
+      <idea>Unit test `AdminLoginPage` component (AC1)</idea>
+      <idea>E2E test: Successful admin login and redirection to dashboard (AC1)</idea>
+      <idea>Unit test `GET /api/admin/system-prompt` endpoint (AC2)</idea>
+      <idea>Unit test UI component for displaying prompt (AC2)</idea>
+      <idea>Unit test `PUT /api/admin/system-prompt` endpoint (AC3)</idea>
+      <idea>E2E test: Admin modifies prompt, starts a new chat, and verifies chatbot behavior reflects the new prompt (AC4)</idea>
+    </ideas>
+  </tests>
+</story-context>

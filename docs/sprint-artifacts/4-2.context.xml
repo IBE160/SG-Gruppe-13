@@ -1,0 +1,195 @@
+<story-context id=".bmad/bmm/workflows/4-implementation/story-context/template" v="1.0">
+  <metadata>
+    <epicId>4</epicId>
+    <storyId>2</storyId>
+    <title>As an administrator, I want an interface to add, edit, and delete content in the knowledge base, so that I can keep the information accurate and up-to-date</title>
+    <status>drafted</status>
+    <generatedAt>søndag 7. desember 2025</generatedAt>
+    <generator>BMAD Story Context Workflow</generator>
+    <sourceStoryPath>C:\Users\oi36\Desktop\julie skole\år 3\programmering med KI\SG-Gruppe-13/docs/sprint-artifacts</sourceStoryPath>
+  </metadata>
+
+  <story>
+    <asA>an administrator,</asA>
+    <iWant>an interface to add, edit, and delete content in the knowledge base,</iWant>
+    <soThat>so that I can keep the information accurate and up-to-date.</soThat>
+    <tasks>
+    <task id="6.1" goal="Design and Implement Admin Interface Layout (AC: 1, 2)">
+        <subtask id="6.1.1">Design the layout for the admin interface for knowledge base management, including a list view for documents.</subtask>
+        <subtask id="6.1.2">Implement the basic UI layout, ensuring secure access only for authenticated administrators.</subtask>
+        <subtask id="6.1.3">Develop a mechanism to fetch and display a list of existing knowledge base documents.</subtask>
+        <subtask id="6.1.4">Implement frontend display of document list.</subtask>
+    </task>
+    <task id="6.2" goal="Implement Document Creation Functionality (AC: 3)">
+        <subtask id="6.2.1">Design and implement a form/modal for creating new knowledge base documents.</subtask>
+        <subtask id="6.2.2">Develop backend API endpoint for adding new documents to the knowledge base.</subtask>
+        <subtask id="6.2.3">Integrate frontend form with backend API for document creation.</subtask>
+    </task>
+    <task id="6.3" goal="Implement Document Editing Functionality (AC: 4)">
+        <subtask id="6.3.1">Design and implement a form/modal for editing existing knowledge base documents.</subtask>
+        <subtask id="6.3.2">Develop backend API endpoint for updating documents in the knowledge base.</subtask>
+        <subtask id="6.3.3">Integrate frontend form with backend API for document editing.</subtask>
+    </task>
+    <task id="6.4" goal="Implement Document Deletion Functionality (AC: 5)">
+        <subtask id="6.4.1">Design and implement a confirmation dialog for deleting knowledge base documents.</subtask>
+        <subtask id="6.4.2">Develop backend API endpoint for deleting documents from the knowledge base.</subtask>
+        <subtask id="6.4.3">Integrate frontend UI with backend API for document deletion.</subtask>
+    </task>
+    <task id="6.5" goal="Integration and Testing">
+        <subtask id="6.5.1">Conduct end-to-end testing of all CRUD operations (Create, Read, Update, Delete) for knowledge base documents.</subtask>
+        <subtask id="6.5.2">Implement unit and integration tests for backend API endpoints.</subtask>
+        <subtask id="6.5.3">Implement UI tests for the admin interface.</subtask>
+        <subtask id="6.5.4">Verify secure access control for all admin functionalities.</subtask>
+    </task>
+</tasks>
+  </story>
+
+  <acceptanceCriteria>
+    <criterion id="1">Given I am logged in as an administrator.</criterion>
+    <criterion id="2">I can view a list of all documents in the knowledge base.</criterion>
+    <criterion id="3">I can create a new document.</criterion>
+    <criterion id="4">I can edit an existing document.</criterion>
+    <criterion id="5">I can delete a document.</criterion>
+</acceptanceCriteria>
+
+  <artifacts>
+    <docs>
+      <artifact>
+        <path>docs/fase-2-plan/PRD.md</path>
+        <title>Product Requirements Document: Sentiabot</title>
+        <section>Functional Requirements (MVP)</section>
+        <snippet>FR010: A separate interface for admins to update the knowledge base.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/fase-2-plan/PRD.md</path>
+        <title>Product Requirements Document: Sentiabot</title>
+        <section>User Journeys</section>
+        <snippet>Journey 2: Admin Updates the Knowledge Base. Describes the process of an administrator logging in and managing knowledge base content.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 4: Administration and System Management</section>
+        <snippet>Goal: Create the necessary tools for administrators to manage the application's content and behavior securely. This epic contains Story 4.2.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/fase-2-plan/epics.md</path>
+        <title>Product Roadmap: Sentiabot</title>
+        <section>Epic 4: Administration and System Management - Story 4.2</section>
+        <snippet>Story 4.2: As an administrator, I want an interface to add, edit, and delete content in the knowledge base, so that I can keep the information accurate and up-to-date. Includes acceptance criteria for viewing, creating, editing, and deleting documents.</snippet>
+      </artifact>
+      <artifact>
+        <path>docs/ux-design-specification.md</path>
+        <title>ibe160 UX Design Specification</title>
+        <section>Executive Summary</section>
+        <snippet>The design will heavily draw inspiration from existing, successful AI chat applications like ChatGPT and Google Gemini, prioritizing a simple and to-the-point interface.</snippet>
+      </artifact>
+    </docs>
+    <code>
+      <artifact>
+        <path>lib/knowledgeBaseService.ts</path>
+        <kind>service</kind>
+        <symbol>semanticSearch, KnowledgeBaseEntry</symbol>
+        <lines>10-14, 21-54</lines>
+        <reason>Core service for knowledge base interaction, defines data structure and search logic.</reason>
+      </artifact>
+      <artifact>
+        <path>supabase/migrations/20251202144700_create_knowledge_base_entries_table.sql</path>
+        <kind>database migration</kind>
+        <symbol>knowledge_base_entries table</symbol>
+        <lines>3-26</lines>
+        <reason>Defines the schema for knowledge base entries and includes RLS policies for insert, update, delete for authenticated users, which directly relates to admin CRUD operations.</reason>
+      </artifact>
+      <artifact>
+        <path>supabase/migrations/20251202153000_create_match_documents_rpc.sql</path>
+        <kind>database migration</kind>
+        <symbol>match_documents function</symbol>
+        <lines>1-22</lines>
+        <reason>Initial creation of the RPC function for semantic search within the knowledge base.</reason>
+      </artifact>
+      <artifact>
+        <path>supabase/migrations/V1_update_match_documents_function.sql</path>
+        <kind>database migration</kind>
+        <symbol>match_documents function</symbol>
+        <lines>1-36</lines>
+        <reason>Updated RPC function for semantic search, showing structure and filtering capabilities.</reason>
+      </artifact>
+      <artifact>
+        <path>app/api/chat/route.ts</path>
+        <kind>API route</kind>
+        <symbol>POST /api/chat</symbol>
+        <lines>3-90</lines>
+        <reason>Demonstrates how knowledge base context is integrated into AI prompts and how chat content is saved. Relevant for understanding existing data flow.</reason>
+      </artifact>
+    </code>
+    <dependencies>
+      <ecosystem name="Node.js/npm">
+        <package name="supabase" version="^2.63.1" location="project-root/package.json" type="devDependency" />
+        <package name="@google/generative-ai" version="^0.24.1" location="sentiabot/package.json" type="dependency" />
+        <package name="@radix-ui/react-dialog" version="^1.1.15" location="sentiabot/package.json" type="dependency" />
+        <package name="@radix-ui/react-select" version="^2.2.6" location="sentiabot/package.json" type="dependency" />
+        <package name="@radix-ui/react-slot" version="^1.2.4" location="sentiabot/package.json" type="dependency" />
+        <package name="@supabase/supabase-js" version="^2.86.0" location="sentiabot/package.json" type="dependency" />
+        <package name="@testing-library/user-event" version="^14.6.1" location="sentiabot/package.json" type="dependency" />
+        <package name="class-variance-authority" version="^0.7.1" location="sentiabot/package.json" type="dependency" />
+        <package name="clsx" version="^2.1.1" location="sentiabot/package.json" type="dependency" />
+        <package name="lucide-react" version="^0.555.0" location="sentiabot/package.json" type="dependency" />
+        <package name="next" version="16.0.6" location="sentiabot/package.json" type="dependency" />
+        <package name="react" version="19.2.0" location="sentiabot/package.json" type="dependency" />
+        <package name="react-dom" version="19.2.0" location="sentiabot/package.json" type="dependency" />
+        <package name="tailwind-merge" version="^3.4.0" location="sentiabot/package.json" type="dependency" />
+        <package name="tailwindcss-animate" version="^1.0.7" location="sentiabot/package.json" type="dependency" />
+        <package name="uuid" version="^13.0.0" location="sentiabot/package.json" type="dependency" />
+        <package name="typescript" version="^5" location="sentiabot/package.json" type="devDependency" />
+        <package name="vitest" version="^4.0.14" location="sentiabot/package.json" type="devDependency" />
+        <!-- ... other devDependencies from sentiabot/package.json -->
+      </ecosystem>
+    </dependencies>
+  </artifacts>
+  </artifacts>
+
+  <constraints>
+    <constraint>RLS policies on `knowledge_base_entries` table must be respected; admin operations require authenticated user context (from `supabase/migrations/20251202144700_create_knowledge_base_entries_table.sql`).</constraint>
+    <constraint>Knowledge base entry schema includes `id`, `title`, `content`, `embedding`, `subject`, `grade_level`, `source_url` (from `lib/knowledgeBaseService.ts` and `supabase/migrations/*`).</constraint>
+    <constraint>New admin API endpoints for CRUD must integrate with existing Supabase services and potentially reuse `supabase.rpc` for database interactions.</constraint>
+  </constraints>
+  <interfaces>
+    <interface>
+      <name>KnowledgeBaseEntry</name>
+      <kind>TypeScript Interface</kind>
+      <signature>interface KnowledgeBaseEntry { id: number; title: string; content: string; source_url: string; }</signature>
+      <path>lib/knowledgeBaseService.ts</path>
+    </interface>
+    <interface>
+      <name>semanticSearch</name>
+      <kind>Function Signature</kind>
+      <signature>semanticSearch(query: string, subject?: string, gradeLevel?: number, matchThreshold?: number, matchCount?: number): Promise&lt;KnowledgeBaseEntry[]&gt;</signature>
+      <path>lib/knowledgeBaseService.ts</path>
+    </interface>
+    <interface>
+      <name>match_documents</name>
+      <kind>Supabase RPC Function</kind>
+      <signature>match_documents(query_embedding vector, match_threshold float, match_count int, p_subject text, p_grade_level int) RETURNS TABLE (id uuid, content text, similarity float)</signature>
+      <path>supabase/migrations/V1_update_match_documents_function.sql</path>
+    </interface>
+    <interface>
+      <name>Admin Knowledge Base CRUD API</name>
+      <kind>REST Endpoints (to be implemented)</kind>
+      <signature>POST /api/admin/knowledgebase (Create), GET /api/admin/knowledgebase (Read All), GET /api/admin/knowledgebase/{id} (Read One), PUT /api/admin/knowledgebase/{id} (Update), DELETE /api/admin/knowledgebase/{id} (Delete)</signature>
+      <path>N/A</path>
+    </interface>
+  </interfaces>
+  <tests>
+    <standards>The project utilizes Vitest for testing. All new features should be covered by unit, integration, and UI tests. Follow established patterns within the `sentiabot/__tests__` directory, particularly for API interactions and UI components. Ensure comprehensive test coverage for all CRUD operations.</standards>
+    <locations>
+      <location>sentiabot/__tests__/**/*.test.ts(x)</location>
+    </locations>
+    <ideas>
+      <idea acId="1">Verify secure access: Only authenticated administrators can view/manage the KB interface. Unauthenticated/unauthorized users should be redirected or receive access denied.</idea>
+      <idea acId="2">List view: Test that all existing knowledge base documents are listed correctly. If pagination/filtering are implemented, test their functionality and data integrity.</idea>
+      <idea acId="3">Create document: Test the UI form for new document creation, including input validation (e.g., required title, content). Verify successful API call and that the new document appears in the list.</idea>
+      <idea acId="4">Edit document: Test selecting a document for editing, populating the form with existing data, and submitting updates. Verify successful API call and that changes are reflected in the UI.</idea>
+      <idea acId="5">Delete document: Test the deletion process, including the confirmation dialog. Verify successful API call and that the document is removed from the list.</idea>
+    </ideas>
+  </tests>
+</story-context>
