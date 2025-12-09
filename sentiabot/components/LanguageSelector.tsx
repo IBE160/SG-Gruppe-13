@@ -38,7 +38,7 @@ const LanguageSelector = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="en">English</SelectItem>
-          <SelectItem value="no">Norwegian</SelectItem>
+          <SelectItem value="norwegian">Norwegian</SelectItem>
         </SelectContent>
       </Select>
     </div>
