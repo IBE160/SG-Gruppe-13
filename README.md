@@ -32,3 +32,29 @@ SETUP:
             !!!WARNING!!! IF YOU USE THE PROVIDED SUPABASE URL/KEY, THE ITEMS HERE ARE SHARED AMONG ALL WHO USE IT!
             DO NOT DELETE ANY ITEMS. YOU MAY CREATE, EDIT AND DELETE *YOUR OWN* ENTRIES AS YOU WISH.
             !!!DELETIONS ARE IRREVERSABLE!!!
+
+Currently the knowledgebase is small and limited, but showcases what it is capable of.
+
+On the chatbot page:
+
+    Select your subject and grade.
+
+Here is what you can ask the chatbot based on grade:
+    
+    Biology:
+        Grade 1: Bear
+        Grade 2: Snowowl
+        Grade 3: Lynx
+        Grade 4: Red fox
+        Grade 5: Snow Mouse
+        Grade 6: Photosynthesis
+        Grade 7: DNA
+
+    Geology:
+        Grade 1: Erosion
+        Grade 2: Earthquake
+        Grade 3: Volcano
+        Grade 4: Rocks
+        Grade 5: The Earth
+        Grade 6: Fossils
+        Grade 7: Geothermic energi

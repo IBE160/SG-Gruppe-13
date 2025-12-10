@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     if (source_url && (typeof source_url !== 'string' || !/^https?:\/\/\S+$/.test(source_url))) {
       return NextResponse.json({ message: 'Source URL must be a valid URL.' }, { status: 400 });
     }
-    const allowedSubjects = ['Biology', 'Geography', 'Math']; // Define allowed subjects
+    const allowedSubjects = ['Biology', 'Geography', 'Math', 'Geology']; // Define allowed subjects
     if (!subject || typeof subject !== 'string' || !allowedSubjects.includes(subject)) {
       return NextResponse.json({ message: `Subject is required and must be one of: ${allowedSubjects.join(', ')}.` }, { status: 400 });
     }
@@ -96,7 +96,7 @@ export async function PUT(request: Request) {
     if (source_url && (typeof source_url !== 'string' || !/^https?:\/\/\S+$/.test(source_url))) {
       return NextResponse.json({ message: 'Source URL must be a valid URL.' }, { status: 400 });
     }
-    const allowedSubjects = ['Biology', 'Geography', 'Math']; // Define allowed subjects
+    const allowedSubjects = ['Biology', 'Geography', 'Math', 'Geology']; // Define allowed subjects
     if (!subject || typeof subject !== 'string' || !allowedSubjects.includes(subject)) {
       return NextResponse.json({ message: `Subject is required and must be one of: ${allowedSubjects.join(', ')}.` }, { status: 400 });
     }
