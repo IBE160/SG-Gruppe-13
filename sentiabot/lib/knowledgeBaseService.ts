@@ -15,6 +15,17 @@ export interface KnowledgeBaseEntry {
   source_url: string;
 }
 
+// Helper function to convert a string to Title Case
+function toTitleCase(str: string): string {
+  if (!str) return '';
+  return str.replace(
+    /\w\S*/g,
+    function(txt) {
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    }
+  );
+}
+
 export async function semanticSearch(
   query: string,
   options?: SearchOptions
@@ -38,7 +49,7 @@ export async function semanticSearch(
 
     // Add optional filters to the RPC parameters
     if (options?.subject) {
-      params.p_subject = options.subject;
+      params.p_subject = toTitleCase(options.subject); // Convert to Title Case
     }
     if (options?.gradeLevel) {
       params.p_grade_level = options.gradeLevel;
@@ -66,3 +77,4 @@ export async function semanticSearch(
     throw new Error('An unexpected error occurred during semantic search.');
   }
 }
+
